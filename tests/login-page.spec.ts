@@ -19,3 +19,12 @@ test('should login with valid credentials', async ({ page }) => {
   await expect(page.getByText('Products')).toBeVisible();
 });
 
+test('should show error for invalid credentials', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.getByPlaceholder('Username').fill('invalid_user');
+  await page.getByPlaceholder('Password').fill('invalid_password');
+  await page.getByRole('button', { name: 'Login' }).click();
+
+  await expect(page.getByText('Epic sadface: Username and password do not match any user in this service')).toBeVisible();
+});
