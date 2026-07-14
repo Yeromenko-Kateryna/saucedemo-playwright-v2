@@ -38,3 +38,30 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+### TC-INV-002 - Verify that product cards contain required information
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate later
+
+#### Actual Result
+
+- Product name `Sauce Labs Backpack` was visible.
+- Product description was visible.
+- Product price was visible.
+- Product image was visible.
+- `Add to cart` button was visible.
+
+#### Observations
+
+- Product name is clickable and opens the product details page.
+- Product image is clickable and opens the product details page.
+- Product description is not clickable.
+- Product price is not clickable.
+- Product description contains code-like demo text: `carry.allTheThings()`.
+- This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
