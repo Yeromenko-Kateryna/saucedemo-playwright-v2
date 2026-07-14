@@ -14,7 +14,7 @@ The goal is to separate planned test cases from actual execution results.
 
 - **Execution type:** Manual
 - **Status:** Passed
-- **Automation decision:** Automate
+- **Automation decision:** Automated
 
 #### Actual Result
 
@@ -39,11 +39,13 @@ The goal is to separate planned test cases from actual execution results.
 
 - None found for this test case.
 
+---
+
 ### TC-INV-002 - Verify that product cards contain required information
 
 - **Execution type:** Manual
 - **Status:** Passed
-- **Automation decision:** Automate later
+- **Automation decision:** Automated
 
 #### Actual Result
 
@@ -61,6 +63,41 @@ The goal is to separate planned test cases from actual execution results.
 - Product price is not clickable.
 - Product description contains code-like demo text: `carry.allTheThings()`.
 - This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-INV-003 - Verify that user can add one product to the cart
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User clicked `Add to cart` for `Sauce Labs Backpack`.
+- Cart badge showed `1`.
+- `Add to cart` button changed to `Remove`.
+- User opened the cart.
+- `Sauce Labs Backpack` was visible in the cart.
+- Product quantity was shown as `1`.
+- Product description was visible.
+- Product price was visible.
+- `Remove` button was visible.
+
+#### Observations
+
+- Cart page displays product quantity instead of product image.
+- The number `1` on the cart item represents quantity, not a missing image.
+- Product description still contains code-like demo text: `carry.allTheThings()`.
+- User can add another different product to the cart, and the cart badge updates to `2`.
+- The same product cannot be added multiple times from the Inventory Page because the button changes from `Add to cart` to `Remove`.
+- `Checkout` button is visible on the cart page.
+- `Continue Shopping` button is visible on the cart page.
 
 #### Possible Bugs
 
