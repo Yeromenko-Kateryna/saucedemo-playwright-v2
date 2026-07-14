@@ -29,3 +29,25 @@ test('TC-INV-002 - should display required product card information', async ({ p
   await expect(firstProductCard.locator('[data-test="item-4-img-link"]')).toBeVisible();
   await expect(firstProductCard.locator('[data-test="add-to-cart-sauce-labs-backpack"]')).toBeVisible();
 });
+
+test('TC-INV-003 - should add one product to the cart', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+  await expect(page.locator('[data-test="remove-sauce-labs-backpack"]')).toBeVisible();
+
+  await page.locator('[data-test="shopping-cart-link"]').click();
+
+  const cartItem = page.locator('[data-test="inventory-item"]').first();
+
+  await expect(cartItem.locator('[data-test="item-quantity"]')).toHaveText('1');
+  await expect(cartItem.locator('[data-test="item-4-title-link"]')).toHaveText('Sauce Labs Backpack');
+  await expect(cartItem.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99');
+  await expect(cartItem.locator('[data-test="remove-sauce-labs-backpack"]')).toBeVisible();
+});
