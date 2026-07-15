@@ -65,3 +65,35 @@ The test uses a scoped locator:
 
 ```ts
 const firstProductCard = page.locator('[data-test="inventory-item"]').first();
+
+---
+
+## TC-INV-004 - User can remove product from the cart
+
+### Purpose
+
+Verify that a user can remove one product from the cart and the cart state is updated correctly.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the product before removal |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count before and after removal |
+| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Item name link | `[data-test="item-4-title-link"]` | Confirms the correct product is in the cart before removal |
+| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product from the cart |
+
+### Notes
+
+Codegen generated additional actions such as clicking `Checkout`, `Cancel`, and `Continue Shopping`.
+
+These actions were excluded because they belong to separate test cases.
+
+The final automated test should focus only on:
+
+```text
+Add product → open cart → remove product → product is no longer visible → cart badge disappears
