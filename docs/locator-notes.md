@@ -171,6 +171,7 @@ The final automated test should focus only on:
 
 ```text
 Add product 1 → cart badge shows 1 → add product 2 → cart badge shows 2 → both products are visible in cart
+```
 
 ---
 
