@@ -65,6 +65,43 @@ The test uses a scoped locator:
 
 ```ts
 const firstProductCard = page.locator('[data-test="inventory-item"]').first();
+```
+
+This makes the test more precise because assertions are made inside one selected product card instead of searching across the whole page.
+
+---
+
+## TC-INV-003 - User can add one product to the cart
+
+### Purpose
+
+Verify that a user can add one product to the cart and see it on the Cart Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Stable product-specific test attribute |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count changed to `1` |
+| Remove button on Inventory Page | `[data-test="remove-sauce-labs-backpack"]` | Confirms button state changed after adding product |
+| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Cart item | `[data-test="inventory-item"]` | Scopes cart item checks |
+| Item quantity | `[data-test="item-quantity"]` | Confirms quantity is `1` |
+| Item name link | `[data-test="item-4-title-link"]` | Confirms correct product is in cart |
+| Item price | `[data-test="inventory-item-price"]` | Confirms product price is displayed |
+| Remove button in cart | `[data-test="remove-sauce-labs-backpack"]` | Confirms item can be removed later |
+
+### Notes
+
+Codegen generated additional actions such as removing the product, clicking `Continue Shopping`, opening product details, and navigating back to Inventory Page.
+
+These actions belong to other test cases and should not be included in `TC-INV-003`.
+
+The final automated test should focus only on:
+
+```text
+Add one product to cart → cart badge shows 1 → product is visible in cart
+```
 
 ---
 
@@ -97,3 +134,4 @@ The final automated test should focus only on:
 
 ```text
 Add product → open cart → remove product → product is no longer visible → cart badge disappears
+```
