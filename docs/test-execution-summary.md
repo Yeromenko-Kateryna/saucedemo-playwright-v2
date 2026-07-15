@@ -131,3 +131,37 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-005 - Verify that user can add multiple different products to the cart
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge showed `1`.
+- User added `Sauce Labs Bike Light` to the cart.
+- Cart badge showed `2`.
+- Both product buttons changed to `Remove`.
+- User opened the cart.
+- `Sauce Labs Backpack` was visible in the cart.
+- `Sauce Labs Bike Light` was visible in the cart.
+- Both products had quantity `1`.
+- Product prices were visible.
+
+#### Observations
+
+- Adding multiple different products worked correctly.
+- Cart badge updated from `1` to `2`.
+- Both added products were displayed correctly on the Cart Page.
+- Each added product had quantity `1`.
+- Product prices were visible for both products.
+
+#### Possible Bugs
+
+- None found for this test case.
