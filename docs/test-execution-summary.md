@@ -165,3 +165,35 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-006 - Verify that product details page opens from product name
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User found product `Sauce Labs Backpack` on the Inventory Page.
+- User clicked product name `Sauce Labs Backpack`.
+- Product details page opened.
+- Product name `Sauce Labs Backpack` was visible.
+- Product description was visible.
+- Product price `$29.99` was visible.
+- Product image was visible.
+- `Add to cart` button was visible.
+- `Back to products` button was visible.
+
+#### Observations
+
+- Product details page opened correctly after clicking the product name.
+- Product details matched the selected product.
+- Product description contains code-like demo text: `carry.allTheThings()`.
+- This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
