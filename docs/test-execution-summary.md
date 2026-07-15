@@ -102,3 +102,32 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-004 - Verify that user can remove product from the cart
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge showed `1`.
+- User opened the cart.
+- `Sauce Labs Backpack` was visible in the cart.
+- User clicked `Remove`.
+- `Sauce Labs Backpack` disappeared from the cart.
+- Cart badge disappeared.
+- Cart page no longer showed the removed product.
+
+#### Observations
+
+- Removing a product from the cart worked correctly.
+- Cart state was updated immediately after clicking `Remove`.
+- Cart badge disappeared after the last product was removed.
+
+#### Possible Bugs
+
+- None found for this test case.
