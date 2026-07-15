@@ -135,3 +135,39 @@ The final automated test should focus only on:
 ```text
 Add product → open cart → remove product → product is no longer visible → cart badge disappears
 ```
+
+---
+
+## TC-INV-005 - User can add multiple different products to the cart
+
+### Purpose
+
+Verify that a user can add multiple different products to the cart and see all added products on the Cart Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Backpack add button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first product |
+| Bike Light add button | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second different product |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count changes from `1` to `2` |
+| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Cart items | `[data-test="inventory-item"]` | Confirms multiple cart items are displayed |
+| Item quantities | `[data-test="item-quantity"]` | Confirms each cart item has quantity `1` |
+| Backpack name link | `[data-test="item-4-title-link"]` | Confirms `Sauce Labs Backpack` is in the cart |
+| Bike Light name link | `[data-test="item-0-title-link"]` | Confirms `Sauce Labs Bike Light` is in the cart |
+| Item prices | `[data-test="inventory-item-price"]` | Confirms prices are visible for added products |
+
+### Notes
+
+Codegen generated extra actions such as opening product details, clicking product descriptions, clicking prices, and clicking cart labels.
+
+These actions were excluded because they belong to separate test cases or do not verify the main purpose of `TC-INV-005`.
+
+The final automated test should focus only on:
+
+```text
+Add product 1 → cart badge shows 1 → add product 2 → cart badge shows 2 → both products are visible in cart
