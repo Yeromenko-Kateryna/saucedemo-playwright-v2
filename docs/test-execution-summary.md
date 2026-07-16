@@ -411,3 +411,36 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-013 - Verify cart navigation from Inventory Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User clicked the cart icon in the top-right corner.
+- Cart Page was opened.
+- URL contained `/cart.html`.
+- Page title `Your Cart` was displayed.
+- Cart list area was visible.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- Cart Page opened successfully from the Inventory Page.
+- Cart was empty by default because no products were added before opening the cart.
+- `Continue Shopping` button returned the user back to the Inventory Page.
+- `Checkout` button allowed the user to continue to the checkout flow even when the cart was empty.
+- Empty-cart checkout behavior should be reviewed separately in Cart or Checkout test cases.
+- This behavior is not blocking for this test case because `TC-INV-013` only verifies cart navigation from the Inventory Page.
+
+#### Possible Bugs
+
+- None found for this test case.
