@@ -525,3 +525,60 @@ The final automated test should focus only on:
 ```text
 Add one product → open Cart Page → verify product details and Cart Page controls
 ```
+
+---
+
+## TC-CART-002 - Product can be removed from Cart Page
+
+### Purpose
+
+Verify that the user can remove an added product directly from the Cart Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart before opening the Cart Page |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that one product was added and should disappear after removal |
+| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Page title | `[data-test="title"]` | Allows verifying that the Cart Page remains displayed |
+| Cart list | `[data-test="cart-list"]` | Allows verifying that the cart content area remains visible |
+| Cart item | `[data-test="inventory-item"]` | Represents the product displayed inside the cart before removal |
+| Product name | `[data-test="inventory-item-name"]` | Allows verifying that the correct product is displayed before removal |
+| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product from the Cart Page |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control remains visible |
+| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point remains visible |
+
+### Additional Locators Observed
+
+| Element | Locator | Reason |
+|---|---|---|
+| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
+| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
+| Product description | `[data-test="inventory-item-desc"]` | Product description was visible before removal |
+| Product quantity | `[data-test="item-quantity"]` | Product quantity was visible before removal |
+
+### Notes
+
+Codegen generated additional clicks on cart labels, product text, Continue Shopping, Checkout, Cancel, and repeated cart navigation.
+
+These actions were excluded because `TC-CART-002` should only verify removing a product directly from the Cart Page.
+
+This test case verifies product removal from the Cart Page, not from the Inventory Page.
+
+After clicking `Remove`, the product should no longer be displayed in the cart.
+
+The cart badge should disappear after removing the only product.
+
+The Cart Page should remain opened after product removal.
+
+The observed behavior where `Checkout` remains available even when the cart is empty should be reviewed separately in Cart or Checkout test cases.
+
+The final automated test should focus only on:
+
+```text
+Add one product → open Cart Page → remove product → verify product and cart badge disappear
+```
