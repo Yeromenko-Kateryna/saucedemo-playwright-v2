@@ -352,3 +352,44 @@ The final automated test should focus only on:
 ```text
 Select Name Z to A → product names are displayed in descending alphabetical order
 ```
+
+---
+
+## TC-INV-011 - Products can be sorted by Price low to high
+
+### Purpose
+
+Verify that products can be sorted by price from the lowest price to the highest price.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
+| Product names | `[data-test="inventory-item-name"]` | Allows checking product names after sorting |
+| Product prices | `[data-test="inventory-item-price"]` | Allows checking that prices are displayed in ascending order |
+
+### Sorting Values
+
+| Sorting option | Value |
+|---|---|
+| Price low to high | `lohi` |
+
+### Notes
+
+The same sorting dropdown locator is used as in previous sorting test cases.
+
+For this test case, the final selected sorting option should be `Price (low to high)`.
+
+The final automated test should verify both product names and product prices, because the user-visible order is based on price.
+
+Two products have the same price: `$15.99`.
+
+The final automated test should focus only on:
+
+```text
+Select Price low to high → products are displayed from lowest price to highest price
+```
