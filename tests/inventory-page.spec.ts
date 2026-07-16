@@ -158,3 +158,23 @@ test('TC-INV-008 - should return to inventory page from product details page', a
   await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
   await expect(page.locator('[data-test="item-4-title-link"]')).toHaveText('Sauce Labs Backpack');
 });
+
+test('TC-INV-009 - should sort products by name A to Z', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="product-sort-container"]').selectOption('za');
+  await page.locator('[data-test="product-sort-container"]').selectOption('az');
+
+  await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText([
+    'Sauce Labs Backpack',
+    'Sauce Labs Bike Light',
+    'Sauce Labs Bolt T-Shirt',
+    'Sauce Labs Fleece Jacket',
+    'Sauce Labs Onesie',
+    'Test.allTheThings() T-Shirt (Red)',
+  ]);
+});
