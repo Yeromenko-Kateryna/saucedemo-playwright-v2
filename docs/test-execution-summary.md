@@ -229,3 +229,35 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-008 - Verify that Back to products button returns user to Inventory Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User found product `Sauce Labs Backpack` on the Inventory Page.
+- User clicked product name `Sauce Labs Backpack`.
+- Product Details Page opened.
+- User clicked `Back to products`.
+- Inventory Page opened again.
+- Page title `Products` was visible.
+- Product list was visible.
+- `Sauce Labs Backpack` was visible again on the Inventory Page.
+
+#### Observations
+
+- `Back to products` button returned the user to the Inventory Page correctly.
+- Product list was displayed after returning from the Product Details Page.
+- Some product names and descriptions contain code-like demo text, for example `carry.allTheThings()` and `Test.allTheThings() T-Shirt (Red)`.
+- This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
+
