@@ -197,3 +197,24 @@ test('TC-INV-010 - should sort products by name Z to A', async ({ page }) => {
     'Sauce Labs Backpack',
   ]);
 });
+
+test('TC-INV-011 - should sort products by price low to high', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="product-sort-container"]').selectOption('lohi');
+
+  const priceLocator = page.locator('[data-test="inventory-item-price"]');
+
+  await expect(priceLocator).toHaveCount(6);
+
+  const priceTexts = await priceLocator.allTextContents();
+
+  const prices = priceTexts.map((price) => Number(price.replace(/[^0-9.]/g, '')));
+  const sortedPrices = [...prices].sort((a, b) => a - b);
+
+  expect(prices).toEqual(sortedPrices);
+});
