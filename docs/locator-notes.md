@@ -431,3 +431,47 @@ The final automated test should focus only on:
 ```text
 Select Price high to low → product prices are displayed from highest price to lowest price
 ```
+
+---
+
+## TC-INV-013 - Cart Page can be opened from Inventory Page
+
+### Purpose
+
+Verify that the user can navigate from the Inventory Page to the Cart Page by clicking the cart icon.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Cart icon/link | `[data-test="shopping-cart-link"]` | Stable test attribute used to open the Cart Page |
+| Page title | `[data-test="title"]` | Allows verifying that the Cart Page title is displayed |
+| Cart list | `[data-test="cart-list"]` | Allows verifying that the Cart Page content area is displayed |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control is visible |
+| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is visible |
+
+### Additional Locators Observed
+
+| Element | Locator | Reason |
+|---|---|---|
+| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
+| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
+
+### Notes
+
+Codegen generated additional actions, including clicking the Checkout button, Cancel button, Continue Shopping button, and opening the cart again.
+
+These actions were excluded because `TC-INV-013` should only verify navigation from the Inventory Page to the Cart Page.
+
+The cart can be empty for this test case because the purpose is to verify cart navigation, not cart item content.
+
+The observed behavior where `Checkout` is available even when the cart is empty should be reviewed separately in Cart or Checkout test cases.
+
+The final automated test should focus only on:
+
+```text
+Click cart icon from Inventory Page → Cart Page is opened and key Cart Page elements are visible
+```
