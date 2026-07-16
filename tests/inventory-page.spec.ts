@@ -218,3 +218,24 @@ test('TC-INV-011 - should sort products by price low to high', async ({ page }) 
 
   expect(prices).toEqual(sortedPrices);
 });
+
+test('TC-INV-012 - should sort products by price high to low', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="product-sort-container"]').selectOption('hilo');
+
+  const priceLocator = page.locator('[data-test="inventory-item-price"]');
+
+  await expect(priceLocator).toHaveCount(6);
+
+  const priceTexts = await priceLocator.allTextContents();
+
+  const prices = priceTexts.map((price) => Number(price.replace(/[^0-9.]/g, '')));
+  const sortedPrices = [...prices].sort((a, b) => b - a);
+
+  expect(prices).toEqual(sortedPrices);
+});
