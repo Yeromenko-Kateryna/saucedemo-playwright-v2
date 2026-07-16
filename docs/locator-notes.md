@@ -628,3 +628,53 @@ The final automated test should focus only on:
 ```text
 Add one product → open Cart Page → click Continue Shopping → Inventory Page opens and cart state is preserved
 ```
+
+---
+
+## TC-CART-004 - Checkout button opens Checkout Step One Page
+
+### Purpose
+
+Verify that the `Checkout` button on the Cart Page opens the Checkout Step One Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the product remains in the cart |
+| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Checkout button | `[data-test="checkout"]` | Opens the Checkout Step One Page from the Cart Page |
+| Page title | `[data-test="title"]` | Allows verifying that Checkout Step One Page is displayed |
+| Checkout info container | `[data-test="checkout-info-container"]` | Confirms that the checkout form area is displayed |
+| First Name field | `[data-test="firstName"]` | Confirms that the First Name input is visible |
+| Last Name field | `[data-test="lastName"]` | Confirms that the Last Name input is visible |
+| Postal Code field | `[data-test="postalCode"]` | Confirms that the Postal Code input is visible |
+| Continue button | `[data-test="continue"]` | Confirms that the checkout form submit button is visible |
+| Cancel button | `[data-test="cancel"]` | Confirms that the checkout form cancel control is visible |
+
+### Additional Locators Observed
+
+| Element | Locator | Reason |
+|---|---|---|
+| Error message | `[data-test="error"]` | Appears when required checkout fields are missing |
+| Error close button | `[data-test="error-button"]` | Closes the checkout validation error |
+| Error container | `.error-message-container` | Codegen captured validation error container |
+| Checkout form | `form` | Codegen captured the form area |
+
+### Notes
+
+Codegen generated additional actions related to clicking `Continue` without filling required fields and interacting with the validation error.
+
+These actions were excluded because `TC-CART-004` should only verify that the `Checkout` button opens the Checkout Step One Page.
+
+Checkout form validation should be covered separately in Checkout Step One test cases.
+
+The final automated test should focus only on:
+
+```text
+Add one product → open Cart Page → click Checkout → Checkout Step One Page opens and form controls are visible
+```
