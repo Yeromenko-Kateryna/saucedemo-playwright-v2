@@ -444,3 +444,42 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-001 - Verify Cart Page with one added product
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User clicked the cart icon.
+- Cart Page was opened.
+- URL contained `/cart.html`.
+- Page title `Your Cart` was displayed.
+- Cart contained one product: `Sauce Labs Backpack`.
+- Product quantity was `1`.
+- Product name was displayed.
+- Product description was displayed.
+- Product price `$29.99` was displayed.
+- `Remove` button was visible.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- Cart Page displayed the added product correctly.
+- Product quantity, name, description, price, and Remove button matched the selected product.
+- Cart badge still displayed `1` on the Cart Page.
+- Cart Page navigation controls were visible.
+- Product image is not displayed on the Cart Page, which appears to be expected SauceDemo behavior.
+
+#### Possible Bugs
+
+- None found for this test case.
