@@ -373,3 +373,41 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-012 - Verify sorting products by Price high to low
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User opened the sorting dropdown.
+- User selected `Price (high to low)`.
+- Product order changed.
+- Products were displayed from highest price to lowest price:
+  1. `Sauce Labs Fleece Jacket` - `$49.99`
+  2. `Sauce Labs Backpack` - `$29.99`
+  3. `Sauce Labs Bolt T-Shirt` - `$15.99`
+  4. `Test.allTheThings() T-Shirt (Red)` - `$15.99`
+  5. `Sauce Labs Bike Light` - `$9.99`
+  6. `Sauce Labs Onesie` - `$7.99`
+
+#### Observations
+
+- Sorting dropdown worked correctly.
+- `Price (high to low)` displayed products from the highest price to the lowest price.
+- Two products had the same price: `$15.99`.
+- Products with the same price were displayed next to each other.
+- No products disappeared after sorting.
+- Product names, images, prices, and `Add to cart` buttons remained visible.
+- Some product names contain code-like demo text, for example `Test.allTheThings() T-Shirt (Red)`.
+- This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
