@@ -299,3 +299,39 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-INV-010 - Verify sorting products by Name Z to A
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User opened the sorting dropdown.
+- User selected `Name (Z to A)`.
+- Product order changed.
+- Products were displayed in descending alphabetical order:
+  1. `Test.allTheThings() T-Shirt (Red)`
+  2. `Sauce Labs Onesie`
+  3. `Sauce Labs Fleece Jacket`
+  4. `Sauce Labs Bolt T-Shirt`
+  5. `Sauce Labs Bike Light`
+  6. `Sauce Labs Backpack`
+
+#### Observations
+
+- Sorting dropdown worked correctly.
+- `Name (Z to A)` displayed products in descending alphabetical order.
+- No products disappeared after sorting.
+- Product names, images, prices, and `Add to cart` buttons remained visible.
+- Some product names contain code-like demo text, for example `Test.allTheThings() T-Shirt (Red)`.
+- This looks like SauceDemo demo/test content and is not blocking for this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
