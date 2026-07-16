@@ -475,3 +475,53 @@ The final automated test should focus only on:
 ```text
 Click cart icon from Inventory Page → Cart Page is opened and key Cart Page elements are visible
 ```
+
+---
+
+## TC-CART-001 - Cart Page displays one added product
+
+### Purpose
+
+Verify that the Cart Page correctly displays one product after the user adds it from the Inventory Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that one product was added |
+| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Page title | `[data-test="title"]` | Allows verifying that the Cart Page title is displayed |
+| Cart list | `[data-test="cart-list"]` | Allows verifying that the cart content area is displayed |
+| Cart item | `[data-test="inventory-item"]` | Represents the product displayed inside the cart |
+| Product quantity | `[data-test="item-quantity"]` | Allows verifying the quantity of the product in the cart |
+| Product name | `[data-test="inventory-item-name"]` | Allows verifying the product name in the cart |
+| Product description | `[data-test="inventory-item-desc"]` | Allows verifying the product description in the cart |
+| Product price | `[data-test="inventory-item-price"]` | Allows verifying the product price in the cart |
+| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the added product can be removed from the cart |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control is visible |
+| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is visible |
+
+### Additional Locators Observed
+
+| Element | Locator | Reason |
+|---|---|---|
+| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
+| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
+
+### Notes
+
+Codegen generated additional clicks on cart labels, product text, Checkout, Cancel, Continue Shopping, and Remove.
+
+These actions were excluded because `TC-CART-001` should only verify that the Cart Page correctly displays one added product.
+
+The product image is not displayed on the Cart Page, which appears to be expected SauceDemo behavior.
+
+The final automated test should focus only on:
+
+```text
+Add one product → open Cart Page → verify product details and Cart Page controls
+```
