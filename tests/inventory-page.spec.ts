@@ -178,3 +178,22 @@ test('TC-INV-009 - should sort products by name A to Z', async ({ page }) => {
     'Test.allTheThings() T-Shirt (Red)',
   ]);
 });
+
+test('TC-INV-010 - should sort products by name Z to A', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="product-sort-container"]').selectOption('za');
+
+  await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText([
+    'Test.allTheThings() T-Shirt (Red)',
+    'Sauce Labs Onesie',
+    'Sauce Labs Fleece Jacket',
+    'Sauce Labs Bolt T-Shirt',
+    'Sauce Labs Bike Light',
+    'Sauce Labs Backpack',
+  ]);
+});
