@@ -483,3 +483,42 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-002 - Verify removing product from Cart Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User clicked the cart icon.
+- Cart Page was opened.
+- Cart Page displayed `Sauce Labs Backpack`.
+- User clicked the `Remove` button for `Sauce Labs Backpack`.
+- `Sauce Labs Backpack` was removed from the cart.
+- Cart badge disappeared.
+- Cart Page remained opened.
+- Page title `Your Cart` was displayed.
+- Cart list area remained visible.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- Product was removed from the Cart Page successfully.
+- Cart badge disappeared after removing the only product.
+- Cart Page remained opened after product removal.
+- Cart Page controls remained visible.
+- `Checkout` button remained visible even when the cart became empty.
+- Empty-cart checkout behavior should be reviewed separately in Cart or Checkout test cases.
+
+#### Possible Bugs
+
+- None found for this test case.
