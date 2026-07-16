@@ -522,3 +522,40 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-003 - Verify Continue Shopping button from Cart Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User clicked the cart icon.
+- Cart Page was opened.
+- User clicked `Continue Shopping`.
+- Inventory Page was opened again.
+- URL contained `/inventory.html`.
+- Page title `Products` was displayed.
+- Product list was visible.
+- Cart badge still displayed `1`.
+- `Sauce Labs Backpack` remained added to the cart.
+- `Remove` button was displayed for `Sauce Labs Backpack`.
+
+#### Observations
+
+- `Continue Shopping` button returned the user from Cart Page to Inventory Page successfully.
+- Cart state was preserved after returning to Inventory Page.
+- Cart badge still displayed `1`.
+- `Sauce Labs Backpack` remained in the added state.
+- The product button still displayed `Remove`.
+
+#### Possible Bugs
+
+- None found for this test case.
