@@ -559,3 +559,43 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-004 - Verify Checkout button from Cart Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User clicked the cart icon.
+- Cart Page was opened.
+- `Checkout` button was visible.
+- User clicked `Checkout`.
+- Checkout Step One Page was opened.
+- URL contained `/checkout-step-one.html`.
+- Page title `Checkout: Your Information` was displayed.
+- First Name field was visible.
+- Last Name field was visible.
+- Postal Code field was visible.
+- `Continue` button was visible.
+- `Cancel` button was visible.
+
+#### Observations
+
+- Checkout button redirected the user from Cart Page to Checkout Step One Page successfully.
+- Checkout form fields were displayed correctly.
+- Cart badge still displayed `1` on Checkout Step One Page.
+- Clicking `Continue` without filling required fields showed validation error `Error: First Name is required`.
+- Empty-field validation should be covered separately in Checkout Step One test cases.
+- This validation behavior is not blocking for `TC-CART-004`.
+
+#### Possible Bugs
+
+- None found for this test case.
