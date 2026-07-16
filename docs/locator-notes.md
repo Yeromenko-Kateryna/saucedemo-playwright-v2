@@ -207,3 +207,39 @@ The final automated test should focus only on:
 ```text
 Click product name → Product Details Page opens → correct product details are visible
 ```
+
+---
+
+## TC-INV-007 - Product details page opens from product image
+
+### Purpose
+
+Verify that clicking a product image on the Inventory Page opens the correct Product Details Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Product image link on Inventory Page | `[data-test="item-4-img-link"]` | Opens the details page for `Sauce Labs Backpack` from product image |
+| Product name on Details Page | `[data-test="inventory-item-name"]` | Confirms correct product details page opened |
+| Product description | `[data-test="inventory-item-desc"]` | Confirms product description is visible |
+| Product price | `[data-test="inventory-item-price"]` | Confirms product price is visible |
+| Product image on Details Page | `[data-test="item-sauce-labs-backpack-img"]` | Confirms product image is visible |
+| Add to cart button | `[data-test="add-to-cart"]` | Confirms add action is available on the details page |
+| Back to products button | `[data-test="back-to-products"]` | Confirms user can return to Inventory Page |
+
+### Notes
+
+Codegen generated additional actions such as clicking `Add to cart`, clicking `Remove`, clicking text content, and returning back to the Inventory Page.
+
+These actions were excluded because `TC-INV-007` should only verify navigation from product image to Product Details Page.
+
+The final automated test should focus only on:
+
+```text
+Click product image → Product Details Page opens → correct product details are visible
+```
+
