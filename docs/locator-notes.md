@@ -275,3 +275,44 @@ The final automated test should focus only on:
 ```text
 Open Product Details Page → click Back to products → Inventory Page is visible again
 ```
+
+---
+
+## TC-INV-009 - Products can be sorted by Name A to Z
+
+### Purpose
+
+Verify that products can be sorted by name in ascending alphabetical order.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
+| Product names | `[data-test="inventory-item-name"]` | Allows checking the displayed product order |
+
+### Sorting Values
+
+| Sorting option | Value |
+|---|---|
+| Name A to Z | `az` |
+| Name Z to A | `za` |
+| Price low to high | `lohi` |
+| Price high to low | `hilo` |
+
+### Notes
+
+Codegen generated multiple sorting actions, including price sorting options and additional clicks on product descriptions.
+
+These actions were excluded because `TC-INV-009` should only verify sorting by `Name (A to Z)`.
+
+The test should first select `Name (Z to A)` to change the default product order, then select `Name (A to Z)` and verify the final product order.
+
+The final automated test should focus only on:
+
+```text
+Select Name Z to A → select Name A to Z → product names are displayed in ascending alphabetical order
+```
