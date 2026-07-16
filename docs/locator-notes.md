@@ -243,3 +243,35 @@ The final automated test should focus only on:
 Click product image → Product Details Page opens → correct product details are visible
 ```
 
+---
+
+## TC-INV-008 - Back to products button returns user to Inventory Page
+
+### Purpose
+
+Verify that clicking `Back to products` on the Product Details Page returns the user to the Inventory Page.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Product name link on Inventory Page | `[data-test="item-4-title-link"]` | Opens the Product Details Page for `Sauce Labs Backpack` |
+| Back to products button | `[data-test="back-to-products"]` | Returns user from Product Details Page to Inventory Page |
+| Page title | `[data-test="title"]` | Confirms Inventory Page title is visible after returning |
+| Inventory list | `[data-test="inventory-list"]` | Confirms product list is visible after returning |
+| Backpack product link | `[data-test="item-4-title-link"]` | Confirms `Sauce Labs Backpack` is visible again on Inventory Page |
+
+### Notes
+
+Codegen generated additional clicks on product descriptions and page sections after returning to the Inventory Page.
+
+These actions were excluded because `TC-INV-008` should only verify that `Back to products` returns the user to the Inventory Page.
+
+The final automated test should focus only on:
+
+```text
+Open Product Details Page → click Back to products → Inventory Page is visible again
+```
