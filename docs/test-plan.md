@@ -1077,7 +1077,7 @@ AI outputs should be validated manually before being added to the test suite, do
 | Login Page automation | Completed |
 | Inventory Page test planning | Completed |
 | Project-wide test planning | Completed |
-| Inventory Page automation | Planned |
+| Inventory Page automation | Completed |
 | Cart Page automation | Planned |
 | Checkout automation | Planned |
 | Menu navigation automation | Planned |
