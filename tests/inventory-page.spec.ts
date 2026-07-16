@@ -139,3 +139,22 @@ test('TC-INV-007 - should open product details page from product image', async (
   await expect(page.locator('[data-test="back-to-products"]')).toBeVisible();
 });
 
+test('TC-INV-008 - should return to inventory page from product details page', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+
+  await page.locator('[data-test="item-4-title-link"]').click();
+
+  await expect(page).toHaveURL(/.*inventory-item.html\?id=4/);
+  await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
+
+  await page.locator('[data-test="back-to-products"]').click();
+
+  await expect(page).toHaveURL(/.*inventory.html/);
+  await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+  await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
+  await expect(page.locator('[data-test="item-4-title-link"]')).toHaveText('Sauce Labs Backpack');
+});
