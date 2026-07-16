@@ -582,3 +582,49 @@ The final automated test should focus only on:
 ```text
 Add one product → open Cart Page → remove product → verify product and cart badge disappear
 ```
+
+---
+
+## TC-CART-003 - Continue Shopping returns user to Inventory Page
+
+### Purpose
+
+Verify that the `Continue Shopping` button on the Cart Page returns the user to the Inventory Page and preserves the cart state.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the cart state is preserved |
+| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Page title | `[data-test="title"]` | Allows verifying both Cart Page and Inventory Page titles |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Returns the user from Cart Page to Inventory Page |
+| Inventory list | `[data-test="inventory-list"]` | Confirms that the Inventory Page is displayed after returning |
+| Remove button for Sauce Labs Backpack | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the product remains added after returning to Inventory Page |
+
+### Additional Locators Observed
+
+| Element | Locator | Reason |
+|---|---|---|
+| Cart item description | `[data-test="inventory-item-desc"]` | Product description was visible on the Cart Page |
+| Product quantity | `[data-test="item-quantity"]` | Product quantity was visible on the Cart Page |
+| Product title link | `[data-test="item-4-title-link"]` | Codegen captured product navigation, but it is not needed for this test |
+| Back to products button | `[data-test="back-to-products"]` | Codegen captured Product Details navigation, but it is not needed for this test |
+
+### Notes
+
+Codegen generated additional clicks on product description, product quantity, product title, Back to products, Remove, and Add to cart.
+
+These actions were excluded because `TC-CART-003` should only verify the `Continue Shopping` navigation from the Cart Page back to the Inventory Page.
+
+The test should verify that the cart state is preserved after returning to the Inventory Page.
+
+The final automated test should focus only on:
+
+```text
+Add one product → open Cart Page → click Continue Shopping → Inventory Page opens and cart state is preserved
+```
