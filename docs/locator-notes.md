@@ -316,3 +316,39 @@ The final automated test should focus only on:
 ```text
 Select Name Z to A → select Name A to Z → product names are displayed in ascending alphabetical order
 ```
+
+---
+
+## TC-INV-010 - Products can be sorted by Name Z to A
+
+### Purpose
+
+Verify that products can be sorted by name in descending alphabetical order.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
+| Product names | `[data-test="inventory-item-name"]` | Allows checking the displayed product order |
+
+### Sorting Values
+
+| Sorting option | Value |
+|---|---|
+| Name Z to A | `za` |
+
+### Notes
+
+The same sorting dropdown locator is used as in `TC-INV-009`.
+
+For this test case, the final selected sorting option should be `Name (Z to A)`.
+
+The final automated test should focus only on:
+
+```text
+Select Name Z to A → product names are displayed in descending alphabetical order
+```
