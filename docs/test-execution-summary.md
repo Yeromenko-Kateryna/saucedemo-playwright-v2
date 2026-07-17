@@ -599,3 +599,46 @@ The goal is to separate planned test cases from actual execution results.
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-005 - Verify Cart Page with multiple added products
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automate
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User added `Sauce Labs Backpack` to the cart.
+- User added `Sauce Labs Bike Light` to the cart.
+- Cart badge displayed `2`.
+- User clicked the cart icon.
+- Cart Page was opened.
+- URL contained `/cart.html`.
+- Page title `Your Cart` was displayed.
+- Cart badge still displayed `2`.
+- Cart contained two products: `Sauce Labs Backpack` and `Sauce Labs Bike Light`.
+- Both product quantities were `1`.
+- Both product names were displayed.
+- Both product descriptions were displayed.
+- Product prices were displayed:
+  - `Sauce Labs Backpack` - `$29.99`
+  - `Sauce Labs Bike Light` - `$9.99`
+- Remove buttons were visible for both products.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- Cart Page displayed both added products correctly.
+- Each product was displayed as a separate cart item.
+- Both products had quantity `1`.
+- Cart badge correctly displayed `2`.
+- Product images were not displayed on the Cart Page, which appears to be expected SauceDemo behavior.
+
+#### Possible Bugs
+
+- None found for this test case.
