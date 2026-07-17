@@ -1,4 +1,4 @@
-﻿# SauceDemo Test Plan
+# SauceDemo Test Plan
 
 ## Document Purpose
 
@@ -6,7 +6,7 @@ This document describes planned manual and automated checks for the SauceDemo QA
 
 The goal is to define what should be tested across the main SauceDemo user journey before selecting and implementing test cases for Playwright automation.
 
-This test plan was created based on manual exploration, technical exploration with Playwright Codegen, and existing Login Page and Inventory Page automation, and partial Cart Page automation.
+This test plan was created based on manual exploration, technical exploration with Playwright Codegen, completed Login Page and Inventory Page automation, and partial Cart Page automation.
 
 This document describes planned checks, not completed execution results. Test execution status should be tracked separately in Playwright reports or manual test execution notes.
 
