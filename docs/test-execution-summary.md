@@ -606,7 +606,7 @@ The goal is to separate planned test cases from actual execution results.
 
 - **Execution type:** Manual
 - **Status:** Passed
-- **Automation decision:** Automate
+- **Automation decision:** Automated
 
 #### Actual Result
 
