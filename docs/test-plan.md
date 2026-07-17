@@ -1,4 +1,4 @@
-# SauceDemo Test Plan
+﻿# SauceDemo Test Plan
 
 ## Document Purpose
 
@@ -6,7 +6,7 @@ This document describes planned manual and automated checks for the SauceDemo QA
 
 The goal is to define what should be tested across the main SauceDemo user journey before selecting and implementing test cases for Playwright automation.
 
-This test plan was created based on manual exploration, technical exploration with Playwright Codegen, and existing Login Page automation.
+This test plan was created based on manual exploration, technical exploration with Playwright Codegen, and existing Login Page and Inventory Page automation, and partial Cart Page automation.
 
 This document describes planned checks, not completed execution results. Test execution status should be tracked separately in Playwright reports or manual test execution notes.
 
@@ -149,14 +149,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Successful login | Covered | Completed |
 | Invalid login validation | Covered | Completed |
 | Locked out user validation | Covered | Completed |
-| Inventory page visibility | Covered | Planned |
-| Product card validation | Covered | Planned |
-| Add product to cart | Covered | Planned |
-| Remove product from cart | Covered | Planned |
-| Multiple products in cart | Covered | Planned |
-| Product details navigation | Covered | Planned |
-| Product sorting | Covered | Planned |
-| Cart page validation | Covered | Planned |
+| Inventory page visibility | Covered | Completed |
+| Product card validation | Covered | Completed |
+| Add product to cart | Covered | Completed |
+| Remove product from cart | Covered | Completed |
+| Multiple products added from Inventory Page | Covered | Completed |
+| Product details navigation | Covered | Completed |
+| Product sorting | Covered | Completed |
+| Cart item validation | Covered | Completed |
+| Cart item removal | Covered | Completed |
+| Continue Shopping navigation | Covered | Completed |
+| Checkout entry navigation | Covered | Completed |
+| Multiple products displayed on Cart Page | Covered | Completed |
+| Empty cart page validation | Covered | Planned |
 | Checkout information form | Covered | Planned |
 | Checkout overview validation | Covered | Planned |
 | Complete order flow | Covered | Planned |
@@ -510,27 +515,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ## 6.3 Cart Page
 
-### TC-CART-001 - Verify that Cart Page is displayed
-
-* **Priority:** High
-* **Type:** Smoke / Navigation
-
-#### Preconditions
-
-* User is logged in as `standard_user`.
-
-#### Steps
-
-1. Open the Cart Page from the Inventory Page.
-
-#### Expected Result
-
-* Page URL contains `/cart.html`.
-* Page title `Your Cart` is visible.
-* `Continue Shopping` button is visible.
-* `Checkout` button is visible.
-
-### TC-CART-002 - Verify that added product is displayed in the cart
+### TC-CART-001 - Verify that added product is displayed in the cart
 
 * **Priority:** High
 * **Type:** Functional / Regression
@@ -551,8 +536,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * Product name is visible.
 * Product price is visible.
 * Product quantity is visible.
+* `Remove` button is visible for the product.
 
-### TC-CART-003 - Verify that user can remove product from the cart
+### TC-CART-002 - Verify that user can remove product from the cart
 
 * **Priority:** High
 * **Type:** Functional / Regression
@@ -571,8 +557,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 * Product is removed from the cart.
 * Cart badge is updated or no longer visible.
+* Removed product is no longer displayed on the Cart Page.
 
-### TC-CART-004 - Verify that Continue Shopping returns user to Inventory Page
+### TC-CART-003 - Verify that Continue Shopping returns user to Inventory Page
 
 * **Priority:** Medium
 * **Type:** Functional / Navigation
@@ -580,6 +567,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Preconditions
 
 * User is logged in as `standard_user`.
+* One product is added to the cart.
 * User is on the Cart Page.
 
 #### Steps
@@ -589,9 +577,13 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Expected Result
 
 * User is redirected to the Inventory Page.
+* Page URL contains `/inventory.html`.
 * Page title `Products` is visible.
+* Cart badge still shows `1`.
+* The added product remains in the cart.
+* The product action button remains changed to `Remove`.
 
-### TC-CART-005 - Verify that Checkout button opens Checkout Step One
+### TC-CART-004 - Verify that Checkout button opens Checkout Step One
 
 * **Priority:** High
 * **Type:** Functional / Navigation
@@ -611,7 +603,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * Page URL contains `/checkout-step-one.html`.
 * Page title `Checkout: Your Information` is visible.
 
-### TC-CART-006 - Verify that multiple added products are displayed in the cart
+### TC-CART-005 - Verify that multiple added products are displayed in the cart
 
 * **Priority:** Medium
 * **Type:** Functional / Regression
@@ -619,16 +611,49 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Preconditions
 
 * User is logged in as `standard_user`.
-* Two products are added to the cart.
+* Two different products are added to the cart.
 
 #### Steps
 
 1. Open the Cart Page.
+2. Check the cart item list.
 
 #### Expected Result
 
 * Both added products are visible in the cart.
+* Each product has quantity `1`.
+* Product names are visible.
+* Product descriptions are visible.
+* Product prices are visible.
+* A `Remove` button is visible for each product.
 * Cart badge shows `2`.
+* `Continue Shopping` button is visible.
+* `Checkout` button is visible.
+
+### TC-CART-006 - Verify that empty Cart Page is displayed correctly
+
+* **Priority:** Medium
+* **Type:** Smoke / UI / Edge case
+
+#### Preconditions
+
+* User is logged in as `standard_user`.
+* Cart is empty.
+
+#### Steps
+
+1. Open the Cart Page from the Inventory Page.
+2. Check the empty Cart Page layout.
+
+#### Expected Result
+
+* User is redirected to the Cart Page.
+* Page URL contains `/cart.html`.
+* Page title `Your Cart` is visible.
+* Cart list area is visible.
+* No cart items are displayed.
+* `Continue Shopping` button is visible.
+* `Checkout` button is visible.
 
 ## 6.4 Checkout Step One
 
@@ -994,20 +1019,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ## 7. Automation Priority
 
-### First Automation Scope
+### Completed Automation Scope
+
+| Test Case | Area | Reason |
+| --- | --- | --- |
+| TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
+| TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
+| TC-CART-001 - TC-CART-005 | Cart Page | Cart item validation, removal, navigation, checkout entry, and multiple products |
+
+### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-LOGIN-001 | Already automated basic login UI check |
-| TC-LOGIN-002 | Already automated successful login |
-| TC-LOGIN-003 | Already automated invalid credentials |
-| TC-LOGIN-004 | Already automated locked out user |
-| TC-INV-001 | Basic smoke coverage after login |
-| TC-INV-003 | Core e-commerce cart action |
-| TC-INV-004 | Validates cart state update |
-| TC-INV-005 | Useful regression for multiple products |
-| TC-CART-002 | Confirms added product appears in cart |
-| TC-CART-005 | Important checkout navigation |
+| TC-CART-006 | Completes Cart Page coverage by validating the empty cart state |
 | TC-CHK1-005 | Required for checkout happy path |
 | TC-CHK2-004 | Completes main purchase flow |
 | TC-COMPLETE-001 | Confirms successful order completion |
@@ -1016,11 +1040,6 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 | Test Case | Reason |
 | --- | --- |
-| TC-INV-002 | UI structure check |
-| TC-INV-006 - TC-INV-008 | Product details navigation |
-| TC-INV-009 - TC-INV-012 | Sorting regression |
-| TC-CART-001 | Cart page smoke check |
-| TC-CART-003 - TC-CART-006 | Cart regression |
 | TC-CHK1-001 - TC-CHK1-004 | Checkout form validation |
 | TC-CHK1-006 | Checkout cancel navigation |
 | TC-CHK2-001 - TC-CHK2-003 | Checkout overview checks |
@@ -1078,7 +1097,7 @@ AI outputs should be validated manually before being added to the test suite, do
 | Inventory Page test planning | Completed |
 | Project-wide test planning | Completed |
 | Inventory Page automation | Completed |
-| Cart Page automation | Planned |
+| Cart Page automation | In Progress |
 | Checkout automation | Planned |
 | Menu navigation automation | Planned |
 
@@ -1095,3 +1114,7 @@ Not every planned manual test case must be automated immediately.
 Automation should be implemented incrementally, starting with high-priority smoke, happy path, and core regression scenarios.
 
 Execution results should be tracked separately through Playwright reports or manual test execution notes.
+
+
+
+
