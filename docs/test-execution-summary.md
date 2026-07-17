@@ -2,9 +2,11 @@
 
 ## Document Purpose
 
-This document tracks selected manual and automated test execution results for the SauceDemo QA Automation portfolio project.
+This document tracks selected manual test execution results and automation decisions for the SauceDemo QA Automation portfolio project.
 
 The goal is to separate planned test cases from actual execution results.
+
+This file records the manual observations for test cases that have already been executed. Each result is limited to the scope of its matching test case ID.
 
 ---
 
@@ -79,25 +81,17 @@ The goal is to separate planned test cases from actual execution results.
 #### Actual Result
 
 - User logged in as `standard_user`.
+- User opened the Inventory Page.
 - User clicked `Add to cart` for `Sauce Labs Backpack`.
-- Cart badge showed `1`.
-- `Add to cart` button changed to `Remove`.
-- User opened the cart.
-- `Sauce Labs Backpack` was visible in the cart.
-- Product quantity was shown as `1`.
-- Product description was visible.
-- Product price was visible.
-- `Remove` button was visible.
+- The product button changed from `Add to cart` to `Remove`.
+- Cart badge appeared and displayed `1`.
+- User remained on the Inventory Page.
 
 #### Observations
 
-- Cart page displays product quantity instead of product image.
-- The number `1` on the cart item represents quantity, not a missing image.
-- Product description still contains code-like demo text: `carry.allTheThings()`.
-- User can add another different product to the cart, and the cart badge updates to `2`.
-- The same product cannot be added multiple times from the Inventory Page because the button changes from `Add to cart` to `Remove`.
-- `Checkout` button is visible on the cart page.
-- `Continue Shopping` button is visible on the cart page.
+- The Inventory Page updated the product action and cart badge immediately.
+- The same product could not be added again because its action changed to `Remove`.
+- Product display inside the Cart Page is covered separately by `TC-CART-001`.
 
 #### Possible Bugs
 
@@ -105,7 +99,7 @@ The goal is to separate planned test cases from actual execution results.
 
 ---
 
-### TC-INV-004 - Verify that user can remove product from the cart
+### TC-INV-004 - Verify that user can remove a product from the Inventory Page
 
 - **Execution type:** Manual
 - **Status:** Passed
@@ -113,20 +107,20 @@ The goal is to separate planned test cases from actual execution results.
 
 #### Actual Result
 
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
 - User added `Sauce Labs Backpack` to the cart.
-- Cart badge showed `1`.
-- User opened the cart.
-- `Sauce Labs Backpack` was visible in the cart.
-- User clicked `Remove`.
-- `Sauce Labs Backpack` disappeared from the cart.
+- Cart badge displayed `1`.
+- The product button displayed `Remove`.
+- User clicked `Remove` for `Sauce Labs Backpack`.
+- The product button changed back to `Add to cart`.
 - Cart badge disappeared.
-- Cart page no longer showed the removed product.
+- User remained on the Inventory Page.
 
 #### Observations
 
-- Removing a product from the cart worked correctly.
-- Cart state was updated immediately after clicking `Remove`.
-- Cart badge disappeared after the last product was removed.
+- Removing the product from the Inventory Page updated both the product action and cart badge immediately.
+- Product removal directly from the Cart Page is covered separately by `TC-CART-002`.
 
 #### Possible Bugs
 
@@ -143,24 +137,20 @@ The goal is to separate planned test cases from actual execution results.
 #### Actual Result
 
 - User logged in as `standard_user`.
+- User opened the Inventory Page.
 - User added `Sauce Labs Backpack` to the cart.
-- Cart badge showed `1`.
+- Cart badge displayed `1`.
+- The Backpack button changed to `Remove`.
 - User added `Sauce Labs Bike Light` to the cart.
-- Cart badge showed `2`.
-- Both product buttons changed to `Remove`.
-- User opened the cart.
-- `Sauce Labs Backpack` was visible in the cart.
-- `Sauce Labs Bike Light` was visible in the cart.
-- Both products had quantity `1`.
-- Product prices were visible.
+- Cart badge updated to `2`.
+- Both product buttons displayed `Remove`.
+- User remained on the Inventory Page.
 
 #### Observations
 
-- Adding multiple different products worked correctly.
-- Cart badge updated from `1` to `2`.
-- Both added products were displayed correctly on the Cart Page.
-- Each added product had quantity `1`.
-- Product prices were visible for both products.
+- Adding multiple different products updated the cart badge from `1` to `2`.
+- Both products remained in the added state on the Inventory Page.
+- Display of multiple products inside the Cart Page is covered separately by `TC-CART-005`.
 
 #### Possible Bugs
 
@@ -446,6 +436,8 @@ The goal is to separate planned test cases from actual execution results.
 - None found for this test case.
 
 ---
+
+## Manual Test Run - Cart Page
 
 ### TC-CART-001 - Verify Cart Page with one added product
 

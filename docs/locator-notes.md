@@ -6,6 +6,8 @@ This document contains locator notes for selected automated tests in the SauceDe
 
 The goal is to document why specific locators were selected before or during Playwright automation.
 
+This document is included as a portfolio artifact to demonstrate locator selection, Playwright Codegen cleanup, and test design reasoning. It does not replace test code or execution reports.
+
 ---
 
 ## General Locator Strategy
@@ -15,6 +17,7 @@ The goal is to document why specific locators were selected before or during Pla
 - Avoid fragile structural locators such as `div:nth-child()` or `.nth()` unless there is a clear reason.
 - Keep locators close to the user-visible behavior being tested.
 - Use scoped locators when checking elements inside a specific product card or cart item.
+- Keep every locator note aligned with the scope of the matching test case ID.
 
 ---
 
@@ -56,7 +59,7 @@ Verify that the first product card contains required product information.
 | Product name | `[data-test="inventory-item-name"]` | Stable test attribute |
 | Product description | `[data-test="inventory-item-desc"]` | Stable test attribute |
 | Product price | `[data-test="inventory-item-price"]` | Stable test attribute |
-| Product image link | `[data-test="item-4-img-link"]` | Stable product-specific test attribute |
+| Product image | `[data-test="inventory-item-sauce-labs-backpack-img"]` | Stable product-specific test attribute on the image element |
 | Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Stable product-specific test attribute |
 
 ### Notes
@@ -75,41 +78,7 @@ This makes the test more precise because assertions are made inside one selected
 
 ### Purpose
 
-Verify that a user can add one product to the cart and see it on the Cart Page.
-
-### Selected Locators
-
-| Element | Locator | Reason |
-|---|---|---|
-| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Stable product-specific test attribute |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count changed to `1` |
-| Remove button on Inventory Page | `[data-test="remove-sauce-labs-backpack"]` | Confirms button state changed after adding product |
-| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Cart item | `[data-test="inventory-item"]` | Scopes cart item checks |
-| Item quantity | `[data-test="item-quantity"]` | Confirms quantity is `1` |
-| Item name link | `[data-test="item-4-title-link"]` | Confirms correct product is in cart |
-| Item price | `[data-test="inventory-item-price"]` | Confirms product price is displayed |
-| Remove button in cart | `[data-test="remove-sauce-labs-backpack"]` | Confirms item can be removed later |
-
-### Notes
-
-Codegen generated additional actions such as removing the product, clicking `Continue Shopping`, opening product details, and navigating back to Inventory Page.
-
-These actions belong to other test cases and should not be included in `TC-INV-003`.
-
-The final automated test should focus only on:
-
-```text
-Add one product to cart → cart badge shows 1 → product is visible in cart
-```
-
----
-
-## TC-INV-004 - User can remove product from the cart
-
-### Purpose
-
-Verify that a user can remove one product from the cart and the cart state is updated correctly.
+Verify that a user can add one product from the Inventory Page and that the product action and cart badge are updated correctly.
 
 ### Selected Locators
 
@@ -118,22 +87,49 @@ Verify that a user can remove one product from the cart and the cart state is up
 | Username field | `[data-test="username"]` | Stable test attribute used for login |
 | Password field | `[data-test="password"]` | Stable test attribute used for login |
 | Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the product before removal |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count before and after removal |
-| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Item name link | `[data-test="item-4-title-link"]` | Confirms the correct product is in the cart before removal |
-| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product from the cart |
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product from the Inventory Page |
+| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the product action changed after adding |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the cart count changed to `1` |
 
 ### Notes
 
-Codegen generated additional actions such as clicking `Checkout`, `Cancel`, and `Continue Shopping`.
+Codegen generated additional Cart Page navigation and cart item interactions.
 
-These actions were excluded because they belong to separate test cases.
+Those actions were excluded because `TC-INV-003` verifies only the Inventory Page state after adding one product. Product display inside the Cart Page is covered separately by `TC-CART-001`.
 
 The final automated test should focus only on:
 
 ```text
-Add product → open cart → remove product → product is no longer visible → cart badge disappears
+Add one product on Inventory Page -> button changes to Remove -> cart badge shows 1
+```
+
+---
+
+## TC-INV-004 - User can remove product from the Inventory Page
+
+### Purpose
+
+Verify that a user can remove an added product directly from the Inventory Page and that the product action and cart badge return to the empty-cart state.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Creates the required added-product state |
+| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product directly from the Inventory Page |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms the count before removal and its disappearance afterward |
+
+### Notes
+
+Cart Page navigation and Cart Page removal locators were excluded because they belong to `TC-CART-002`.
+
+The final automated test should focus only on:
+
+```text
+Add product on Inventory Page -> click Remove -> Add to cart returns -> cart badge disappears
 ```
 
 ---
@@ -142,7 +138,7 @@ Add product → open cart → remove product → product is no longer visible �
 
 ### Purpose
 
-Verify that a user can add multiple different products to the cart and see all added products on the Cart Page.
+Verify that a user can add two different products from the Inventory Page and that both product actions and the cart badge are updated correctly.
 
 ### Selected Locators
 
@@ -153,24 +149,18 @@ Verify that a user can add multiple different products to the cart and see all a
 | Login button | `[data-test="login-button"]` | Stable test attribute used for login |
 | Backpack add button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first product |
 | Bike Light add button | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second different product |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms cart count changes from `1` to `2` |
-| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Cart items | `[data-test="inventory-item"]` | Confirms multiple cart items are displayed |
-| Item quantities | `[data-test="item-quantity"]` | Confirms each cart item has quantity `1` |
-| Backpack name link | `[data-test="item-4-title-link"]` | Confirms `Sauce Labs Backpack` is in the cart |
-| Bike Light name link | `[data-test="item-0-title-link"]` | Confirms `Sauce Labs Bike Light` is in the cart |
-| Item prices | `[data-test="inventory-item-price"]` | Confirms prices are visible for added products |
+| Backpack remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the first product remains added |
+| Bike Light remove button | `[data-test="remove-sauce-labs-bike-light"]` | Confirms that the second product was added |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the count changes from `1` to `2` |
 
 ### Notes
 
-Codegen generated extra actions such as opening product details, clicking product descriptions, clicking prices, and clicking cart labels.
-
-These actions were excluded because they belong to separate test cases or do not verify the main purpose of `TC-INV-005`.
+Cart Page item locators were excluded because `TC-INV-005` verifies only the Inventory Page state. Display of multiple products inside the Cart Page is covered separately by `TC-CART-005`.
 
 The final automated test should focus only on:
 
 ```text
-Add product 1 → cart badge shows 1 → add product 2 → cart badge shows 2 → both products are visible in cart
+Add product 1 -> badge shows 1 -> add product 2 -> both buttons show Remove -> badge shows 2
 ```
 
 ---
@@ -205,7 +195,7 @@ These actions were excluded because `TC-INV-006` should only verify navigation f
 The final automated test should focus only on:
 
 ```text
-Click product name → Product Details Page opens → correct product details are visible
+Click product name -> Product Details Page opens -> correct product details are visible
 ```
 
 ---
@@ -240,7 +230,7 @@ These actions were excluded because `TC-INV-007` should only verify navigation f
 The final automated test should focus only on:
 
 ```text
-Click product image → Product Details Page opens → correct product details are visible
+Click product image -> Product Details Page opens -> correct product details are visible
 ```
 
 ---
@@ -273,7 +263,7 @@ These actions were excluded because `TC-INV-008` should only verify that `Back t
 The final automated test should focus only on:
 
 ```text
-Open Product Details Page → click Back to products → Inventory Page is visible again
+Open Product Details Page -> click Back to products -> Inventory Page is visible again
 ```
 
 ---
@@ -314,7 +304,7 @@ The test should first select `Name (Z to A)` to change the default product order
 The final automated test should focus only on:
 
 ```text
-Select Name Z to A → select Name A to Z → product names are displayed in ascending alphabetical order
+Select Name Z to A -> select Name A to Z -> product names are displayed in ascending alphabetical order
 ```
 
 ---
@@ -350,7 +340,7 @@ For this test case, the final selected sorting option should be `Name (Z to A)`.
 The final automated test should focus only on:
 
 ```text
-Select Name Z to A → product names are displayed in descending alphabetical order
+Select Name Z to A -> product names are displayed in descending alphabetical order
 ```
 
 ---
@@ -368,9 +358,8 @@ Verify that products can be sorted by price from the lowest price to the highest
 | Username field | `[data-test="username"]` | Stable test attribute used for login |
 | Password field | `[data-test="password"]` | Stable test attribute used for login |
 | Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
-| Product names | `[data-test="inventory-item-name"]` | Allows checking product names after sorting |
-| Product prices | `[data-test="inventory-item-price"]` | Allows checking that prices are displayed in ascending order |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting the price sorting option |
+| Product prices | `[data-test="inventory-item-price"]` | Provides the displayed prices for numeric order validation |
 
 ### Sorting Values
 
@@ -380,18 +369,14 @@ Verify that products can be sorted by price from the lowest price to the highest
 
 ### Notes
 
-The same sorting dropdown locator is used as in previous sorting test cases.
+The test reads all displayed price texts, removes currency formatting, converts the values to numbers, and compares the actual order with an independently sorted ascending copy.
 
-For this test case, the final selected sorting option should be `Price (low to high)`.
-
-The final automated test should verify both product names and product prices, because the user-visible order is based on price.
-
-Two products have the same price: `$15.99`.
+This validates sorting behavior without hardcoding the entire product-price dataset.
 
 The final automated test should focus only on:
 
 ```text
-Select Price low to high → products are displayed from lowest price to highest price
+Select Price low to high -> convert displayed prices to numbers -> verify ascending numeric order
 ```
 
 ---
@@ -429,7 +414,7 @@ The final automated test should verify the product price order as behavior, not 
 The final automated test should focus only on:
 
 ```text
-Select Price high to low → product prices are displayed from highest price to lowest price
+Select Price high to low -> product prices are displayed from highest price to lowest price
 ```
 
 ---
@@ -473,7 +458,7 @@ The observed behavior where `Checkout` is available even when the cart is empty 
 The final automated test should focus only on:
 
 ```text
-Click cart icon from Inventory Page → Cart Page is opened and key Cart Page elements are visible
+Click cart icon from Inventory Page -> Cart Page is opened and key Cart Page elements are visible
 ```
 
 ---
@@ -523,7 +508,7 @@ The product image is not displayed on the Cart Page, which appears to be expecte
 The final automated test should focus only on:
 
 ```text
-Add one product → open Cart Page → verify product details and Cart Page controls
+Add one product -> open Cart Page -> verify product details and Cart Page controls
 ```
 
 ---
@@ -580,7 +565,7 @@ The observed behavior where `Checkout` remains available even when the cart is e
 The final automated test should focus only on:
 
 ```text
-Add one product → open Cart Page → remove product → verify product and cart badge disappear
+Add one product -> open Cart Page -> remove product -> verify product and cart badge disappear
 ```
 
 ---
@@ -626,7 +611,7 @@ The test should verify that the cart state is preserved after returning to the I
 The final automated test should focus only on:
 
 ```text
-Add one product → open Cart Page → click Continue Shopping → Inventory Page opens and cart state is preserved
+Add one product -> open Cart Page -> click Continue Shopping -> Inventory Page opens and cart state is preserved
 ```
 
 ---
@@ -676,7 +661,7 @@ Checkout form validation should be covered separately in Checkout Step One test 
 The final automated test should focus only on:
 
 ```text
-Add one product → open Cart Page → click Checkout → Checkout Step One Page opens and form controls are visible
+Add one product -> open Cart Page -> click Checkout -> Checkout Step One Page opens and form controls are visible
 ```
 
 ---
@@ -694,45 +679,60 @@ Verify that the Cart Page correctly displays multiple products after the user ad
 | Username field | `[data-test="username"]` | Stable test attribute used for login |
 | Password field | `[data-test="password"]` | Stable test attribute used for login |
 | Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first selected product to the cart |
-| Add to cart button for Sauce Labs Bike Light | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second selected product to the cart |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first selected product |
+| Add to cart button for Sauce Labs Bike Light | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second selected product |
 | Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that two products were added |
 | Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying that the Cart Page is displayed |
-| Cart list | `[data-test="cart-list"]` | Allows verifying that the cart content area is displayed |
-| Cart items | `[data-test="inventory-item"]` | Allows checking that two separate cart items are displayed |
-| Product quantities | `[data-test="item-quantity"]` | Allows verifying that each product quantity is `1` |
-| Product names | `[data-test="inventory-item-name"]` | Allows verifying that both selected products are displayed |
-| Product descriptions | `[data-test="inventory-item-desc"]` | Allows verifying that product descriptions are displayed |
-| Product prices | `[data-test="inventory-item-price"]` | Allows verifying that product prices are displayed |
-| Remove button for Sauce Labs Backpack | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the first product has a Remove button |
-| Remove button for Sauce Labs Bike Light | `[data-test="remove-sauce-labs-bike-light"]` | Confirms that the second product has a Remove button |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control is visible |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is visible |
+| Page title | `[data-test="title"]` | Confirms that the Cart Page is displayed |
+| Cart list | `[data-test="cart-list"]` | Confirms that the cart content area is displayed |
+| Cart items | `[data-test="inventory-item"]` | Provides the collection of product containers displayed in the cart |
+| Product quantity | `[data-test="item-quantity"]` | Verifies quantity inside a specific cart item |
+| Product name | `[data-test="inventory-item-name"]` | Verifies the name inside a specific cart item |
+| Product description | `[data-test="inventory-item-desc"]` | Verifies the description inside a specific cart item |
+| Product price | `[data-test="inventory-item-price"]` | Verifies the price inside a specific cart item |
+| Remove button for Sauce Labs Backpack | `[data-test="remove-sauce-labs-backpack"]` | Verifies the action inside the Backpack cart item |
+| Remove button for Sauce Labs Bike Light | `[data-test="remove-sauce-labs-bike-light"]` | Verifies the action inside the Bike Light cart item |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that Cart Page navigation is available |
+| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is available |
+
+### Scoped Locator Strategy
+
+The test first locates the complete cart item collection:
+
+```ts
+const cartItems = page.locator('[data-test="inventory-item"]');
+```
+
+Each product is then identified by its visible product name:
+
+```ts
+const backpackCartItem = cartItems.filter({
+  hasText: 'Sauce Labs Backpack',
+});
+
+const bikeLightCartItem = cartItems.filter({
+  hasText: 'Sauce Labs Bike Light',
+});
+```
+
+Quantity, name, description, price, and the matching `Remove` button are asserted inside the corresponding cart item.
+
+This confirms that each value belongs to the correct product and avoids relying on the global order of separate name and price collections.
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Backpack description text | Text locator generated by Codegen | Product description was clicked during exploration but is not needed for the final test |
-| Bike Light description text | Text locator generated by Codegen | Product description was clicked during exploration but is not needed for the final test |
-| Backpack price text | Text locator generated by Codegen | Price text was clicked during exploration but should be verified through `[data-test="inventory-item-price"]` |
-| Bike Light price text | Text locator generated by Codegen | Price text was clicked during exploration but should be verified through `[data-test="inventory-item-price"]` |
+Codegen generated direct text locators for product descriptions and prices, along with additional clicks on Checkout, Cancel, and Continue Shopping.
+
+These locators and actions were excluded because stable `data-test` locators and scoped cart item assertions express the test intent more precisely.
 
 ### Notes
 
-Codegen generated additional clicks on product quantities, product descriptions, product prices, Checkout, Cancel, and Continue Shopping.
-
-These actions were excluded because `TC-CART-005` should only verify that the Cart Page correctly displays multiple added products.
-
-The test should verify that two separate cart items are displayed, not only that the cart badge shows `2`.
-
-Each product should have quantity `1`, product name, description, price, and a Remove button.
+The test verifies that two separate cart items are displayed, not only that the cart badge shows `2`.
 
 Product images are not displayed on the Cart Page, which appears to be expected SauceDemo behavior.
 
 The final automated test should focus only on:
 
 ```text
-Add two products → open Cart Page → verify both products and Cart Page controls
+Add two products -> open Cart Page -> locate each product container -> verify its own quantity, name, description, price, and Remove button
 ```

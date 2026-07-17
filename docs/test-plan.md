@@ -123,13 +123,16 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 ### Initial Automation Approach
 
 * Keep test files simple and feature-based.
+* Use separate spec files for Login Page, Inventory Page, and Cart Page tests.
 * Start with direct Playwright locators.
-* Extract repeated login steps when they become duplicated across multiple specs.
+* Extract repeated login steps when duplication creates a real maintenance cost.
 * Add Page Object Model later if the test suite grows enough to justify it.
 
 ### Planned Test Structure
 
-* `tests/` - Playwright test specifications.
+* `tests/login-page.spec.ts` - Login Page tests.
+* `tests/inventory-page.spec.ts` - Inventory Page and Product Details tests.
+* `tests/cart-page.spec.ts` - Cart Page tests.
 * `docs/` - test planning and QA documentation.
 * `playwright-report/` - locally generated test execution reports, not committed to the repository.
 
@@ -152,12 +155,12 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Inventory page visibility | Covered | Completed |
 | Product card validation | Covered | Completed |
 | Add product to cart | Covered | Completed |
-| Remove product from cart | Covered | Completed |
+| Remove product from Inventory Page | Covered | Completed |
 | Multiple products added from Inventory Page | Covered | Completed |
 | Product details navigation | Covered | Completed |
 | Product sorting | Covered | Completed |
 | Cart item validation | Covered | Completed |
-| Cart item removal | Covered | Completed |
+| Remove product from Cart Page | Covered | Completed |
 | Continue Shopping navigation | Covered | Completed |
 | Checkout entry navigation | Covered | Completed |
 | Multiple products displayed on Cart Page | Covered | Completed |
@@ -265,7 +268,8 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 #### Preconditions
 
-* User is logged in as `standard_user`.
+* User is on the SauceDemo Login Page.
+* User has valid credentials.
 
 #### Steps
 
@@ -324,7 +328,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * Cart badge is visible.
 * Cart badge shows `1`.
 
-### TC-INV-004 - Verify that user can remove product from the cart
+### TC-INV-004 - Verify that user can remove a product from the Inventory Page
 
 * **Priority:** High
 * **Type:** Functional / Regression
@@ -512,6 +516,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * User is redirected to the Cart Page.
 * Page URL contains `/cart.html`.
 * Page title `Your Cart` is visible.
+* Cart list area is visible.
+* `Continue Shopping` button is visible.
+* `Checkout` button is visible.
 
 ## 6.3 Cart Page
 
@@ -532,11 +539,15 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 #### Expected Result
 
-* Added product is visible in the cart.
-* Product name is visible.
-* Product price is visible.
-* Product quantity is visible.
+* Cart Page URL contains `/cart.html`.
+* Page title `Your Cart` is visible.
+* Cart badge still shows `1`.
+* Exactly one cart item is displayed.
+* Product quantity is `1`.
+* Product name, description, and price are visible.
 * `Remove` button is visible for the product.
+* `Continue Shopping` button is visible.
+* `Checkout` button is visible.
 
 ### TC-CART-002 - Verify that user can remove product from the cart
 
@@ -556,8 +567,13 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Expected Result
 
 * Product is removed from the cart.
-* Cart badge is updated or no longer visible.
-* Removed product is no longer displayed on the Cart Page.
+* No cart items are displayed.
+* Cart badge is no longer visible.
+* User remains on the Cart Page.
+* Page title `Your Cart` remains visible.
+* Cart list area remains visible.
+* `Continue Shopping` button remains visible.
+* `Checkout` button remains visible.
 
 ### TC-CART-003 - Verify that Continue Shopping returns user to Inventory Page
 
@@ -591,6 +607,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Preconditions
 
 * User is logged in as `standard_user`.
+* One product is added to the cart.
 * User is on the Cart Page.
 
 #### Steps
@@ -602,6 +619,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * User is redirected to Checkout Step One.
 * Page URL contains `/checkout-step-one.html`.
 * Page title `Checkout: Your Information` is visible.
+* First name, last name, and postal code fields are visible.
+* `Continue` and `Cancel` buttons are visible.
+* Cart badge still shows `1`.
 
 ### TC-CART-005 - Verify that multiple added products are displayed in the cart
 
@@ -1113,8 +1133,6 @@ Not every planned manual test case must be automated immediately.
 
 Automation should be implemented incrementally, starting with high-priority smoke, happy path, and core regression scenarios.
 
+Automated tests may include supporting assertions beyond the minimum expected result, but those assertions must remain within the scope of the matching test case ID.
+
 Execution results should be tracked separately through Playwright reports or manual test execution notes.
-
-
-
-

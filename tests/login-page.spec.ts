@@ -1,41 +1,46 @@
 import { test, expect } from '@playwright/test';
 
-test('should display login page elements', async ({ page }) => {
+test('TC-LOGIN-001 - should display login page elements', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
 
-  await expect(page.getByPlaceholder('Username')).toBeVisible();
-  await expect(page.getByPlaceholder('Password')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+  await expect(page.locator('[data-test="username"]')).toBeVisible();
+  await expect(page.locator('[data-test="password"]')).toBeVisible();
+  await expect(page.locator('[data-test="login-button"]')).toBeVisible();
 });
 
-test('should login with valid credentials', async ({ page }) => {
+test('TC-LOGIN-002 - should login with valid credentials', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
 
-  await page.getByPlaceholder('Username').fill('standard_user');
-  await page.getByPlaceholder('Password').fill('secret_sauce');
-  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
 
   await expect(page).toHaveURL(/.*inventory.html/);
-  await expect(page.getByText('Products')).toBeVisible();
+  await expect(page.locator('[data-test="title"]')).toHaveText('Products');
 });
 
-test('should show error for invalid credentials', async ({ page }) => {
+test('TC-LOGIN-003 - should show error for invalid credentials', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
 
-  await page.getByPlaceholder('Username').fill('invalid_user');
-  await page.getByPlaceholder('Password').fill('invalid_password');
-  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator('[data-test="username"]').fill('invalid_user');
+  await page.locator('[data-test="password"]').fill('invalid_password');
+  await page.locator('[data-test="login-button"]').click();
 
-  await expect(page.getByText('Epic sadface: Username and password do not match any user in this service')).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toHaveText(
+    'Epic sadface: Username and password do not match any user in this service',
+  );
+  await expect(page).toHaveURL('https://www.saucedemo.com/');
 });
 
-test('should show error for locked out user', async ({ page }) => {
+test('TC-LOGIN-004 - should show error for locked out user', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
 
-  await page.getByPlaceholder('Username').fill('locked_out_user');
-  await page.getByPlaceholder('Password').fill('secret_sauce');
-  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator('[data-test="username"]').fill('locked_out_user');
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
 
-  await expect(page.getByText('Epic sadface: Sorry, this user has been locked out.')).toBeVisible();
+  await expect(page.locator('[data-test="error"]')).toHaveText(
+    'Epic sadface: Sorry, this user has been locked out.',
+  );
+  await expect(page).toHaveURL('https://www.saucedemo.com/');
 });
-
