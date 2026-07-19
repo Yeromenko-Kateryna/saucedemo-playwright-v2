@@ -672,6 +672,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * Page title `Your Cart` is visible.
 * Cart list area is visible.
 * No cart items are displayed.
+* Cart badge is not displayed.
 * `Continue Shopping` button is visible.
 * `Checkout` button is visible.
 
