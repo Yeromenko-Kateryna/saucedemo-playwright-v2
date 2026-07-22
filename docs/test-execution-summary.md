@@ -634,3 +634,36 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CART-006 - Verify empty Cart Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page without adding any products.
+- Cart badge was not displayed on the Inventory Page.
+- User clicked the cart icon.
+- Cart Page was opened.
+- URL contained `/cart.html`.
+- Page title `Your Cart` was displayed.
+- Cart list area was visible.
+- No cart items were displayed.
+- Cart badge was not displayed on the Cart Page.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- The empty Cart Page displayed the cart column labels and navigation controls correctly.
+- No dedicated message such as `Your cart is empty` was displayed.
+- The absence of an empty-state message is a UX observation and is not a failure because such a message is not required by `TC-CART-006`.
+
+#### Possible Bugs
+
+- None found for this test case.
