@@ -6,7 +6,7 @@ This document describes planned manual and automated checks for the SauceDemo QA
 
 The goal is to define what should be tested across the main SauceDemo user journey before selecting and implementing test cases for Playwright automation.
 
-This test plan was created based on manual exploration, technical exploration with Playwright Codegen, completed Login Page and Inventory Page automation, and partial Cart Page automation.
+This test plan was created based on manual exploration, technical exploration with Playwright Codegen, and completed Login Page, Inventory Page, and Cart Page automation.
 
 This document describes planned checks, not completed execution results. Test execution status should be tracked separately in Playwright reports or manual test execution notes.
 
@@ -164,7 +164,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Continue Shopping navigation | Covered | Completed |
 | Checkout entry navigation | Covered | Completed |
 | Multiple products displayed on Cart Page | Covered | Completed |
-| Empty cart page validation | Covered | Planned |
+| Empty cart page validation | Covered | Completed |
 | Checkout information form | Covered | Planned |
 | Checkout overview validation | Covered | Planned |
 | Complete order flow | Covered | Planned |
@@ -1046,13 +1046,12 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | --- | --- | --- |
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
-| TC-CART-001 - TC-CART-005 | Cart Page | Cart item validation, removal, navigation, checkout entry, and multiple products |
+| TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CART-006 | Completes Cart Page coverage by validating the empty cart state |
 | TC-CHK1-005 | Required for checkout happy path |
 | TC-CHK2-004 | Completes main purchase flow |
 | TC-COMPLETE-001 | Confirms successful order completion |
@@ -1118,7 +1117,7 @@ AI outputs should be validated manually before being added to the test suite, do
 | Inventory Page test planning | Completed |
 | Project-wide test planning | Completed |
 | Inventory Page automation | Completed |
-| Cart Page automation | In Progress |
+| Cart Page automation | Completed |
 | Checkout automation | Planned |
 | Menu navigation automation | Planned |
 

@@ -641,7 +641,7 @@ This file records the manual observations for test cases that have already been 
 
 - **Execution type:** Manual
 - **Status:** Passed
-- **Automation decision:** Planned
+- **Automation decision:** Automated
 
 #### Actual Result
 
