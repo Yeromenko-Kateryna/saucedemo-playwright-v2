@@ -736,3 +736,75 @@ The final automated test should focus only on:
 ```text
 Add two products -> open Cart Page -> locate each product container -> verify its own quantity, name, description, price, and Remove button
 ```
+
+---
+
+## TC-CART-006 - Empty Cart Page is displayed correctly
+
+### Purpose
+
+Verify that the Cart Page is displayed correctly when the user opens it without adding any products.
+
+### Selected Locators
+
+| Element | Locator | Reason |
+|---|---|---|
+| Username field | `[data-test="username"]` | Stable test attribute used for login |
+| Password field | `[data-test="password"]` | Stable test attribute used for login |
+| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
+| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
+| Page title | `[data-test="title"]` | Confirms that `Your Cart` is displayed |
+| Cart list | `[data-test="cart-list"]` | Confirms that the cart area is visible |
+| Cart items | `[data-test="inventory-item"]` | Represents products displayed in the cart |
+| Cart badge | `[data-test="shopping-cart-badge"]` | Represents the numerical cart item count |
+| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the navigation button is visible |
+| Checkout button | `[data-test="checkout"]` | Confirms that the checkout button is visible |
+
+### DOM Behavior and Assertions
+
+Chrome DevTools Console confirmed that no cart item nodes are present on the empty Cart Page:
+
+```javascript
+document.querySelectorAll('[data-test="inventory-item"]').length
+```
+
+Result: `0`
+
+Chrome DevTools Console also confirmed that the cart badge is not present in the DOM:
+
+```javascript
+document.querySelectorAll('[data-test="shopping-cart-badge"]').length
+```
+
+Result: `0`
+
+The selected assertions are:
+
+```ts
+await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(0);
+await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
+```
+
+`toHaveCount(0)` is used because locator exploration confirmed that both locators resolve to zero DOM nodes.
+
+`toBeHidden()` was not selected because it checks only that an element is not visible and can also pass when an element exists but is hidden.
+
+### Notes
+
+Playwright Codegen was used to identify the interactive Cart Page elements.
+
+Chrome DevTools Console was used to confirm the DOM behavior of cart items and the cart badge.
+
+Codegen actions such as `dblclick()`, intermediate `fill()` values, `CapsLock` presses, container clicks, and clicks on `Continue Shopping` and `Checkout` were excluded.
+
+The final automated test should only:
+
+```text
+Login with an empty cart -> open Cart Page -> verify the empty Cart Page layout
+```
+
+The test should not click `Continue Shopping` or `Checkout`.
+
+The selected locators use stable `data-test` attributes and do not depend on visual position or DOM order.
+
+Actual cross-browser stability must be confirmed by running the test in Chromium, Firefox, and WebKit.
