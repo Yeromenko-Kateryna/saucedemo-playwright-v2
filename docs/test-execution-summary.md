@@ -10,6 +10,16 @@ This file records the manual observations for test cases that have already been 
 
 ---
 
+## Reporting Scope and Evidence
+
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 25 documented manual cases: 13 Inventory, 6 Cart, 5 Checkout Step One, and 1 Checkout Overview case. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+
+The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
+
+Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). A test case marked `Automated` here means that a corresponding Playwright test exists; it does not by itself prove the result of a particular automated run.
+
+---
+
 ## Manual Test Run - Inventory Page
 
 ### TC-INV-001 - Verify that Inventory Page is displayed after successful login
@@ -874,6 +884,8 @@ This file records the manual observations for test cases that have already been 
 - None found for this test case.
 
 ---
+
+## Manual Test Run - Checkout Overview
 
 ### TC-CHK2-004 - Verify that Finish button completes the order
 

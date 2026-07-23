@@ -83,9 +83,9 @@ The following areas are not included in the current automation scope, but can be
 | Locked out username | `locked_out_user` |
 | Invalid username | `invalid_user` |
 | Invalid password | `invalid_password` |
-| First name | `Kateryna` |
-| Last name | `Yeromenko` |
-| Postal code | `38640` |
+| First name | `Katia` |
+| Last name | `Tester` |
+| Postal code | `12345` |
 
 ---
 
@@ -120,12 +120,12 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * Run tests locally before each commit.
 * Use Playwright reports to review test execution results.
 
-### Initial Automation Approach
+### Current Automation Approach
 
 * Keep test files simple and feature-based.
-* Use separate spec files for Login Page, Inventory Page, and Cart Page tests.
+* Use separate feature-based spec files for Login, Inventory, Cart, and Checkout tests.
 * Start with direct Playwright locators.
-* Extract repeated login steps when duplication creates a real maintenance cost.
+* Keep shared workflow setup in `tests/saucedemo-test-helpers.ts` when it is reused across multiple test files.
 * Add Page Object Model later if the test suite grows enough to justify it.
 
 ### Planned Test Structure
@@ -133,6 +133,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * `tests/login-page.spec.ts` - Login Page tests.
 * `tests/inventory-page.spec.ts` - Inventory Page and Product Details tests.
 * `tests/cart-page.spec.ts` - Cart Page tests.
+* `tests/checkout-step-one.spec.ts` - Checkout information form and required-field validation tests.
+* `tests/checkout-overview.spec.ts` - Checkout completion test.
+* `tests/saucedemo-test-helpers.ts` - shared test data and reusable workflow helpers.
 * `docs/` - test planning and QA documentation.
 * `playwright-report/` - locally generated test execution reports, not committed to the repository.
 
@@ -166,9 +169,9 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Multiple products displayed on Cart Page | Covered | Completed |
 | Empty cart page validation | Covered | Completed |
 | Checkout Step One form display | Covered | Completed |
-| Checkout information form | Covered | Planned |
-| Checkout overview validation | Covered | Planned |
-| Complete order flow | Covered | Planned |
+| Checkout Step One validation and continuation | Covered | Completed |
+| Checkout overview display and price details | Covered | Planned |
+| Complete order flow | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
 | Logout flow | Covered | Planned |
 
@@ -1043,6 +1046,8 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
+**Current automated coverage:** 29 of 41 planned test cases (70.7%). This count is based on the current Playwright spec files and does not represent a test-run result.
+
 | Test Case | Area | Reason |
 | --- | --- | --- |
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
@@ -1118,7 +1123,8 @@ AI outputs should be validated manually before being added to the test suite, do
 | Project-wide test planning | Completed |
 | Inventory Page automation | Completed |
 | Cart Page automation | Completed |
-| Checkout automation | In Progress |
+| Checkout Step One automation | Completed |
+| Checkout Overview and Order Complete automation | In Progress |
 | Menu navigation automation | Planned |
 
 ---

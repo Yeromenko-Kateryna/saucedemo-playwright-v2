@@ -1,19 +1,13 @@
 import { test, expect } from '@playwright/test';
+import { addProduct, loginAsStandardUser, openCart } from './saucedemo-test-helpers';
 
 test('TC-CART-001 - should display one added product on cart page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await loginAsStandardUser(page);
+  await addProduct(page, 'sauce-labs-backpack');
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="cart-list"]')).toBeVisible();
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
@@ -30,19 +24,12 @@ test('TC-CART-001 - should display one added product on cart page', async ({ pag
 });
 
 test('TC-CART-002 - should remove product from cart page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await loginAsStandardUser(page);
+  await addProduct(page, 'sauce-labs-backpack');
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(1);
   await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
@@ -59,19 +46,12 @@ test('TC-CART-002 - should remove product from cart page', async ({ page }) => {
 });
 
 test('TC-CART-003 - should continue shopping from cart page and preserve cart state', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await loginAsStandardUser(page);
+  await addProduct(page, 'sauce-labs-backpack');
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
 
@@ -85,19 +65,12 @@ test('TC-CART-003 - should continue shopping from cart page and preserve cart st
 });
 
 test('TC-CART-004 - should open checkout step one page from cart page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+  await loginAsStandardUser(page);
+  await addProduct(page, 'sauce-labs-backpack');
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="checkout"]')).toBeVisible();
 
@@ -115,20 +88,13 @@ test('TC-CART-004 - should open checkout step one page from cart page', async ({
 });
 
 test('TC-CART-005 - should display multiple added products on cart page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
+  await loginAsStandardUser(page);
+  await addProduct(page, 'sauce-labs-backpack');
+  await addProduct(page, 'sauce-labs-bike-light');
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="cart-list"]')).toBeVisible();
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('2');
@@ -168,17 +134,11 @@ test('TC-CART-005 - should display multiple added products on cart page', async 
 });
 
 test('TC-CART-006 - should display empty cart page correctly', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
+  await openCart(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
   await expect(page.locator('[data-test="cart-list"]')).toBeVisible();
 

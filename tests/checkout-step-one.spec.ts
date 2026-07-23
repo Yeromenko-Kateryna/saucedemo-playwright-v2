@@ -1,25 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { openCheckoutStepOneWithBackpack, testData } from './saucedemo-test-helpers';
 
 test('TC-CHK1-001 - should display checkout step one form correctly', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-  await page.locator('[data-test="shopping-cart-link"]').click();
-
-  await expect(page).toHaveURL(/.*cart.html/);
-  await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
-  await expect(page.locator('[data-test="checkout"]')).toBeVisible();
-
-  await page.locator('[data-test="checkout"]').click();
-
-  await expect(page).toHaveURL(/.*checkout-step-one.html/);
+  await openCheckoutStepOneWithBackpack(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Your Information');
   await expect(page.locator('[data-test="checkout-info-container"]')).toBeVisible();
   await expect(page.locator('[data-test="firstName"]')).toBeVisible();
@@ -32,20 +15,10 @@ test('TC-CHK1-001 - should display checkout step one form correctly', async ({ p
 });
 
 test('TC-CHK1-002 - should show error when first name is missing', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
+  await openCheckoutStepOneWithBackpack(page);
 
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
-
-  await page.locator('[data-test="lastName"]').fill('Tester');
-  await page.locator('[data-test="postalCode"]').fill('12345');
+  await page.locator('[data-test="lastName"]').fill(testData.checkout.lastName);
+  await page.locator('[data-test="postalCode"]').fill(testData.checkout.postalCode);
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
@@ -53,65 +26,45 @@ test('TC-CHK1-002 - should show error when first name is missing', async ({ page
     'Error: First Name is required',
   );
   await expect(page.locator('[data-test="firstName"]')).toHaveValue('');
-  await expect(page.locator('[data-test="lastName"]')).toHaveValue('Tester');
-  await expect(page.locator('[data-test="postalCode"]')).toHaveValue('12345');
+  await expect(page.locator('[data-test="lastName"]')).toHaveValue(testData.checkout.lastName);
+  await expect(page.locator('[data-test="postalCode"]')).toHaveValue(testData.checkout.postalCode);
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
   await expect(page.locator('[data-test="cancel"]')).toBeVisible();
   await expect(page.locator('[data-test="continue"]')).toBeVisible();
 });
 
 test('TC-CHK1-003 - should show error when last name is missing', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
+  await openCheckoutStepOneWithBackpack(page);
 
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
-
-  await page.locator('[data-test="firstName"]').fill('Katia');
-  await page.locator('[data-test="postalCode"]').fill('12345');
+  await page.locator('[data-test="firstName"]').fill(testData.checkout.firstName);
+  await page.locator('[data-test="postalCode"]').fill(testData.checkout.postalCode);
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
   await expect(page.locator('[data-test="error"]')).toHaveText(
     'Error: Last Name is required',
   );
-  await expect(page.locator('[data-test="firstName"]')).toHaveValue('Katia');
+  await expect(page.locator('[data-test="firstName"]')).toHaveValue(testData.checkout.firstName);
   await expect(page.locator('[data-test="lastName"]')).toHaveValue('');
-  await expect(page.locator('[data-test="postalCode"]')).toHaveValue('12345');
+  await expect(page.locator('[data-test="postalCode"]')).toHaveValue(testData.checkout.postalCode);
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
   await expect(page.locator('[data-test="cancel"]')).toBeVisible();
   await expect(page.locator('[data-test="continue"]')).toBeVisible();
 });
 
 test('TC-CHK1-004 - should show error when postal code is missing', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
+  await openCheckoutStepOneWithBackpack(page);
 
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
-
-  await page.locator('[data-test="firstName"]').fill('Katia');
-  await page.locator('[data-test="lastName"]').fill('Tester');
+  await page.locator('[data-test="firstName"]').fill(testData.checkout.firstName);
+  await page.locator('[data-test="lastName"]').fill(testData.checkout.lastName);
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
   await expect(page.locator('[data-test="error"]')).toHaveText(
     'Error: Postal Code is required',
   );
-  await expect(page.locator('[data-test="firstName"]')).toHaveValue('Katia');
-  await expect(page.locator('[data-test="lastName"]')).toHaveValue('Tester');
+  await expect(page.locator('[data-test="firstName"]')).toHaveValue(testData.checkout.firstName);
+  await expect(page.locator('[data-test="lastName"]')).toHaveValue(testData.checkout.lastName);
   await expect(page.locator('[data-test="postalCode"]')).toHaveValue('');
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
   await expect(page.locator('[data-test="cancel"]')).toBeVisible();
@@ -119,21 +72,11 @@ test('TC-CHK1-004 - should show error when postal code is missing', async ({ pag
 });
 
 test('TC-CHK1-005 - should continue with valid checkout information', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
+  await openCheckoutStepOneWithBackpack(page);
 
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
-
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
-
-  await page.locator('[data-test="firstName"]').fill('Katia');
-  await page.locator('[data-test="lastName"]').fill('Tester');
-  await page.locator('[data-test="postalCode"]').fill('12345');
+  await page.locator('[data-test="firstName"]').fill(testData.checkout.firstName);
+  await page.locator('[data-test="lastName"]').fill(testData.checkout.lastName);
+  await page.locator('[data-test="postalCode"]').fill(testData.checkout.postalCode);
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-two.html/);

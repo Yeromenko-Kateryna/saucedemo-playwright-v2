@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { loginAsStandardUser } from './saucedemo-test-helpers';
 
 test('TC-INV-001 - should display inventory page after successful login', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await expect(page).toHaveURL(/.*inventory.html/);
   await expect(page.locator('[data-test="title"]')).toHaveText('Products');
@@ -15,11 +12,7 @@ test('TC-INV-001 - should display inventory page after successful login', async 
 });
 
 test('TC-INV-002 - should display required product card information', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   const firstProductCard = page.locator('[data-test="inventory-item"]').first();
 
@@ -33,11 +26,7 @@ test('TC-INV-002 - should display required product card information', async ({ p
 });
 
 test('TC-INV-003 - should add one product to the cart', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   const addBackpackButton = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
   const removeBackpackButton = page.locator('[data-test="remove-sauce-labs-backpack"]');
@@ -51,11 +40,7 @@ test('TC-INV-003 - should add one product to the cart', async ({ page }) => {
 });
 
 test('TC-INV-004 - should remove one product from the inventory page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   const addBackpackButton = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
   const removeBackpackButton = page.locator('[data-test="remove-sauce-labs-backpack"]');
@@ -74,11 +59,7 @@ test('TC-INV-004 - should remove one product from the inventory page', async ({ 
 });
 
 test('TC-INV-005 - should add multiple different products to the cart', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   const addBackpackButton = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
   const addBikeLightButton = page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]');
@@ -101,11 +82,7 @@ test('TC-INV-005 - should add multiple different products to the cart', async ({
 });
 
 test('TC-INV-006 - should open product details page from product name', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="item-4-title-link"]').click();
 
@@ -119,11 +96,7 @@ test('TC-INV-006 - should open product details page from product name', async ({
 });
 
 test('TC-INV-007 - should open product details page from product image', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="item-4-img-link"]').click();
 
@@ -137,11 +110,7 @@ test('TC-INV-007 - should open product details page from product image', async (
 });
 
 test('TC-INV-008 - should return to inventory page from product details page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="item-4-title-link"]').click();
 
@@ -157,11 +126,7 @@ test('TC-INV-008 - should return to inventory page from product details page', a
 });
 
 test('TC-INV-009 - should sort products by name A to Z', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="product-sort-container"]').selectOption('za');
   await page.locator('[data-test="product-sort-container"]').selectOption('az');
@@ -177,11 +142,7 @@ test('TC-INV-009 - should sort products by name A to Z', async ({ page }) => {
 });
 
 test('TC-INV-010 - should sort products by name Z to A', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="product-sort-container"]').selectOption('za');
 
@@ -196,11 +157,7 @@ test('TC-INV-010 - should sort products by name Z to A', async ({ page }) => {
 });
 
 test('TC-INV-011 - should sort products by price low to high', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="product-sort-container"]').selectOption('lohi');
 
@@ -217,11 +174,7 @@ test('TC-INV-011 - should sort products by price low to high', async ({ page }) 
 });
 
 test('TC-INV-012 - should sort products by price high to low', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="product-sort-container"]').selectOption('hilo');
 
@@ -238,11 +191,7 @@ test('TC-INV-012 - should sort products by price high to low', async ({ page }) 
 });
 
 test('TC-INV-013 - should open cart page from inventory page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/');
-
-  await page.locator('[data-test="username"]').fill('standard_user');
-  await page.locator('[data-test="password"]').fill('secret_sauce');
-  await page.locator('[data-test="login-button"]').click();
+  await loginAsStandardUser(page);
 
   await page.locator('[data-test="shopping-cart-link"]').click();
 
