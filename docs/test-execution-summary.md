@@ -709,3 +709,42 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CHK1-002 - Verify error message when first name is missing
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added one product to the cart.
+- User opened Checkout Step One.
+- `First Name` field was left empty.
+- `Last Name` field was filled with `Tester`.
+- `Zip/Postal Code` field was filled with `12345`.
+- User clicked the `Continue` button.
+- URL remained `/checkout-step-one.html`.
+- Error message `Error: First Name is required` was displayed.
+- `First Name` field remained empty.
+- `First Name` placeholder and underline were highlighted in red.
+- A red validation icon was displayed next to the `First Name` field.
+- `Last Name` value `Tester` was preserved.
+- `Zip/Postal Code` value `12345` was preserved.
+- Cart badge still displayed `1`.
+- `Cancel` and `Continue` buttons remained available.
+
+#### Observations
+
+- The page prevented navigation to Checkout Overview when the required `First Name` field was empty.
+- The entered values in the other fields were preserved after validation failed.
+- Red validation icons were displayed next to all three form fields, although the error message referred only to the missing `First Name`.
+- This may make it appear that all fields are invalid, even though `Last Name` and `Zip/Postal Code` contain valid values.
+- This is recorded as a UX observation and does not cause the test case to fail.
+
+#### Possible Bugs
+
+- None found for this test case.
