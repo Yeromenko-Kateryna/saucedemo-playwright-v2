@@ -1048,7 +1048,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
-| TC-CHK1-001 - TC-CHK1-002 | Checkout Step One | Initial form display and missing First Name validation |
+| TC-CHK1-001 - TC-CHK1-003 | Checkout Step One | Initial form display and required-field validation for missing First Name and Last Name |
 
 ### Next Automation Scope
 
@@ -1062,7 +1062,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK1-003 - TC-CHK1-004 | Checkout required-field validation |
+| TC-CHK1-004 | Missing Postal Code validation |
 | TC-CHK1-006 | Checkout cancel navigation |
 | TC-CHK2-001 - TC-CHK2-003 | Checkout overview checks |
 | TC-CHK2-005 | Checkout overview cancel navigation |
