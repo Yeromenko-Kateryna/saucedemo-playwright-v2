@@ -667,3 +667,45 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+## Manual Test Run - Checkout Step One
+
+### TC-CHK1-001 - Verify that Checkout Step One form is displayed
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added one product to the cart.
+- Cart badge displayed `1`.
+- User opened the Cart Page.
+- User clicked the `Checkout` button.
+- Checkout Step One Page was opened.
+- URL contained `/checkout-step-one.html`.
+- Page title `Checkout: Your Information` was displayed.
+- `First Name` field was visible.
+- `Last Name` field was visible.
+- `Zip/Postal Code` field was visible.
+- `Cancel` button was visible.
+- `Continue` button was visible.
+- `Swag Labs` logo was visible.
+- Cart icon was visible.
+- Cart badge still displayed `1`.
+- No validation error was displayed immediately after opening the page.
+
+#### Observations
+
+- The checkout form contains only first name, last name, and postal code fields.
+- A real checkout or delivery form would normally require additional customer or address information, but SauceDemo uses a simplified demo flow.
+- The horizontal divider above the navigation buttons is limited to the main content container instead of extending across the full viewport.
+- The form layout changes according to viewport width and remains usable in both observed layouts.
+- These are UX and product-design observations and do not cause this test case to fail.
+
+#### Possible Bugs
+
+- None found for this test case.
