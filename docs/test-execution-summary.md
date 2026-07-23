@@ -872,3 +872,44 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CHK2-004 - Verify that Finish button completes the order
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User opened the Cart Page.
+- User clicked the `Checkout` button.
+- User entered `Katia` in the `First Name` field.
+- User entered `Tester` in the `Last Name` field.
+- User entered `12345` in the `Zip/Postal Code` field.
+- User clicked the `Continue` button.
+- User reached `/checkout-step-two.html`.
+- `Checkout: Overview` was displayed.
+- `Finish` button was visible.
+- User clicked the `Finish` button.
+- User was redirected to `/checkout-complete.html`.
+- Page title `Checkout: Complete!` was displayed.
+- Cart badge was no longer displayed.
+- Confirmation message `Thank you for your order!` was visible.
+- Order dispatch message was visible.
+- `Back Home` button was visible.
+- `Generate PDF order` button was visible.
+- No error was displayed.
+
+#### Observations
+
+- This test verifies that clicking `Finish` completes the order and opens the Order Complete Page.
+- Detailed validation of the Order Complete Page belongs to `TC-COMPLETE-001`.
+
+#### Possible Bugs
+
+- None found for this test case.
