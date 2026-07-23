@@ -165,6 +165,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout entry navigation | Covered | Completed |
 | Multiple products displayed on Cart Page | Covered | Completed |
 | Empty cart page validation | Covered | Completed |
+| Checkout Step One form display | Covered | Completed |
 | Checkout information form | Covered | Planned |
 | Checkout overview validation | Covered | Planned |
 | Complete order flow | Covered | Planned |
@@ -1047,6 +1048,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
+| TC-CHK1-001 | Checkout Step One | Initial form display, navigation state, required controls, cart badge, and absence of an initial validation error |
 
 ### Next Automation Scope
 
@@ -1060,7 +1062,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK1-001 - TC-CHK1-004 | Checkout form validation |
+| TC-CHK1-002 - TC-CHK1-004 | Checkout required-field validation |
 | TC-CHK1-006 | Checkout cancel navigation |
 | TC-CHK2-001 - TC-CHK2-003 | Checkout overview checks |
 | TC-CHK2-005 | Checkout overview cancel navigation |
@@ -1118,7 +1120,7 @@ AI outputs should be validated manually before being added to the test suite, do
 | Project-wide test planning | Completed |
 | Inventory Page automation | Completed |
 | Cart Page automation | Completed |
-| Checkout automation | Planned |
+| Checkout automation | In Progress |
 | Menu navigation automation | Planned |
 
 ---
