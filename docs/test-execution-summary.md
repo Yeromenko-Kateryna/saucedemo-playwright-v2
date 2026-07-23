@@ -787,3 +787,42 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CHK1-004 - Verify error message when Postal Code is missing
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added one product to the cart.
+- User opened Checkout Step One.
+- `First Name` field was filled with `Katia`.
+- `Last Name` field was filled with `Tester`.
+- `Zip/Postal Code` field was left empty.
+- User clicked the `Continue` button.
+- URL remained `/checkout-step-one.html`.
+- Error message `Error: Postal Code is required` was displayed.
+- `First Name` value `Katia` was preserved.
+- `Last Name` value `Tester` was preserved.
+- `Zip/Postal Code` field remained empty.
+- `Zip/Postal Code` placeholder and underline were highlighted in red.
+- A red validation icon was displayed next to the `Zip/Postal Code` field.
+- Cart badge still displayed `1`.
+- `Cancel` and `Continue` buttons remained available.
+
+#### Observations
+
+- The page prevented navigation to Checkout Overview when the required `Zip/Postal Code` field was empty.
+- The entered values in the other fields were preserved after validation failed.
+- Red validation icons were displayed next to all three form fields, although the error message referred only to the missing `Zip/Postal Code`.
+- This may make it appear that all fields are invalid, even though `First Name` and `Last Name` contain valid values.
+- This is recorded as a UX observation and does not cause the test case to fail.
+
+#### Possible Bugs
+
+- None found for this test case.
