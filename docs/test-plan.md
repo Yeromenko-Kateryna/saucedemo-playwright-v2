@@ -1049,12 +1049,12 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
 | TC-CHK1-001 - TC-CHK1-005 | Checkout Step One | Initial form display, required-field validation, and successful continuation with valid checkout information |
+| TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-004 | Completes main purchase flow |
 | TC-COMPLETE-001 | Confirms successful order completion |
 
 ### Later Automation Scope
