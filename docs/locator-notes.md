@@ -1150,3 +1150,68 @@ It does not verify:
 - Finish order behavior.
 - Checkout completion.
 - PDF generation.
+
+---
+
+## TC-CHK2-004 - Verify that Finish button completes the order
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Checkout button | `[data-test="checkout"]` |
+| First Name field | `[data-test="firstName"]` |
+| Last Name field | `[data-test="lastName"]` |
+| Postal Code field | `[data-test="postalCode"]` |
+| Continue button | `[data-test="continue"]` |
+| Finish button | `[data-test="finish"]` |
+| Page title | `[data-test="title"]` |
+| Order confirmation header | `[data-test="complete-header"]` |
+| Validation error | `[data-test="error"]` |
+
+### Planned input data
+
+- First Name: `Katia`
+- Last Name: `Tester`
+- Postal Code: `12345`
+
+### Planned assertions
+
+- Finish button is visible on Checkout Overview.
+- URL changes to `/checkout-complete.html`.
+- Page title equals `Checkout: Complete!`.
+- Order confirmation header equals `Thank you for your order!`.
+- Validation error is not present.
+
+### Codegen cleanup decisions
+
+The following Codegen actions are not part of the final test:
+
+- Clicking the login container.
+- Repeated clicks and double-clicks on input fields.
+- Caps Lock keyboard actions.
+- Intermediate or cleared username, password, first-name, and last-name values.
+- Clicking the Order Complete Page title, text, image, header, and container only to generate locators.
+- Generating and downloading the order PDF.
+- Clicking the Back Home button.
+
+Each input field will use one final `fill()` call with the intended value.
+
+Large container locators such as `[data-test="checkout-complete-container"]` and `[data-test="secondary-header"]` are not selected because more specific locators are available.
+
+### Scope boundary
+
+This test verifies only that clicking the Finish button completes the order and opens the Order Complete Page.
+
+It does not verify:
+
+- The complete order dispatch message.
+- The confirmation image.
+- The Back Home button behavior.
+- PDF generation or download.
+- Detailed Order Complete Page layout.
