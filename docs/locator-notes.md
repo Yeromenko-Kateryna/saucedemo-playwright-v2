@@ -808,3 +808,68 @@ The test should not click `Continue Shopping` or `Checkout`.
 The selected locators use stable `data-test` attributes and do not depend on visual position or DOM order.
 
 Actual cross-browser stability must be confirmed by running the test in Chromium, Firefox, and WebKit.
+
+---
+
+## TC-CHK1-001 - Checkout Step One form display
+
+### Test purpose
+
+Verify that Checkout Step One opens correctly and displays the required form elements for a user with one product in the cart.
+
+### Selected locators
+
+| Element | Locator |
+| --- | --- |
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Checkout button | `[data-test="checkout"]` |
+| Page title | `[data-test="title"]` |
+| First Name field | `[data-test="firstName"]` |
+| Last Name field | `[data-test="lastName"]` |
+| Postal Code field | `[data-test="postalCode"]` |
+| Cancel button | `[data-test="cancel"]` |
+| Continue button | `[data-test="continue"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Validation error | `[data-test="error"]` |
+
+### Planned assertions
+
+- Checkout Step One URL contains `/checkout-step-one.html`.
+- Page title equals `Checkout: Your Information`.
+- First Name field is visible.
+- Last Name field is visible.
+- Postal Code field is visible.
+- Cancel button is visible.
+- Continue button is visible.
+- Cart badge displays `1`.
+- Validation error element count equals `0` immediately after page opening.
+
+### Codegen cleanup decisions
+
+The following Codegen actions are not part of the final test:
+
+- Double-clicks on input fields.
+- Caps Lock keyboard actions.
+- Intermediate username and password values.
+- Clicks on the page title, form, containers, error message, and SVG path.
+- Repeated clicks on the same fields.
+- Cancel navigation.
+- Empty-form submission.
+- Error-message interaction.
+
+These actions were generated during exploration but do not belong to the scope of `TC-CHK1-001`.
+
+### Scope boundary
+
+This test verifies only the initial display of Checkout Step One.
+
+It does not verify:
+
+- Required-field validation.
+- Cancel navigation.
+- Successful form submission.
+- Error-message content.
