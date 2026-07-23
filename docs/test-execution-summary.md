@@ -826,3 +826,49 @@ This file records the manual observations for test cases that have already been 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CHK1-005 - Verify that user can continue with valid checkout information
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Planned
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User opened the Cart Page.
+- User clicked the `Checkout` button.
+- User entered `Katia` in the `First Name` field.
+- User entered `Tester` in the `Last Name` field.
+- User entered `12345` in the `Zip/Postal Code` field.
+- User clicked the `Continue` button.
+- User was redirected to `/checkout-step-two.html`.
+- Page title `Checkout: Overview` was displayed.
+- `Sauce Labs Backpack` was visible.
+- Product quantity was `1`.
+- Product price `$29.99` was displayed.
+- Cart badge still displayed `1`.
+- `Payment Information` section was visible.
+- `Shipping Information` section was visible.
+- `Price Total` section was visible.
+- Item total was `$29.99`.
+- Tax was `$2.40`.
+- Total price was `$32.39`.
+- `Cancel` button was visible.
+- `Finish` button was visible.
+- No validation error was displayed.
+
+#### Observations
+
+- The product description begins with code-like demo text: `carry.allTheThings()`.
+- Similar code-like content is used elsewhere in SauceDemo and is treated as demo data rather than a functional defect.
+- The checkout data entered on the previous page is not displayed on Checkout Overview.
+- This test verifies successful navigation only; detailed Checkout Overview validation is covered by separate test cases.
+
+#### Possible Bugs
+
+- None found for this test case.
