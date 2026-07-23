@@ -942,3 +942,73 @@ It does not verify:
 - Successful checkout form submission.
 - Cancel navigation.
 - Error icon styling or CSS appearance.
+
+---
+
+## TC-CHK1-003 - Missing Last Name validation
+
+### Test purpose
+
+Verify that Checkout Step One prevents the user from continuing when `Last Name` is empty and displays the correct validation error.
+
+### Selected locators
+
+| Element | Locator |
+| --- | --- |
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Checkout button | `[data-test="checkout"]` |
+| First Name field | `[data-test="firstName"]` |
+| Last Name field | `[data-test="lastName"]` |
+| Postal Code field | `[data-test="postalCode"]` |
+| Continue button | `[data-test="continue"]` |
+| Cancel button | `[data-test="cancel"]` |
+| Validation error | `[data-test="error"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+
+### Planned input data
+
+- First Name: `Katia`
+- Last Name: empty
+- Postal Code: `12345`
+
+### Planned assertions
+
+- URL remains on `/checkout-step-one.html`.
+- Validation error equals `Error: Last Name is required`.
+- First Name value remains `Katia`.
+- Last Name value remains empty.
+- Postal Code value remains `12345`.
+- Cart badge still displays `1`.
+- Cancel button remains visible.
+- Continue button remains visible.
+
+### Codegen cleanup decisions
+
+The following Codegen actions are not part of the final test:
+
+- Double-clicks on input fields.
+- Caps Lock keyboard actions.
+- Intermediate username, password, and first-name values.
+- Repeated clicks on the same fields.
+- Clicks on the form, containers, secondary header, error message, SVG elements, and paths.
+- Closing the validation error.
+- Repeated submission after the first validation result.
+
+The generated locator using `div.filter(...).nth(...)` is not selected because it depends on DOM structure and element order. The stable `[data-test="error"]` locator will be used instead.
+
+### Scope boundary
+
+This test verifies only validation for a missing Last Name.
+
+It does not verify:
+
+- Missing First Name validation.
+- Missing Postal Code validation.
+- Successful checkout form submission.
+- Cancel navigation.
+- Error dismissal.
+- Error icon styling or CSS appearance.
