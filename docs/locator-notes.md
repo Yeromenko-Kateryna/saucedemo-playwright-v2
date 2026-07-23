@@ -1081,3 +1081,72 @@ It does not verify:
 - Cancel navigation.
 - Error dismissal.
 - Error icon styling or CSS appearance.
+
+---
+
+## TC-CHK1-005 - Verify that user can continue with valid checkout information
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Checkout button | `[data-test="checkout"]` |
+| First Name field | `[data-test="firstName"]` |
+| Last Name field | `[data-test="lastName"]` |
+| Postal Code field | `[data-test="postalCode"]` |
+| Continue button | `[data-test="continue"]` |
+| Checkout Overview title | `[data-test="title"]` |
+| Validation error | `[data-test="error"]` |
+
+### Planned input data
+
+- First Name: `Katia`
+- Last Name: `Tester`
+- Postal Code: `12345`
+
+### Planned assertions
+
+- URL changes to `/checkout-step-two.html`.
+- Page title equals `Checkout: Overview`.
+- Validation error is not present.
+
+### Codegen cleanup decisions
+
+The following Codegen actions are not part of the final test:
+
+- Double-clicks and repeated clicks on input fields.
+- Caps Lock keyboard actions.
+- Intermediate username, password, first-name, last-name, and postal-code values.
+- Repeated checkout executions.
+- Clicking the Cancel button.
+- Clicking the Finish button.
+- Completing the order.
+- Generating and downloading the order PDF.
+- Returning to the Products Page.
+- Repeating product selection and checkout.
+- Clicking informational containers only to generate locators.
+
+Each input field will use one final `fill()` call with the intended value.
+
+The generated locator using `getByText('Payment Information:SauceCard')` is not selected because it depends on combined container text and is outside the scope of this test.
+
+### Scope boundary
+
+This test verifies only that valid checkout information allows the user to continue from Checkout Step One to Checkout Overview.
+
+It does not verify:
+
+- Product details on Checkout Overview.
+- Product quantity or price.
+- Payment Information content.
+- Shipping Information content.
+- Item total, tax, or total price.
+- Cancel navigation.
+- Finish order behavior.
+- Checkout completion.
+- PDF generation.
