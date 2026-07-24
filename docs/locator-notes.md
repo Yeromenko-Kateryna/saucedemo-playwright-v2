@@ -1533,3 +1533,70 @@ It does not verify:
 - The Back Home button behavior.
 - PDF generation or download.
 - Detailed Order Complete Page layout.
+
+---
+
+## TC-CHK2-005 - Verify that Cancel button returns user to Inventory Page
+
+### Test purpose
+
+Verify that clicking the `Cancel` button on Checkout Overview returns the user to the Inventory Page and preserves the existing cart state.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Cancel button | `[data-test="cancel"]` |
+| Inventory Page title | `[data-test="title"]` |
+| Inventory list | `[data-test="inventory-list"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Backpack Remove button | `[data-test="remove-sauce-labs-backpack"]` |
+
+### Planned assertions
+
+- URL changes from `/checkout-step-two.html` to `/inventory.html`.
+- Page title equals `Products`.
+- Inventory list is visible.
+- Cart badge still displays `1`.
+- `Sauce Labs Backpack` remains added to the cart.
+- The Backpack action button displays `Remove`.
+
+### Locator strategy
+
+The shared `openCheckoutOverview(page)` helper creates the required precondition:
+
+- user is logged in;
+- `Sauce Labs Backpack` is added;
+- valid checkout information is submitted;
+- Checkout Overview is opened.
+
+The feature-level test then performs only the action and assertions belonging to `TC-CHK2-005`.
+
+### Codegen cleanup decisions
+
+The stable `[data-test="cancel"]` locator is used for the Checkout Overview Cancel button.
+
+The following actions are excluded:
+
+- clicking product information or price summary elements;
+- clicking the `Finish` button;
+- completing the order;
+- opening the cart after returning;
+- removing or re-adding the product;
+- interacting with the sidebar menu.
+
+### Scope boundary
+
+This test verifies only that cancelling from Checkout Overview:
+
+- returns the user to the Inventory Page;
+- preserves the cart badge;
+- preserves the added-product state.
+
+It does not verify:
+
+- price calculations;
+- order completion;
+- product removal;
+- Cart Page navigation;
+- sidebar menu behavior.

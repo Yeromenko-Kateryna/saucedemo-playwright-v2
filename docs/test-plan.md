@@ -173,6 +173,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout overview display | Covered | Completed |
 | Checkout overview product details | Covered | Completed |
 | Checkout overview price details | Covered | Completed |
+| Checkout overview cancel navigation | Covered | Completed |
 | Complete order flow | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
 | Logout flow | Covered | Planned |
@@ -1055,7 +1056,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 33 of 41 planned test cases (80.5%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 34 of 41 planned test cases (82.9%). This count is based on the current Playwright spec files and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1067,18 +1068,18 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-CHK2-002 | Checkout Overview | Selected product name, quantity, description, price, and preserved cart badge |
 | TC-CHK2-003 | Checkout Overview | Product price, item subtotal, tax, total, and arithmetic consistency |
 | TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
+| TC-CHK2-005 | Checkout Overview | Cancel navigation to Inventory Page with preserved cart state |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-005 | Verifies Cancel navigation from Checkout Overview to Inventory Page |
+| TC-COMPLETE-001 | Verifies the Order Complete Page content |
 
 ### Later Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-COMPLETE-001 | Verifies the Order Complete Page content |
 | TC-COMPLETE-002 | Verifies Back Home navigation |
 | TC-MENU-001 - TC-MENU-005 | Verifies sidebar menu behavior |
 

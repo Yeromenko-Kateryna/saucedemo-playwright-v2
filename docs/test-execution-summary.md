@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 29 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 4 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 30 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 5 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1074,6 +1074,39 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 
 - This test verifies that clicking `Finish` completes the order and opens the Order Complete Page.
 - Detailed validation of the Order Complete Page belongs to `TC-COMPLETE-001`.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-CHK2-005 - Verify that Cancel button returns user to Inventory Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User proceeded through Checkout Step One with valid checkout information.
+- User reached `/checkout-step-two.html`.
+- Page title `Checkout: Overview` was displayed.
+- User clicked the `Cancel` button.
+- User was redirected to `/inventory.html`.
+- Page title `Products` was displayed.
+- Cart badge still displayed `1`.
+- `Sauce Labs Backpack` remained added to the cart.
+- The product action button displayed `Remove`.
+
+#### Observations
+
+- Cancel navigation from Checkout Overview returned the user directly to the Inventory Page.
+- The cart state was preserved after cancelling checkout.
+- The selected product remained in the added state.
 
 #### Possible Bugs
 

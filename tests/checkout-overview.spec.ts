@@ -84,3 +84,15 @@ test('TC-CHK2-004 - should complete the order after clicking Finish', async ({ p
   );
   await expect(page.locator('[data-test="error"]')).toHaveCount(0);
 });
+
+test('TC-CHK2-005 - should return to inventory when checkout is cancelled', async ({ page }) => {
+  await openCheckoutOverview(page);
+
+  await page.locator('[data-test="cancel"]').click();
+
+  await expect(page).toHaveURL(/\/inventory\.html$/);
+  await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+  await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+  await expect(page.locator('[data-test="remove-sauce-labs-backpack"]')).toHaveText('Remove');
+});
