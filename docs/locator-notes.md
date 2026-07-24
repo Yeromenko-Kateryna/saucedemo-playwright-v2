@@ -1156,6 +1156,84 @@ It does not verify:
 
 ---
 
+## TC-CHK1-006 - Verify that Cancel returns user to Cart Page
+
+### Test purpose
+
+Verify that clicking the `Cancel` button on Checkout Step One returns the user to the Cart Page and preserves the existing cart state.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Checkout button | `[data-test="checkout"]` |
+| Cancel button | `[data-test="cancel"]` |
+| Cart Page title | `[data-test="title"]` |
+| Cart item | `[data-test="inventory-item"]` |
+| Product name | `[data-test="inventory-item-name"]` |
+| Product quantity | `[data-test="item-quantity"]` |
+| Product price | `[data-test="inventory-item-price"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Continue Shopping button | `[data-test="continue-shopping"]` |
+| Checkout button on Cart Page | `[data-test="checkout"]` |
+
+### Planned assertions
+
+- URL changes from `/checkout-step-one.html` to `/cart.html`.
+- Page title equals `Your Cart`.
+- Exactly one cart item is displayed.
+- Product name equals `Sauce Labs Backpack`.
+- Product quantity equals `1`.
+- Product price equals `$29.99`.
+- Cart badge still displays `1`.
+- Continue Shopping button is visible.
+- Checkout button is visible.
+
+### Codegen cleanup decisions
+
+Playwright Codegen identified the Cancel button as `page.locator('[data-test="cancel"]')`.
+
+The following Codegen actions are not part of the final test:
+
+- Double-clicks on the login container and input fields.
+- Caps Lock keyboard actions.
+- Intermediate username and password values.
+- Repeated clicks on Checkout Step One form fields.
+- Clicks on the secondary header, checkout form, page title, and content containers.
+- Clicks on Cart Page labels and product text after returning.
+- Opening the Product Details Page after cancelling checkout.
+
+These actions were generated during locator exploration but do not belong to the scope of `TC-CHK1-006`.
+
+The selected Cancel locator uses the stable SauceDemo test attribute: `page.locator('[data-test="cancel"]')`.
+
+Because the project config defines `testIdAttribute: 'data-test'`, the equivalent helper-style locator is `page.getByTestId('cancel')`.
+
+The feature-level spec keeps `[data-test]` locator syntax to remain consistent with the existing `checkout-step-one.spec.ts` implementation.
+
+### Scope boundary
+
+This test verifies only that cancelling Checkout Step One:
+
+- returns the user to the Cart Page;
+- preserves the existing cart item;
+- preserves the cart badge count.
+
+It does not verify:
+
+- Checkout form validation.
+- Successful navigation to Checkout Overview.
+- Removing the product from the Cart Page.
+- Continuing shopping.
+- Completing the order.
+
+---
+
 ## TC-CHK2-004 - Verify that Finish button completes the order
 
 ### Selected locators

@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 25 documented manual cases: 13 Inventory, 6 Cart, 5 Checkout Step One, and 1 Checkout Overview case. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 26 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 1 Checkout Overview case. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -878,6 +878,47 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - Similar code-like content is used elsewhere in SauceDemo and is treated as demo data rather than a functional defect.
 - The checkout data entered on the previous page is not displayed on Checkout Overview.
 - This test verifies successful navigation only; detailed Checkout Overview validation is covered by separate test cases.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-CHK1-006 - Verify that Cancel returns user to Cart Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User opened the Cart Page.
+- User clicked the `Checkout` button.
+- Checkout Step One Page was opened.
+- URL contained `/checkout-step-one.html`.
+- Page title `Checkout: Your Information` was displayed.
+- User left the checkout information fields empty.
+- User clicked the `Cancel` button.
+- User was redirected to `/cart.html`.
+- Page title `Your Cart` was displayed.
+- `Sauce Labs Backpack` remained in the cart.
+- Product quantity remained `1`.
+- Product price `$29.99` was displayed.
+- Cart badge still displayed `1`.
+- `Continue Shopping` button was visible.
+- `Checkout` button was visible.
+
+#### Observations
+
+- Clicking `Cancel` returned the user from Checkout Step One to the Cart Page successfully.
+- The cart state was preserved after cancelling checkout.
+- `Sauce Labs Backpack` remained in the cart.
+- Cart badge still displayed `1`.
+- Checkout information fields did not need to be completed before using the `Cancel` button.
 
 #### Possible Bugs
 

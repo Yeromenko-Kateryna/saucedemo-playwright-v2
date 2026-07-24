@@ -169,7 +169,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Multiple products displayed on Cart Page | Covered | Completed |
 | Empty cart page validation | Covered | Completed |
 | Checkout Step One form display | Covered | Completed |
-| Checkout Step One validation and continuation | Covered | Completed |
+| Checkout Step One validation, continuation, and cancel navigation | Covered | Completed |
 | Checkout overview display and price details | Covered | Planned |
 | Complete order flow | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
@@ -1046,14 +1046,14 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 29 of 41 planned test cases (70.7%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 30 of 41 planned test cases (73.2%). This count is based on the current Playwright spec files and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
-| TC-CHK1-001 - TC-CHK1-005 | Checkout Step One | Initial form display, required-field validation, and successful continuation with valid checkout information |
+| TC-CHK1-001 - TC-CHK1-006 | Checkout Step One | Initial form display, required-field validation, successful continuation, and cancel navigation |
 | TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
 
 ### Next Automation Scope
@@ -1066,7 +1066,6 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK1-006 | Checkout cancel navigation |
 | TC-CHK2-001 - TC-CHK2-003 | Checkout overview checks |
 | TC-CHK2-005 | Checkout overview cancel navigation |
 | TC-COMPLETE-002 | Back Home navigation |

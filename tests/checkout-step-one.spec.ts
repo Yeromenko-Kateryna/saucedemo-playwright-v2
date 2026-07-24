@@ -83,3 +83,23 @@ test('TC-CHK1-005 - should continue with valid checkout information', async ({ p
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');
   await expect(page.locator('[data-test="error"]')).toHaveCount(0);
 });
+
+test('TC-CHK1-006 - should return to cart when checkout is cancelled', async ({ page }) => {
+  await openCheckoutStepOneWithBackpack(page);
+
+  await page.locator('[data-test="cancel"]').click();
+
+  const cartItem = page.locator('[data-test="inventory-item"]');
+
+  await expect(page).toHaveURL(/.*cart.html/);
+  await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
+  await expect(cartItem).toHaveCount(1);
+  await expect(cartItem.locator('[data-test="inventory-item-name"]')).toHaveText(
+    'Sauce Labs Backpack',
+  );
+  await expect(cartItem.locator('[data-test="item-quantity"]')).toHaveText('1');
+  await expect(cartItem.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99');
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+  await expect(page.locator('[data-test="continue-shopping"]')).toBeVisible();
+  await expect(page.locator('[data-test="checkout"]')).toBeVisible();
+});
