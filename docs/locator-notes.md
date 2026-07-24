@@ -1234,6 +1234,93 @@ It does not verify:
 
 ---
 
+## TC-CHK2-001 - Verify that Checkout Overview is displayed
+
+### Test purpose
+
+Verify that Checkout Overview opens after submitting valid checkout information and displays its main informational sections and navigation controls.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Page title | `[data-test="title"]` |
+| Payment Information label | `[data-test="payment-info-label"]` |
+| Shipping Information label | `[data-test="shipping-info-label"]` |
+| Price Total label | `[data-test="total-info-label"]` |
+| Cancel button | `[data-test="cancel"]` |
+| Finish button | `[data-test="finish"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Validation error | `[data-test="error"]` |
+
+### Planned assertions
+
+- URL contains `/checkout-step-two.html`.
+- Page title equals `Checkout: Overview`.
+- Payment Information label equals `Payment Information:`.
+- Shipping Information label equals `Shipping Information:`.
+- Price Total label equals `Price Total`.
+- Cancel button is visible.
+- Finish button is visible.
+- Cart badge displays `1`.
+- Validation error is not present.
+
+### Codegen cleanup decisions
+
+Playwright Codegen identified stable `data-test` locators for the Checkout Overview sections and controls.
+
+The following Codegen actions are not part of the final test:
+
+- Caps Lock keyboard actions.
+- Intermediate username, password, first-name, and last-name values.
+- Double-clicks and repeated clicks on input fields.
+- Clicking the error-message container before submitting the form.
+- Clicking cart column labels and content containers.
+- Clicking product description, quantity, price, and product card elements.
+- Opening the Product Details Page.
+- Repeating the checkout flow.
+- Clicking Finish and completing the order.
+- Returning to the Inventory Page.
+- Repeating product selection and checkout.
+- Clicking Cancel and exploring Inventory Page elements afterward.
+
+The generated locator:
+
+`page.getByText('CancelFinish')`
+
+is not selected because it combines the text of two separate buttons. Stable individual locators are available:
+
+- `[data-test="cancel"]`
+- `[data-test="finish"]`
+
+Product information locators are excluded because product validation belongs to `TC-CHK2-002`.
+
+Price calculation locators are excluded because subtotal, tax, and total validation belongs to `TC-CHK2-003`.
+
+### Scope boundary
+
+This test verifies only that Checkout Overview:
+
+- opens successfully;
+- displays its main informational section labels;
+- displays the Cancel and Finish buttons;
+- preserves the cart badge;
+- does not display a validation error.
+
+It does not verify:
+
+- Selected product details.
+- Product quantity or price.
+- Payment Information value.
+- Shipping Information value.
+- Item subtotal.
+- Tax calculation.
+- Total calculation.
+- Cancel navigation.
+- Finish order behavior.
+
+---
+
 ## TC-CHK2-004 - Verify that Finish button completes the order
 
 ### Selected locators
