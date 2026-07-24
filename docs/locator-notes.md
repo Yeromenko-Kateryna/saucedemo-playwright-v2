@@ -1321,6 +1321,87 @@ It does not verify:
 
 ---
 
+## TC-CHK2-002 - Verify that selected product is displayed on Checkout Overview
+
+### Test purpose
+
+Verify that the product selected on the Inventory Page is preserved and displayed correctly on Checkout Overview.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Cart item | `[data-test="inventory-item"]` |
+| Product quantity | `[data-test="item-quantity"]` |
+| Product name | `[data-test="inventory-item-name"]` |
+| Product description | `[data-test="inventory-item-desc"]` |
+| Product price | `[data-test="inventory-item-price"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+
+### Planned assertions
+
+- Exactly one cart item is displayed.
+- Product quantity equals `1`.
+- Product name equals `Sauce Labs Backpack`.
+- Product description is visible and is not empty.
+- Product price equals `$29.99`.
+- Cart badge still displays `1`.
+
+### Scoped locator strategy
+
+The test first locates the product container displayed on Checkout Overview:
+
+`const overviewItem = page.locator('[data-test="inventory-item"]');`
+
+Product quantity, name, description, and price are asserted inside this container:
+
+- `overviewItem.locator('[data-test="item-quantity"]')`
+- `overviewItem.locator('[data-test="inventory-item-name"]')`
+- `overviewItem.locator('[data-test="inventory-item-desc"]')`
+- `overviewItem.locator('[data-test="inventory-item-price"]')`
+
+This confirms that all displayed values belong to the same selected product instead of checking unrelated global element collections.
+
+### Codegen cleanup decisions
+
+Playwright Codegen identified stable `data-test` locators for the product container and its fields.
+
+The following Codegen actions are not part of the final test:
+
+- Caps Lock keyboard actions.
+- Intermediate username, password, first-name, and last-name values.
+- Double-clicks and repeated clicks on input fields.
+- Clicking the error-message container.
+- Clicking cart column labels and page containers.
+- Clicking the product container, quantity, description, and price only to generate locators.
+- Opening the Product Details Page from Checkout Overview.
+- Repeating the checkout flow.
+- Clicking Cancel or Finish.
+- Completing the order or returning to the Inventory Page.
+
+The generated structural price locator `page.locator('div').filter({ hasText: /^\$29\.99$/ }).first()` is not selected because it depends on page structure and text filtering.
+
+The stable product price locator `[data-test="inventory-item-price"]` is used instead.
+
+Price summary locators such as `[data-test="subtotal-label"]`, `[data-test="tax-label"]`, and `[data-test="total-label"]` are excluded because calculation validation belongs to `TC-CHK2-003`.
+
+### Scope boundary
+
+This test verifies only that the selected product is displayed correctly on Checkout Overview.
+
+It does not verify:
+
+- Checkout Overview informational sections.
+- Payment Information value.
+- Shipping Information value.
+- Item subtotal.
+- Tax calculation.
+- Total calculation.
+- Cancel navigation.
+- Finish order behavior.
+
+---
+
 ## TC-CHK2-004 - Verify that Finish button completes the order
 
 ### Selected locators

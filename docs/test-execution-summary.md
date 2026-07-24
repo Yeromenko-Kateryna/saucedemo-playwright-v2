@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 27 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 2 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 28 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 3 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -961,6 +961,46 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - The page displayed the main order summary sections and navigation controls.
 - Product information and price calculations were visible but are validated separately in `TC-CHK2-002` and `TC-CHK2-003`.
 - The checkout information entered on Checkout Step One was not displayed on Checkout Overview.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-CHK2-002 - Verify that selected product is displayed on Checkout Overview
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- Cart badge displayed `1`.
+- User opened the Cart Page.
+- User clicked the `Checkout` button.
+- User entered `Katia` in the `First Name` field.
+- User entered `Tester` in the `Last Name` field.
+- User entered `12345` in the `Zip/Postal Code` field.
+- User clicked the `Continue` button.
+- User was redirected to `/checkout-step-two.html`.
+- Page title `Checkout: Overview` was displayed.
+- Exactly one product was displayed.
+- Product name `Sauce Labs Backpack` was displayed.
+- Product quantity was `1`.
+- Product description was displayed.
+- Product price `$29.99` was displayed.
+- Cart badge still displayed `1`.
+
+#### Observations
+
+- The selected product was preserved throughout the checkout flow.
+- Product name, quantity, description, and price matched the product added on the Inventory Page.
+- The product description begins with code-like demo text: `carry.allTheThings()`.
+- Similar code-like content is used elsewhere in SauceDemo and is treated as demo data rather than a functional defect.
+- Price summary calculations are validated separately in `TC-CHK2-003`.
 
 #### Possible Bugs
 

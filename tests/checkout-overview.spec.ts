@@ -19,6 +19,25 @@ test('TC-CHK2-001 - should display checkout overview correctly', async ({ page }
   await expect(page.locator('[data-test="error"]')).toHaveCount(0);
 });
 
+test('TC-CHK2-002 - should display selected product on checkout overview', async ({ page }) => {
+  await openCheckoutOverview(page);
+
+  const overviewItem = page.locator('[data-test="inventory-item"]');
+  const productDescription = overviewItem.locator('[data-test="inventory-item-desc"]');
+
+  await expect(overviewItem).toHaveCount(1);
+  await expect(overviewItem.locator('[data-test="item-quantity"]')).toHaveText('1');
+  await expect(overviewItem.locator('[data-test="inventory-item-name"]')).toHaveText(
+    'Sauce Labs Backpack',
+  );
+  await expect(productDescription).toBeVisible();
+  await expect(productDescription).not.toHaveText('');
+  await expect(overviewItem.locator('[data-test="inventory-item-price"]')).toHaveText(
+    '$29.99',
+  );
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+});
+
 test('TC-CHK2-004 - should complete the order after clicking Finish', async ({ page }) => {
   await openCheckoutOverview(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');

@@ -171,7 +171,8 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout Step One form display | Covered | Completed |
 | Checkout Step One validation, continuation, and cancel navigation | Covered | Completed |
 | Checkout overview display | Covered | Completed |
-| Checkout overview product and price details | Covered | Planned |
+| Checkout overview product details | Covered | Completed |
+| Checkout overview price details | Covered | Planned |
 | Complete order flow | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
 | Logout flow | Covered | Planned |
@@ -1047,7 +1048,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 31 of 41 planned test cases (75.6%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 32 of 41 planned test cases (78.0%). This count is based on the current Playwright spec files and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1056,19 +1057,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
 | TC-CHK1-001 - TC-CHK1-006 | Checkout Step One | Initial form display, required-field validation, successful continuation, and cancel navigation |
 | TC-CHK2-001 | Checkout Overview | Basic overview page display, informational section labels, navigation controls, and cart badge |
+| TC-CHK2-002 | Checkout Overview | Selected product name, quantity, description, price, and preserved cart badge |
 | TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-002 | Verifies that the selected product is displayed correctly on Checkout Overview |
+| TC-CHK2-003 | Verifies item subtotal, tax, and total price calculations |
 
 ### Later Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-003 | Verifies item subtotal, tax, and total price calculations |
 | TC-CHK2-005 | Verifies Cancel navigation from Checkout Overview to Inventory Page |
 | TC-COMPLETE-001 | Verifies the Order Complete Page content |
 | TC-COMPLETE-002 | Verifies Back Home navigation |
