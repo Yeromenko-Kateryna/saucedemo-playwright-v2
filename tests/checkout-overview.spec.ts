@@ -38,6 +38,38 @@ test('TC-CHK2-002 - should display selected product on checkout overview', async
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 });
 
+test('TC-CHK2-003 - should calculate checkout price summary correctly', async ({ page }) => {
+  await openCheckoutOverview(page);
+
+  const productPrice = page.locator('[data-test="inventory-item-price"]');
+  const itemTotal = page.locator('[data-test="subtotal-label"]');
+  const tax = page.locator('[data-test="tax-label"]');
+  const total = page.locator('[data-test="total-label"]');
+
+  await expect(productPrice).toHaveText('$29.99');
+  await expect(itemTotal).toHaveText('Item total: $29.99');
+  await expect(tax).toHaveText('Tax: $2.40');
+  await expect(total).toHaveText('Total: $32.39');
+
+  const parseMoneyToCents = (text: string) => {
+    const match = text.match(/\$(\d+)\.(\d{2})$/);
+
+    if (!match) {
+      throw new Error(`Could not parse monetary value from: ${text}`);
+    }
+
+    return Number(match[1]) * 100 + Number(match[2]);
+  };
+
+  const productPriceCents = parseMoneyToCents(await productPrice.innerText());
+  const itemTotalCents = parseMoneyToCents(await itemTotal.innerText());
+  const taxCents = parseMoneyToCents(await tax.innerText());
+  const totalCents = parseMoneyToCents(await total.innerText());
+
+  expect(itemTotalCents).toBe(productPriceCents);
+  expect(totalCents).toBe(itemTotalCents + taxCents);
+});
+
 test('TC-CHK2-004 - should complete the order after clicking Finish', async ({ page }) => {
   await openCheckoutOverview(page);
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');

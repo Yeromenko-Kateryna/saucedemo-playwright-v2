@@ -2,7 +2,7 @@
 
 ## Document Purpose
 
-This document contains locator notes for the automated SauceDemo QA Automation portfolio tests.
+This document contains locator notes for selected automated SauceDemo QA Automation portfolio tests.
 
 The goal is to document why specific locators were selected in the final Playwright implementation.
 
@@ -1398,6 +1398,75 @@ It does not verify:
 - Tax calculation.
 - Total calculation.
 - Cancel navigation.
+- Finish order behavior.
+
+---
+
+## TC-CHK2-003 - Verify price summary calculations
+
+### Test purpose
+
+Verify that the item subtotal, tax, and total displayed on Checkout Overview are correct and arithmetically consistent.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Product price | `[data-test="inventory-item-price"]` |
+| Item total | `[data-test="subtotal-label"]` |
+| Tax | `[data-test="tax-label"]` |
+| Total | `[data-test="total-label"]` |
+
+### Planned assertions
+
+- Product price displays `$29.99`.
+- Item total displays `Item total: $29.99`.
+- Tax displays `Tax: $2.40`.
+- Total displays `Total: $32.39`.
+- Item total equals the displayed product price.
+- Total equals item total plus tax.
+
+### Monetary calculation strategy
+
+The displayed text values contain labels and currency symbols, so the test extracts each monetary amount and converts it to integer cents.
+
+Example conversions:
+
+- `$29.99` becomes `2999`.
+- `Item total: $29.99` becomes `2999`.
+- `Tax: $2.40` becomes `240`.
+- `Total: $32.39` becomes `3239`.
+
+The final calculation is performed using integers:
+
+`2999 + 240 = 3239`
+
+Using cents avoids floating-point precision issues that can occur when monetary values are calculated as decimal JavaScript numbers.
+
+### Codegen cleanup decisions
+
+Stable `data-test` locators are available for all required monetary values.
+
+Structural or text-filtering locators are not selected because they depend on page layout or combined visible text.
+
+The test does not click `Cancel` or `Finish` because navigation and order completion belong to separate test cases.
+
+### Scope boundary
+
+This test verifies only:
+
+- displayed product price;
+- item subtotal;
+- tax;
+- total;
+- arithmetic consistency between those values.
+
+It does not verify:
+
+- product name, description, or quantity;
+- payment information;
+- shipping information;
+- Cancel navigation;
 - Finish order behavior.
 
 ---

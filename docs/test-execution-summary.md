@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 28 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 3 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 29 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 4 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1001,6 +1001,38 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - The product description begins with code-like demo text: `carry.allTheThings()`.
 - Similar code-like content is used elsewhere in SauceDemo and is treated as demo data rather than a functional defect.
 - Price summary calculations are validated separately in `TC-CHK2-003`.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-CHK2-003 - Verify price summary calculations
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- User proceeded through Checkout Step One with valid checkout information.
+- User was redirected to `/checkout-step-two.html`.
+- Product price displayed `$29.99`.
+- Item total displayed `$29.99`.
+- Tax displayed `$2.40`.
+- Total displayed `$32.39`.
+- Item total matched the selected product price.
+- Total matched the sum of item total and tax: `$29.99 + $2.40 = $32.39`.
+
+#### Observations
+
+- The price summary was displayed correctly.
+- All monetary values were displayed with two decimal places.
+- The displayed total was arithmetically correct.
+- The manual result matches the expected calculation defined in `TC-CHK2-003`.
 
 #### Possible Bugs
 

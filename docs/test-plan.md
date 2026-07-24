@@ -172,7 +172,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout Step One validation, continuation, and cancel navigation | Covered | Completed |
 | Checkout overview display | Covered | Completed |
 | Checkout overview product details | Covered | Completed |
-| Checkout overview price details | Covered | Planned |
+| Checkout overview price details | Covered | Completed |
 | Complete order flow | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
 | Logout flow | Covered | Planned |
@@ -828,7 +828,6 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 #### Expected Result
 
 * Page title `Checkout: Overview` is visible.
-* Cart item is visible.
 * Payment information is visible.
 * Shipping information is visible.
 * Price total section is visible.
@@ -849,28 +848,36 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 #### Expected Result
 
-* Selected product name is visible.
-* Product price is visible.
-* Product quantity is visible.
+* Exactly one selected product is displayed.
+* Selected product name, description, price, and quantity are visible.
+* Cart badge preserves the value `1`.
 
-### TC-CHK2-003 - Verify that price summary is displayed
+### TC-CHK2-003 - Verify price summary calculations
 
 * **Priority:** Medium
-* **Type:** UI / Functional
+* **Type:** UI / Functional / Calculation
 
 #### Preconditions
 
 * User is on Checkout Overview.
+* `Sauce Labs Backpack` is displayed with a price of `$29.99`.
+* Product quantity is `1`.
 
 #### Steps
 
-1. Check the price summary section.
+1. Check the `Item total` value.
+2. Check the `Tax` value.
+3. Check the `Total` value.
+4. Compare the item total with the displayed product price.
+5. Verify that the total equals the item total plus tax.
 
 #### Expected Result
 
-* Item total is visible.
-* Tax is visible.
-* Total price is visible.
+* Item total displays `$29.99`.
+* Item total equals the price of the selected product.
+* Tax displays `$2.40`.
+* Total displays `$32.39`.
+* Total equals item total plus tax: `$29.99 + $2.40 = $32.39`.
 
 ### TC-CHK2-004 - Verify that Finish button completes the order
 
@@ -1048,7 +1055,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 32 of 41 planned test cases (78.0%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 33 of 41 planned test cases (80.5%). This count is based on the current Playwright spec files and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1058,19 +1065,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-CHK1-001 - TC-CHK1-006 | Checkout Step One | Initial form display, required-field validation, successful continuation, and cancel navigation |
 | TC-CHK2-001 | Checkout Overview | Basic overview page display, informational section labels, navigation controls, and cart badge |
 | TC-CHK2-002 | Checkout Overview | Selected product name, quantity, description, price, and preserved cart badge |
+| TC-CHK2-003 | Checkout Overview | Product price, item subtotal, tax, total, and arithmetic consistency |
 | TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-003 | Verifies item subtotal, tax, and total price calculations |
+| TC-CHK2-005 | Verifies Cancel navigation from Checkout Overview to Inventory Page |
 
 ### Later Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-CHK2-005 | Verifies Cancel navigation from Checkout Overview to Inventory Page |
 | TC-COMPLETE-001 | Verifies the Order Complete Page content |
 | TC-COMPLETE-002 | Verifies Back Home navigation |
 | TC-MENU-001 - TC-MENU-005 | Verifies sidebar menu behavior |
