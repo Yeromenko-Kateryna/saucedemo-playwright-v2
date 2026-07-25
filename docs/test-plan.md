@@ -6,7 +6,7 @@ This document describes planned manual and automated checks for the SauceDemo QA
 
 The goal is to define what should be tested across the main SauceDemo user journey before selecting and implementing test cases for Playwright automation.
 
-This test plan was created based on manual exploration, technical exploration with Playwright Codegen, and completed Login Page, Inventory Page, and Cart Page automation.
+This test plan was created incrementally from manual exploration, technical exploration with Playwright Codegen, and implemented UI automation.
 
 This document describes planned checks, not completed execution results. Test execution status should be tracked separately in Playwright reports or manual test execution notes.
 
@@ -95,13 +95,13 @@ The following areas are not included in the current automation scope, but can be
 | --- | ---: | --- |
 | Login Page | 4 | High |
 | Inventory Page | 13 | High / Medium |
-| Cart Page | 6 | High / Medium |
+| Cart Page | 7 | High / Medium |
 | Checkout Step One | 6 | High / Medium |
 | Checkout Overview | 5 | High / Medium |
 | Order Complete Page | 2 | High / Medium |
 | Sidebar Menu and Navigation | 5 | High / Medium / Low |
 
-**Total planned test cases:** 41
+**Total planned test cases:** 42
 
 ---
 
@@ -123,7 +123,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 ### Current Automation Approach
 
 * Keep test files simple and feature-based.
-* Use separate feature-based spec files for Login, Inventory, Cart, and Checkout tests.
+* Use separate feature-based spec files for Login, Inventory, Cart, Checkout, and Order Complete tests.
 * Start with direct Playwright locators.
 * Keep shared workflow setup in `tests/saucedemo-test-helpers.ts` when it is reused across multiple test files.
 * Add Page Object Model later if the test suite grows enough to justify it.
@@ -134,7 +134,8 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * `tests/inventory-page.spec.ts` - Inventory Page and Product Details tests.
 * `tests/cart-page.spec.ts` - Cart Page tests.
 * `tests/checkout-step-one.spec.ts` - Checkout information form and required-field validation tests.
-* `tests/checkout-overview.spec.ts` - Checkout completion test.
+* `tests/checkout-overview.spec.ts` - Checkout Overview display, product, price-summary, completion, and cancel-navigation tests.
+* `tests/order-complete.spec.ts` - Order confirmation content and Back Home navigation tests.
 * `tests/saucedemo-test-helpers.ts` - shared test data and reusable workflow helpers.
 * `docs/` - test planning and QA documentation.
 * `playwright-report/` - locally generated test execution reports, not committed to the repository.
@@ -168,6 +169,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout entry navigation | Covered | Completed |
 | Multiple products displayed on Cart Page | Covered | Completed |
 | Empty cart page validation | Covered | Completed |
+| Empty-cart checkout prevention | Covered | Completed as known defect |
 | Checkout Step One form display | Covered | Completed |
 | Checkout Step One validation, continuation, and cancel navigation | Covered | Completed |
 | Checkout overview display | Covered | Completed |
@@ -685,6 +687,52 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * `Continue Shopping` button is visible.
 * `Checkout` button is visible.
 
+### TC-CART-007 - Verify that checkout cannot be completed with an empty cart
+
+* **Priority:** High
+* **Type:** Negative / Business Rule / End-to-end
+* **Related bug:** BUG-CART-001
+
+#### Preconditions
+
+* User is logged in as `standard_user`.
+* Cart contains no products.
+* Cart badge is not displayed.
+* User is on the Cart Page.
+
+#### Steps
+
+1. Confirm that no cart items are displayed.
+2. Click the `Checkout` button.
+3. If Checkout Step One opens, enter valid checkout information.
+4. Click `Continue`.
+5. If Checkout Overview opens, review the product list and totals.
+6. Click `Finish`, if the button is available.
+
+#### Expected Result
+
+* The application prevents checkout of an empty cart.
+* User cannot successfully complete an order containing no products.
+* The Order Complete Page is not displayed.
+* A clear validation message is displayed, or the relevant checkout action is disabled.
+
+#### Actual Result
+
+* Checkout Step One opens with an empty cart.
+* User can continue to Checkout Overview.
+* No products are displayed on Checkout Overview.
+* Item total is `$0`.
+* Tax is `$0.00`.
+* Total is `$0.00`.
+* The `Finish` button is enabled.
+* User can complete the order.
+* The Order Complete Page displays `Thank you for your order!`.
+
+#### Manual Execution Status
+
+* **Status:** Failed
+* **Defect:** BUG-CART-001
+
 ## 6.4 Checkout Step One
 
 ### TC-CHK1-001 - Verify that Checkout Step One form is displayed
@@ -1058,13 +1106,14 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 36 of 41 planned test cases (87.8%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 37 of 42 planned test cases (88.1%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
 | TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
+| TC-CART-007 | Cart / Checkout | Empty-cart checkout prevention, automated as a known expected failure for `BUG-CART-001` |
 | TC-CHK1-001 - TC-CHK1-006 | Checkout Step One | Initial form display, required-field validation, successful continuation, and cancel navigation |
 | TC-CHK2-001 | Checkout Overview | Basic overview page display, informational section labels, navigation controls, and cart badge |
 | TC-CHK2-002 | Checkout Overview | Selected product name, quantity, description, price, and preserved cart badge |
@@ -1138,7 +1187,8 @@ AI outputs should be validated manually before being added to the test suite, do
 | Inventory Page automation | Completed |
 | Cart Page automation | Completed |
 | Checkout Step One automation | Completed |
-| Checkout Overview and Order Complete automation | In Progress |
+| Checkout Overview automation | Completed |
+| Order Complete automation | Completed |
 | Menu navigation automation | Planned |
 
 ---

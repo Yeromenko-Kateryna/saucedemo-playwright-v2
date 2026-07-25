@@ -814,6 +814,88 @@ Actual cross-browser stability must be confirmed by running the test in Chromium
 
 ---
 
+## TC-CART-007 - Verify that checkout cannot be completed with an empty cart
+
+### Related defect
+
+- `BUG-CART-001` — User can complete checkout with an empty cart.
+
+### Test purpose
+
+Verify the business rule that checkout cannot be completed when the cart contains no products.
+
+The current application violates this rule and allows the user to complete an empty order.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Cart link | `[data-test="shopping-cart-link"]` |
+| Cart items | `[data-test="inventory-item"]` |
+| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Checkout button | `[data-test="checkout"]` |
+| First name field | `[data-test="firstName"]` |
+| Last name field | `[data-test="lastName"]` |
+| Postal code field | `[data-test="postalCode"]` |
+| Continue button | `[data-test="continue"]` |
+| Overview items | `[data-test="inventory-item"]` |
+| Item total | `[data-test="subtotal-label"]` |
+| Tax | `[data-test="tax-label"]` |
+| Total | `[data-test="total-label"]` |
+| Finish button | `[data-test="finish"]` |
+| Complete Page title | `[data-test="title"]` |
+| Success heading | `[data-test="complete-header"]` |
+
+### Required business-rule assertions
+
+A valid implementation must prevent the empty order before successful completion.
+
+The intended automated test should verify that:
+
+- the application does not allow the user to complete checkout with zero cart items;
+- `/checkout-complete.html` is not reached;
+- the success heading is not displayed;
+- a relevant action is disabled or a clear validation error is displayed.
+
+### Current defective behavior
+
+Manual testing confirmed that:
+
+- the Checkout button is enabled on an empty Cart Page;
+- Checkout Step One opens;
+- valid customer information can be submitted;
+- Checkout Overview contains zero products;
+- totals are `$0`, `$0.00`, and `$0.00`;
+- Finish is enabled;
+- the Order Complete Page is displayed;
+- `Thank you for your order!` is shown.
+
+### Known-defect automation strategy
+
+The automated test should assert the intended business rule rather than permanently accepting the defective behavior.
+
+Until `BUG-CART-001` is fixed, the Playwright test should be marked as an expected failure with the bug ID and reason.
+
+This preserves three important properties:
+
+- the complete regression run remains usable;
+- the known defect stays visible in the automated suite;
+- when the product behavior is fixed, the unexpected pass signals that the annotation can be removed.
+
+### Scope boundary
+
+This test verifies only the empty-cart checkout business rule.
+
+It does not verify:
+
+- the standard checkout flow with products;
+- required-field validation;
+- price calculations for a populated cart;
+- Back Home navigation;
+- sidebar menu behavior.
+
+---
+
 ## TC-CHK1-001 - Checkout Step One form display
 
 ### Test purpose

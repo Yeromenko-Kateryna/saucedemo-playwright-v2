@@ -150,3 +150,54 @@ test('TC-CART-006 - should display empty cart page correctly', async ({ page }) 
   await expect(page.locator('[data-test="continue-shopping"]')).toBeVisible();
   await expect(page.locator('[data-test="checkout"]')).toBeVisible();
 });
+
+test('TC-CART-007 - should prevent checkout with an empty cart', async ({ page }) => {
+  test.fail(true, 'BUG-CART-001: User can complete checkout with an empty cart');
+
+  await loginAsStandardUser(page);
+  await openCart(page);
+
+  await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(0);
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
+
+  const checkoutButton = page.locator('[data-test="checkout"]');
+
+  if (await checkoutButton.isDisabled()) {
+    await expect(checkoutButton).toBeDisabled();
+    return;
+  }
+
+  await checkoutButton.click();
+
+  if (!page.url().endsWith('/checkout-step-one.html')) {
+    await expect(page).not.toHaveURL(/\/checkout-complete\.html$/);
+    return;
+  }
+
+  await page.locator('[data-test="firstName"]').fill('Katia');
+  await page.locator('[data-test="lastName"]').fill('Tester');
+  await page.locator('[data-test="postalCode"]').fill('12345');
+  await page.locator('[data-test="continue"]').click();
+
+  if (!page.url().endsWith('/checkout-step-two.html')) {
+    await expect(page).not.toHaveURL(/\/checkout-complete\.html$/);
+    return;
+  }
+
+  await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(0);
+  await expect(page.locator('[data-test="subtotal-label"]')).toHaveText('Item total: $0');
+  await expect(page.locator('[data-test="tax-label"]')).toHaveText('Tax: $0.00');
+  await expect(page.locator('[data-test="total-label"]')).toHaveText('Total: $0.00');
+
+  const finishButton = page.locator('[data-test="finish"]');
+
+  if (await finishButton.isDisabled()) {
+    await expect(finishButton).toBeDisabled();
+    return;
+  }
+
+  await finishButton.click();
+
+  await expect(page).not.toHaveURL(/\/checkout-complete\.html$/);
+  await expect(page.locator('[data-test="complete-header"]')).toHaveCount(0);
+});

@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 32 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, 5 Checkout Overview, and 2 Order Complete cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 33 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, and 2 Order Complete cases. Of these cases, 32 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -677,6 +677,54 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 #### Possible Bugs
 
 - None found for this test case.
+
+
+---
+
+### TC-CART-007 - Verify that checkout cannot be completed with an empty cart
+
+- **Execution type:** Manual / Exploratory
+- **Status:** Failed
+- **Automation decision:** Automated as known expected failure
+- **Related defect:** BUG-CART-001
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Cart Page with no products added.
+- No cart items were displayed.
+- Cart badge was not displayed.
+- The `Checkout` button was enabled.
+- User clicked `Checkout`.
+- Checkout Step One opened successfully.
+- User entered valid checkout information.
+- User clicked `Continue`.
+- Checkout Overview opened with no products.
+- Item total was displayed as `$0`.
+- Tax was displayed as `$0.00`.
+- Total was displayed as `$0.00`.
+- The `Finish` button was enabled.
+- User clicked `Finish`.
+- User was redirected to `/checkout-complete.html`.
+- Page title `Checkout: Complete!` was displayed.
+- Success heading `Thank you for your order!` was displayed.
+
+#### Expected Result
+
+- The application prevents checkout of an empty cart.
+- User cannot complete an order containing no products.
+- A validation message is displayed or the relevant checkout action is disabled.
+- The Order Complete Page is not displayed.
+
+#### Observations
+
+- No validation was applied on the Cart Page, Checkout Step One, or Checkout Overview.
+- The application accepted an empty order with a total value of `$0.00`.
+- The issue was reproduced through the complete checkout flow.
+
+#### Possible Bugs
+
+- `BUG-CART-001` — User can complete checkout with an empty cart.
 
 ---
 
