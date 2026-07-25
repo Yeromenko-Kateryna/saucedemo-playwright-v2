@@ -1809,3 +1809,77 @@ It does not verify:
 - cart-state reset;
 - adding another product;
 - sidebar menu behavior.
+
+---
+
+## TC-MENU-001 - Verify that sidebar menu opens
+
+### Test purpose
+
+Verify that clicking the menu button opens the sidebar and displays the expected navigation items.
+
+### Confirmed locators
+
+| Element | Locator |
+|---|---|
+| Menu button | `getByRole('button', { name: 'Open Menu' })` |
+| All Items link | `[data-test="inventory-sidebar-link"]` |
+| About link | `[data-test="about-sidebar-link"]` |
+| Logout link | `[data-test="logout-sidebar-link"]` |
+| Reset App State link | `[data-test="reset-sidebar-link"]` |
+
+### Planned assertions
+
+- After clicking the `Open Menu` button, `All Items` is visible.
+- `About` is visible.
+- `Logout` is visible.
+- `Reset App State` is visible.
+
+### Locator strategy
+
+The test logs in as `standard_user` and opens the Inventory Page.
+
+The menu button is located by its accessible role and name:
+
+`getByRole('button', { name: 'Open Menu' })`
+
+The menu items use stable `data-test` attributes confirmed during Playwright Codegen exploration.
+
+The opened state is verified through the visibility of the expected menu items. No assumption is made about the sidebar container, its CSS classes, `aria-hidden` state, or the close-button locator.
+
+### Codegen cleanup decisions
+
+The recorded Codegen flow contained actions belonging to several different test cases:
+
+- clicking `All Items`;
+- clicking `About`;
+- clicking `Reset App State`;
+- clicking `Logout`.
+
+These navigation actions are excluded from `TC-MENU-001`, because this case verifies only that the sidebar opens and its menu items become visible.
+
+The following Codegen noise is also excluded:
+
+- repeated partial username fills;
+- repeated partial password fills;
+- `dblclick()`;
+- `CapsLock` and `Shift+CapsLock` key presses;
+- clicking the Inventory Page title.
+
+### Scope boundary
+
+This test verifies only:
+
+- clicking the `Open Menu` button;
+- visibility of `All Items`;
+- visibility of `About`;
+- visibility of `Logout`;
+- visibility of `Reset App State`.
+
+It does not verify:
+
+- closing the sidebar;
+- navigation through `All Items`;
+- external navigation through `About`;
+- logout behavior;
+- Reset App State behavior.
