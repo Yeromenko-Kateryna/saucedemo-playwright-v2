@@ -1600,3 +1600,69 @@ It does not verify:
 - product removal;
 - Cart Page navigation;
 - sidebar menu behavior.
+
+---
+
+## TC-COMPLETE-001 - Verify that order completion message is displayed
+
+### Test purpose
+
+Verify that completing checkout opens the Order Complete Page and displays the expected confirmation content and navigation control.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Finish button | `[data-test="finish"]` |
+| Page title | `[data-test="title"]` |
+| Success heading | `[data-test="complete-header"]` |
+| Success message | `[data-test="complete-text"]` |
+| Back Home button | `[data-test="back-to-products"]` |
+
+### Planned assertions
+
+- URL changes from `/checkout-step-two.html` to `/checkout-complete.html`.
+- Page title equals `Checkout: Complete!`.
+- Success heading equals `Thank you for your order!`.
+- Success message equals `Your order has been dispatched, and will arrive just as fast as the pony can get there!`.
+- `Back Home` button is visible.
+
+### Locator strategy
+
+The shared `openCheckoutOverview(page)` helper creates the required precondition:
+
+- user is logged in;
+- `Sauce Labs Backpack` is added to the cart;
+- valid checkout information is submitted;
+- Checkout Overview is opened.
+
+The feature-level test then clicks `Finish` and verifies only the Order Complete Page content belonging to `TC-COMPLETE-001`.
+
+### Codegen cleanup decisions
+
+Stable `data-test` attributes are used for all interactive and informational elements.
+
+The following actions are excluded:
+
+- clicking the `Back Home` button;
+- clicking the `Generate PDF order` button;
+- opening the sidebar menu;
+- navigating to the cart;
+- starting another checkout flow.
+
+### Scope boundary
+
+This test verifies only:
+
+- successful navigation to the Order Complete Page;
+- page title;
+- success heading;
+- success message;
+- visibility of the `Back Home` button.
+
+It does not verify:
+
+- `Back Home` navigation;
+- PDF generation;
+- cart state after completion;
+- sidebar menu behavior.

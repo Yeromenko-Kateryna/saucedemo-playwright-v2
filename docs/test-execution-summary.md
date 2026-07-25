@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 30 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, and 5 Checkout Overview cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 31 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, 5 Checkout Overview, and 1 Order Complete case. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1107,6 +1107,38 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - Cancel navigation from Checkout Overview returned the user directly to the Inventory Page.
 - The cart state was preserved after cancelling checkout.
 - The selected product remained in the added state.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+## Manual Test Run - Order Complete Page
+
+### TC-COMPLETE-001 - Verify that order completion message is displayed
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User added `Sauce Labs Backpack` to the cart.
+- User completed Checkout Step One with valid information.
+- User reached Checkout Overview.
+- User clicked the `Finish` button.
+- User was redirected to `/checkout-complete.html`.
+- Page title `Checkout: Complete!` was displayed.
+- Success heading `Thank you for your order!` was displayed.
+- Success message `Your order has been dispatched, and will arrive just as fast as the pony can get there!` was displayed.
+- The `Back Home` button was visible.
+
+#### Observations
+
+- The Order Complete Page clearly confirmed successful checkout completion.
+- A `Generate PDF order` button was also displayed, but its behavior is outside the scope of this test case.
 
 #### Possible Bugs
 

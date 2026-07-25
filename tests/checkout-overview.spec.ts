@@ -79,9 +79,6 @@ test('TC-CHK2-004 - should complete the order after clicking Finish', async ({ p
 
   await expect(page).toHaveURL(/.*checkout-complete.html/);
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Complete!');
-  await expect(page.locator('[data-test="complete-header"]')).toHaveText(
-    'Thank you for your order!',
-  );
   await expect(page.locator('[data-test="error"]')).toHaveCount(0);
 });
 
