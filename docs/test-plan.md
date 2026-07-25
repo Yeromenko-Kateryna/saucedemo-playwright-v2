@@ -176,6 +176,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | Checkout overview cancel navigation | Covered | Completed |
 | Complete order flow | Covered | Completed |
 | Order completion confirmation | Covered | Completed |
+| Back Home navigation | Covered | Completed |
 | Sidebar menu navigation | Covered | Planned |
 | Logout flow | Covered | Planned |
 
@@ -1057,7 +1058,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 35 of 41 planned test cases (85.4%). This count is based on the current Playwright spec files and does not represent a test-run result.
+**Current automated coverage:** 36 of 41 planned test cases (87.8%). This count is based on the current Playwright spec files and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1071,18 +1072,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-CHK2-004 | Checkout Overview | Successful order completion through the Finish action |
 | TC-CHK2-005 | Checkout Overview | Cancel navigation to Inventory Page with preserved cart state |
 | TC-COMPLETE-001 | Order Complete Page | Completion title, success heading, confirmation message, and Back Home control |
+| TC-COMPLETE-002 | Order Complete Page | Back Home navigation to Inventory Page |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-COMPLETE-002 | Verifies Back Home navigation |
+| TC-MENU-001 | Verifies that the sidebar menu opens |
 
 ### Later Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-MENU-001 - TC-MENU-005 | Verifies sidebar menu behavior |
+| TC-MENU-002 - TC-MENU-005 | Verifies sidebar navigation, reset, and logout behavior |
 
 ---
 

@@ -15,3 +15,16 @@ test('TC-COMPLETE-001 - should display order completion confirmation', async ({ 
   );
   await expect(page.locator('[data-test="back-to-products"]')).toBeVisible();
 });
+
+test('TC-COMPLETE-002 - should return to inventory after clicking Back Home', async ({ page }) => {
+  await openCheckoutOverview(page);
+  await page.locator('[data-test="finish"]').click();
+
+  await expect(page).toHaveURL(/\/checkout-complete\.html$/);
+
+  await page.locator('[data-test="back-to-products"]').click();
+
+  await expect(page).toHaveURL(/\/inventory\.html$/);
+  await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+  await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
+});

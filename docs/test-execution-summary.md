@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 31 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, 5 Checkout Overview, and 1 Order Complete case. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 32 documented manual cases: 13 Inventory, 6 Cart, 6 Checkout Step One, 5 Checkout Overview, and 2 Order Complete cases. All recorded cases have a `Passed` status; no product defects were identified within their stated scope.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1139,6 +1139,36 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 
 - The Order Complete Page clearly confirmed successful checkout completion.
 - A `Generate PDF order` button was also displayed, but its behavior is outside the scope of this test case.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-COMPLETE-002 - Verify that Back Home button returns user to Inventory Page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User completed checkout successfully.
+- User reached `/checkout-complete.html`.
+- Page title `Checkout: Complete!` was displayed.
+- User clicked the `Back Home` button.
+- User was redirected to `/inventory.html`.
+- Page title `Products` was displayed.
+- Inventory list was visible.
+- Cart badge was not displayed.
+- `Sauce Labs Backpack` displayed the `Add to cart` button.
+
+#### Observations
+
+- Back Home navigation returned the user directly to the Inventory Page.
+- The completed order cleared the cart state.
+- The previously purchased product returned to the default `Add to cart` state.
 
 #### Possible Bugs
 

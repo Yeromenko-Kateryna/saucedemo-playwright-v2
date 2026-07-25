@@ -1666,3 +1666,64 @@ It does not verify:
 - PDF generation;
 - cart state after completion;
 - sidebar menu behavior.
+
+---
+
+## TC-COMPLETE-002 - Verify that Back Home button returns user to Inventory Page
+
+### Test purpose
+
+Verify that clicking the `Back Home` button on the Order Complete Page returns the user to the Inventory Page.
+
+### Selected locators
+
+| Element | Locator |
+|---|---|
+| Finish button | `[data-test="finish"]` |
+| Back Home button | `[data-test="back-to-products"]` |
+| Inventory Page title | `[data-test="title"]` |
+| Inventory list | `[data-test="inventory-list"]` |
+
+### Planned assertions
+
+- URL changes from `/checkout-complete.html` to `/inventory.html`.
+- Page title equals `Products`.
+- Inventory list is visible.
+
+### Locator strategy
+
+The shared `openCheckoutOverview(page)` helper creates the checkout precondition.
+
+The test then:
+
+- clicks `Finish` to open the Order Complete Page;
+- clicks `Back Home`;
+- verifies navigation to the Inventory Page.
+
+Stable `data-test` attributes are used for both navigation controls and Inventory Page elements.
+
+### Manual observations outside the required assertions
+
+Manual testing also confirmed that after completing the order:
+
+- the cart badge is not displayed;
+- `Sauce Labs Backpack` displays `Add to cart`.
+
+These observations are documented in the execution summary but are not required assertions for `TC-COMPLETE-002`, whose stated scope is Back Home navigation.
+
+### Scope boundary
+
+This test verifies only:
+
+- navigation from the Order Complete Page to the Inventory Page;
+- the resulting URL;
+- Inventory Page title;
+- Inventory list visibility.
+
+It does not verify:
+
+- order confirmation content;
+- PDF generation;
+- cart-state reset;
+- adding another product;
+- sidebar menu behavior.
