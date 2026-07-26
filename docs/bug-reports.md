@@ -384,3 +384,63 @@ Additional observations:
 - Product names, descriptions, and prices remained different.
 - The corresponding product images display correctly for `standard_user`.
 - This issue is suitable for focused visual or DOM-based automation.
+
+---
+
+## BUG-INV-003 - Product sorting does not change for problem_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** Medium
+- **Type:** Functional / Sorting
+- **Area:** Inventory Page
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-001`
+- **Environment:** SauceDemo web application
+- **User:** `problem_user`
+
+### Preconditions
+
+- User is logged in as `problem_user`.
+- User is on the Inventory Page.
+- The product sorting dropdown is visible.
+
+### Steps to Reproduce
+
+1. Open the product sorting dropdown.
+2. Select any option other than `Name (A to Z)`, for example:
+   - `Name (Z to A)`;
+   - `Price (low to high)`;
+   - `Price (high to low)`.
+3. Observe the selected value in the dropdown.
+4. Observe the order of products in the catalog.
+
+### Actual Result
+
+- The sorting dropdown opens.
+- Clicking another sorting option does not apply the selection.
+- The displayed value remains `Name (A to Z)`.
+- Product order does not change.
+- The user cannot switch to another sorting mode.
+
+### Expected Result
+
+- The selected sorting option is applied.
+- The dropdown displays the selected value.
+- Product order changes according to the selected sorting rule.
+- User can switch between all available sorting modes.
+
+### Impact
+
+- `problem_user` cannot sort products by name or price.
+- Product discovery and comparison are limited.
+- The Inventory Page does not respond to a visible user control.
+- The behavior differs from the working sorting flow for `standard_user`.
+
+### Notes
+
+- The issue was discovered during persona exploratory testing.
+- The behavior was reproduced repeatedly.
+- The sorting control remains visible but does not apply any alternative option.
+- Sorting works correctly for `standard_user`.
+- This issue is suitable for focused automation as a known expected failure.
