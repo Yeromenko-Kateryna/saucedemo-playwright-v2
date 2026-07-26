@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 38 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these cases, 37 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 38 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these cases, 37 have a `Passed` status and 1 has a `Failed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 

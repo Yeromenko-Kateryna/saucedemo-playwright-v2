@@ -105,3 +105,86 @@ This should also be treated as a requirement clarification point for the product
 - The complete empty-cart checkout flow was reproduced successfully.
 - No validation message was displayed at any stage.
 - The defect affects the core checkout business process.
+
+---
+
+## BUG-COMPLETE-001 - Generated order PDF corrupts Unicode checkout data
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** Medium
+- **Type:** Encoding / Data Presentation
+- **Area:** Order Complete / PDF Generation
+- **Reproducibility:** 100%
+- **Related test case:** Not yet created; discovered during exploratory testing
+- **Environment:** SauceDemo web application
+- **User:** `standard_user`
+
+### Preconditions
+
+- User is logged in as `standard_user`.
+- Cart contains at least one product.
+- User is able to complete the checkout flow.
+
+### Steps to Reproduce
+
+1. Open the Cart Page.
+2. Click `Checkout`.
+3. Enter Cyrillic or other non-ASCII text into the First Name and Last Name fields.
+4. Enter a value into the Zip/Postal Code field.
+5. Click `Continue`.
+6. Complete the order by clicking `Finish`.
+7. Click `Generate PDF order`.
+8. Open the generated PDF.
+9. Review the `SHIP TO` section.
+
+### Actual Result
+
+- The checkout flow accepts the Unicode input.
+- The order is completed successfully.
+- The entered checkout information is included in the generated PDF.
+- Cyrillic characters in the `SHIP TO` section are replaced with unreadable or corrupted characters.
+- Long corrupted values may also overflow the intended layout area.
+- Product names, prices, tax, total, and other Latin text remain readable.
+
+### Expected Result
+
+- The generated PDF preserves Unicode checkout information correctly.
+- Cyrillic and other supported characters remain readable.
+- Long values wrap or are constrained without overlapping other PDF content.
+- The generated receipt accurately represents the information entered by the user.
+
+### Control Check
+
+The same flow was repeated with ASCII checkout data:
+
+- First Name: `Katia`
+- Last Name: `Tester`
+- Zip/Postal Code: `12345`
+
+The generated PDF displayed these values correctly:
+
+- `Katia Tester`
+- `12345`
+
+This confirms that the issue is specifically related to Unicode character handling rather than general PDF generation.
+
+### Impact
+
+- Users whose names contain Cyrillic or other unsupported Unicode characters receive an incorrect order receipt.
+- Shipping or customer information in the PDF cannot be reliably read.
+- The generated document does not accurately preserve user-provided data.
+- This can reduce trust in the receipt and create ambiguity in order records.
+
+### Evidence
+
+1. [Generated PDF with corrupted long Cyrillic input](evidence/BUG-COMPLETE-001/01-corrupted-cyrillic-long-input.pdf)
+2. [Generated PDF with corrupted mixed Unicode input](evidence/BUG-COMPLETE-001/02-corrupted-mixed-unicode-input.pdf)
+3. [Generated PDF with correctly displayed ASCII control data](evidence/BUG-COMPLETE-001/03-correct-ascii-control.pdf)
+
+### Notes
+
+- The issue was discovered during Checkout Input Validation exploratory testing.
+- Checkout Step One does not reject Unicode or long input.
+- Checkout Overview does not display the entered customer information, so the corruption becomes visible only after generating the PDF.
+- The defect was reproduced with multiple Unicode and mixed-character values.
