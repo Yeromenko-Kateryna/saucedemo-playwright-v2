@@ -1963,3 +1963,68 @@ It does not verify:
 - `About` navigation;
 - logout;
 - Reset App State behavior.
+
+---
+
+## TC-MENU-003 - Verify that All Items menu item opens Inventory Page
+
+### Test purpose
+
+Verify that clicking `All Items` in the sidebar returns the user from Product Details to the Inventory Page.
+
+### Confirmed locators
+
+| Element | Locator |
+|---|---|
+| Backpack product link | `[data-test="item-4-title-link"]` |
+| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
+| All Items link | `[data-test="inventory-sidebar-link"]` |
+| Inventory Page title | `[data-test="title"]` |
+| Inventory container | `[data-test="inventory-container"]` |
+
+### Planned assertions
+
+- Product Details Page is opened before the menu action.
+- After clicking `All Items`, URL changes to `/inventory.html`.
+- Page title equals `Products`.
+- Inventory container is visible.
+- `All Items` is no longer visible after navigation.
+
+### Locator strategy
+
+The test starts from Product Details so that `All Items` performs a meaningful navigation instead of reloading the page already open.
+
+The confirmed Codegen flow uses:
+
+- `[data-test="item-4-title-link"]` to open `Sauce Labs Backpack`;
+- `getByRole('button', { name: 'Open Menu' })` to open the sidebar;
+- `[data-test="inventory-sidebar-link"]` to navigate to Inventory;
+- `[data-test="inventory-container"]` to confirm that the product list is displayed.
+
+### Codegen cleanup decisions
+
+The following recorded actions are excluded:
+
+- partial username and password fills;
+- `CapsLock` and `Shift+CapsLock` key presses;
+- clicking `[data-test="secondary-header"]`;
+- clicking `[data-test="inventory-container"]` as an action.
+
+The Inventory container is used only as an assertion target.
+
+### Scope boundary
+
+This test verifies only:
+
+- opening Product Details as a meaningful precondition;
+- opening the sidebar;
+- clicking `All Items`;
+- navigation to the Inventory Page;
+- visibility of the Inventory Page content.
+
+It does not verify:
+
+- closing the sidebar through the close button;
+- About navigation;
+- logout;
+- Reset App State behavior.

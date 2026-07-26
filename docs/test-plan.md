@@ -1106,7 +1106,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 39 of 42 planned test cases (92.9%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
+**Current automated coverage:** 40 of 42 planned test cases (95.2%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1124,18 +1124,19 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-COMPLETE-002 | Order Complete Page | Back Home navigation to Inventory Page |
 | TC-MENU-001 | Sidebar Menu | Sidebar opening and visibility of all expected navigation items |
 | TC-MENU-002 | Sidebar Menu | Sidebar closing, hidden menu items, and preserved Inventory Page state |
+| TC-MENU-003 | Sidebar Menu | All Items navigation from Product Details to Inventory Page |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-MENU-003 | Verifies All Items navigation to the Inventory Page |
+| TC-MENU-004 | Verifies external navigation through About |
 
 ### Later Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-MENU-004 - TC-MENU-005 | Verifies About navigation and logout behavior |
+| TC-MENU-005 | Verifies logout behavior |
 
 ---
 
