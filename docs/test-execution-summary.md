@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 36 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 3 Sidebar Menu cases. Of these cases, 35 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 37 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 4 Sidebar Menu cases. Of these cases, 36 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1316,6 +1316,35 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - Navigation completed without errors.
 - The Inventory Page loaded with all product cards visible.
 - No visual or functional defects were observed.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-MENU-004 - Verify that About menu item opens Sauce Labs page
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the sidebar menu.
+- User clicked `About`.
+- User was redirected away from SauceDemo.
+- Final URL was `https://saucelabs.com/`.
+- The Sauce Labs website loaded successfully.
+- Sauce Labs branding and page content were visible.
+- No browser error page was displayed.
+
+#### Observations
+
+- `About` performs external navigation in the same browser tab.
+- The destination path and external page content may change independently of SauceDemo.
+- The stable requirement for this case is navigation to the `saucelabs.com` domain.
 
 #### Possible Bugs
 

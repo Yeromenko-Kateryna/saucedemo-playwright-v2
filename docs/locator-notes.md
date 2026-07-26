@@ -2028,3 +2028,79 @@ It does not verify:
 - About navigation;
 - logout;
 - Reset App State behavior.
+
+---
+
+## TC-MENU-004 - Verify that About menu item opens Sauce Labs page
+
+### Test purpose
+
+Verify that clicking `About` in the sidebar navigates the user from SauceDemo to the Sauce Labs website.
+
+### Confirmed locators
+
+| Element | Locator |
+|---|---|
+| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
+| About link | `[data-test="about-sidebar-link"]` |
+
+### Planned assertions
+
+- Clicking `About` navigates away from SauceDemo.
+- Final URL belongs to the `saucelabs.com` domain.
+- No browser error page is displayed.
+
+### Locator strategy
+
+The test uses the confirmed Codegen locators:
+
+- `getByRole('button', { name: 'Open Menu' })`
+- `[data-test="about-sidebar-link"]`
+
+The external Sauce Labs page is not validated through unstable page text, headings, CSS classes, or layout details.
+
+The stable assertion is the destination domain:
+
+`saucelabs.com`
+
+### Codegen cleanup decisions
+
+The following recorded actions are excluded:
+
+- partial username and password fills;
+- `dblclick()`;
+- `CapsLock` and `Shift+CapsLock` key presses;
+- clicking external page headings;
+- clicking external page text;
+- clicking complex CSS-class locators on the Sauce Labs website.
+
+These external-page interactions are unrelated to the navigation purpose of `TC-MENU-004`.
+
+### External dependency note
+
+This test depends on the external Sauce Labs website.
+
+Possible failures may be caused by:
+
+- network connectivity;
+- DNS issues;
+- redirects controlled by Sauce Labs;
+- temporary external-site availability problems.
+
+The test should avoid asserting exact external page content because that content may change independently of SauceDemo.
+
+### Scope boundary
+
+This test verifies only:
+
+- opening the sidebar;
+- clicking `About`;
+- navigation to the `saucelabs.com` domain.
+
+It does not verify:
+
+- Sauce Labs page content;
+- external website functionality;
+- All Items navigation;
+- logout;
+- Reset App State behavior.

@@ -1106,7 +1106,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 40 of 42 planned test cases (95.2%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
+**Current automated coverage:** 41 of 42 planned test cases (97.6%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1125,18 +1125,17 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 | TC-MENU-001 | Sidebar Menu | Sidebar opening and visibility of all expected navigation items |
 | TC-MENU-002 | Sidebar Menu | Sidebar closing, hidden menu items, and preserved Inventory Page state |
 | TC-MENU-003 | Sidebar Menu | All Items navigation from Product Details to Inventory Page |
+| TC-MENU-004 | Sidebar Menu | External About navigation to the `saucelabs.com` domain |
 
 ### Next Automation Scope
 
 | Test Case | Reason |
 | --- | --- |
-| TC-MENU-004 | Verifies external navigation through About |
+| TC-MENU-005 | Verifies logout behavior |
 
 ### Later Automation Scope
 
-| Test Case | Reason |
-| --- | --- |
-| TC-MENU-005 | Verifies logout behavior |
+All currently planned test cases except `TC-MENU-005` are automated.
 
 ---
 

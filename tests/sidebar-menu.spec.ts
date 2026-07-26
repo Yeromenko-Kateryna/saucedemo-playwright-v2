@@ -56,3 +56,16 @@ test('TC-MENU-003 - should navigate to inventory through All Items', async ({ pa
   await expect(page.locator('[data-test="inventory-container"]')).toBeVisible();
   await expect(allItemsLink).not.toBeVisible();
 });
+
+test('TC-MENU-004 - should navigate to Sauce Labs through About', async ({ page }) => {
+  await loginAsStandardUser(page);
+
+  await page.getByRole('button', { name: 'Open Menu' }).click();
+
+  const aboutLink = page.locator('[data-test="about-sidebar-link"]');
+
+  await expect(aboutLink).toBeVisible();
+  await aboutLink.click();
+
+  await expect(page).toHaveURL(/^https:\/\/(?:www\.)?saucelabs\.com\/?/);
+});
