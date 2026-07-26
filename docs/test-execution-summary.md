@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 41 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 1 Persona Exploration case. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 2 exploratory charters have a `Completed` status. Four confirmed product defects are recorded: `BUG-CART-001`, `BUG-COMPLETE-001`, `BUG-INV-001`, and `BUG-CHK1-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 41 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 1 Persona Exploration case. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 2 exploratory charters have a `Completed` status. Five confirmed product defects are recorded: `BUG-CART-001`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, and `BUG-CHK1-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 

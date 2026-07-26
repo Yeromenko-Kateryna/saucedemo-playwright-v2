@@ -329,3 +329,58 @@ Additional observations:
 - First Name and Zip/Postal Code continue to work.
 - The corresponding checkout form works correctly for `standard_user`.
 - This issue is suitable for focused automation as a known expected failure.
+
+---
+
+## BUG-INV-002 - All inventory products display the same incorrect image for problem_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** Medium
+- **Type:** Visual / Data Mapping
+- **Area:** Inventory Page
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-001`
+- **Environment:** SauceDemo web application
+- **User:** `problem_user`
+
+### Preconditions
+
+- User is logged in as `problem_user`.
+- User is on the Inventory Page.
+- All six product cards are displayed.
+
+### Steps to Reproduce
+
+1. Review the image displayed on each product card.
+2. Compare the images between all available products.
+3. Compare each image with the corresponding product name and description.
+
+### Actual Result
+
+- All six product cards display the same image of a dog holding a ball.
+- The image is unrelated to the actual products.
+- Different products with different names, descriptions, and prices display the same image.
+- The visual identity of each product is lost.
+
+### Expected Result
+
+- Every product card displays the image corresponding to that product.
+- Product images differ where the catalog contains different products.
+- The image matches the product name and description.
+- Unrelated placeholder or incorrect images are not displayed.
+
+### Impact
+
+- Users cannot visually distinguish products.
+- Product presentation is misleading.
+- The catalog appears corrupted or untrustworthy.
+- The issue affects every available product for `problem_user`.
+
+### Notes
+
+- The issue was discovered during persona exploratory testing.
+- The same dog image was reproduced on all six Inventory Page product cards.
+- Product names, descriptions, and prices remained different.
+- The corresponding product images display correctly for `standard_user`.
+- This issue is suitable for focused visual or DOM-based automation.
