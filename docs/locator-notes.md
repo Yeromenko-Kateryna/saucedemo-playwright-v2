@@ -1883,3 +1883,83 @@ It does not verify:
 - external navigation through `About`;
 - logout behavior;
 - Reset App State behavior.
+
+---
+
+## TC-MENU-002 - Verify that sidebar menu can be closed
+
+### Test purpose
+
+Verify that clicking the `Close Menu` button closes the sidebar and returns the Inventory Page to its normal state.
+
+### Confirmed locators
+
+| Element | Locator |
+|---|---|
+| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
+| Close Menu button | `getByRole('button', { name: 'Close Menu' })` |
+| All Items link | `[data-test="inventory-sidebar-link"]` |
+| About link | `[data-test="about-sidebar-link"]` |
+| Logout link | `[data-test="logout-sidebar-link"]` |
+| Reset App State link | `[data-test="reset-sidebar-link"]` |
+| Inventory Page title | `[data-test="title"]` |
+
+### Planned assertions
+
+- The sidebar menu is opened before the close action.
+- After clicking `Close Menu`, `All Items` is not visible.
+- `About` is not visible.
+- `Logout` is not visible.
+- `Reset App State` is not visible.
+- The `Open Menu` button is visible again.
+- URL remains `/inventory.html`.
+- Page title remains `Products`.
+
+### Locator strategy
+
+The menu controls are located by accessible role and name:
+
+- `getByRole('button', { name: 'Open Menu' })`
+- `getByRole('button', { name: 'Close Menu' })`
+
+The menu item locators use stable `data-test` attributes confirmed during Codegen exploration.
+
+The closed state is verified through user-visible behavior:
+
+- menu items are no longer visible;
+- the `Open Menu` button is available again;
+- the user remains on the Inventory Page.
+
+No assumption is made about CSS classes or internal animation attributes.
+
+### Codegen cleanup decisions
+
+The recorded Codegen flow contained actions outside the scope of `TC-MENU-002`:
+
+- opening and closing the menu multiple times;
+- clicking unrelated page content;
+- navigating directly with `page.goto()`;
+- clicking `Logout`;
+- repeating the login flow;
+- partial username and password fills;
+- `dblclick()`;
+- `CapsLock` and `Shift+CapsLock` key presses.
+
+Only one open action and one close action are required for this test case.
+
+### Scope boundary
+
+This test verifies only:
+
+- opening the sidebar as a precondition;
+- closing the sidebar;
+- disappearance of menu items;
+- restoration of the `Open Menu` control;
+- preservation of the Inventory Page URL and title.
+
+It does not verify:
+
+- `All Items` navigation;
+- `About` navigation;
+- logout;
+- Reset App State behavior.

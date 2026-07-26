@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 34 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 1 Sidebar Menu case. Of these cases, 33 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
+This is a collection of individual manual execution records, not a single consolidated release run. It contains 35 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 2 Sidebar Menu cases. Of these cases, 34 have a `Passed` status and 1 has a `Failed` status. One confirmed product defect is recorded as `BUG-CART-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1252,6 +1252,39 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - No menu text was truncated.
 - No overlapping or broken UI elements were observed.
 - The opened menu state was visually clear.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-MENU-002 - Verify that sidebar menu can be closed
+
+- **Execution type:** Manual
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- User opened the Inventory Page.
+- User opened the sidebar menu.
+- User clicked the close button.
+- The sidebar menu closed successfully.
+- `All Items` was no longer visible.
+- `About` was no longer visible.
+- `Logout` was no longer visible.
+- `Reset App State` was no longer visible.
+- The `Open Menu` button was available again.
+- User remained on `/inventory.html`.
+- Page title `Products` remained visible.
+
+#### Observations
+
+- Closing the sidebar did not navigate away from the Inventory Page.
+- The product list remained available after the menu was closed.
+- No visual defects were observed during the close animation.
 
 #### Possible Bugs
 
