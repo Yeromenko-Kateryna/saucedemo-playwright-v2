@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 40 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 1 exploratory charter has a `Completed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 41 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 1 Persona Exploration case. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 2 exploratory charters have a `Completed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1482,3 +1482,83 @@ Investigate how Checkout Step One handles malformed, international, whitespace-o
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+## Exploratory Test Run - Personas
+
+### TC-PERSONA-001 - Explore critical user flows as problem_user
+
+- **Execution type:** Exploratory
+- **Status:** Completed
+- **Automation decision:** Partially planned
+- **User:** `problem_user`
+
+#### Charter
+
+Compare the behavior of `problem_user` with the working behavior already established for `standard_user`.
+
+#### Actual Result
+
+- Login succeeded.
+- Inventory Page opened successfully.
+- All six product cards displayed the same unrelated dog image.
+- Product names, descriptions, and prices on the Inventory Page remained different.
+- None of the six product cards opened its corresponding Product Details page.
+
+#### Product Details Routing Results
+
+| Selected product | Opened URL | Actual Product Details content |
+| --- | --- | --- |
+| Sauce Labs Backpack | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket |
+| Sauce Labs Bike Light | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt |
+| Sauce Labs Bolt T-Shirt | `/inventory-item.html?id=2` | Sauce Labs Onesie |
+| Sauce Labs Fleece Jacket | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
+| Sauce Labs Onesie | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red) |
+| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack |
+
+#### Cart and Product Action Results
+
+- Add and Remove behavior was inconsistent.
+- Some products could be added from the Inventory Page.
+- Some `Add to cart` buttons did not respond.
+- Some `Remove` buttons did not respond.
+- Products could still be removed from the Cart Page.
+- Product Details did not always reflect the current cart state.
+- A product could already be present in the cart while Product Details still displayed `Add to cart`.
+
+#### Sorting Results
+
+- The sort control was visible.
+- Switching sorting options did not work as expected.
+- Product order did not reliably change.
+
+#### Checkout Results
+
+- Checkout Step One opened.
+- First Name accepted input.
+- Zip/Postal Code accepted input.
+- Last Name received focus but did not preserve typed characters.
+- Clicking `Continue` displayed `Error: Last Name is required`.
+- Checkout could not proceed to Checkout Overview.
+
+#### Findings
+
+- Multiple independent defects affect `problem_user`.
+- Product identity is not preserved between Inventory and Product Details.
+- Inventory images are incorrectly mapped.
+- Add and Remove actions are inconsistent.
+- Sorting does not function correctly.
+- Checkout is blocked by the Last Name field.
+
+#### Automation Recommendation
+
+Automate only stable, high-risk scenarios:
+
+- incorrect Inventory Page images;
+- incorrect Product Details routing;
+- Last Name input blocking checkout;
+- non-functional sorting;
+- selected reproducible Add/Remove failures.
+
+Do not duplicate the complete `standard_user` regression suite.

@@ -1227,6 +1227,118 @@ Because SauceDemo does not publish a formal checkout-input specification, the fo
 * Password field is visible.
 * Login button is visible.
 
+## 6.7 Persona Exploration
+
+### TC-PERSONA-001 - Explore critical user flows as problem_user
+
+* **Priority:** High
+* **Type:** Exploratory / Persona / Functional / Data Integrity
+* **User:** `problem_user`
+
+#### Preconditions
+
+* SauceDemo is available.
+* User can log in with `problem_user`.
+* Password is `secret_sauce`.
+
+#### Exploratory Charter
+
+Compare the behavior of `problem_user` with the functional behavior already established for `standard_user`.
+
+Focus areas:
+
+* login;
+* Inventory Page product data and images;
+* Add and Remove actions;
+* cart-state consistency;
+* Product Details routing and data consistency;
+* sorting;
+* Cart Page;
+* Checkout Step One;
+* ability to complete checkout.
+
+#### Actual Result
+
+* Login succeeded.
+* Inventory Page opened successfully.
+* All six product cards displayed the same incorrect dog image.
+* Product names, descriptions, and prices on the Inventory Page remained different.
+* None of the six product cards opened its corresponding Product Details page.
+
+#### Product Details Routing Results
+
+| Selected product on Inventory Page | Opened URL | Actual Product Details content |
+| --- | --- | --- |
+| Sauce Labs Backpack | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket |
+| Sauce Labs Bike Light | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt |
+| Sauce Labs Bolt T-Shirt | `/inventory-item.html?id=2` | Sauce Labs Onesie |
+| Sauce Labs Fleece Jacket | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
+| Sauce Labs Onesie | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red) |
+| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack |
+
+#### Cart Action Results
+
+* Add and Remove behavior was inconsistent.
+* Some products could be added from the Inventory Page.
+* Some `Add to cart` buttons did not respond.
+* Some `Remove` buttons did not respond.
+* Products that could not be removed from the Inventory Page could still be removed from the Cart Page.
+* Product Details did not always reflect the current cart state.
+* A product could already be present in the cart while Product Details still displayed `Add to cart`.
+* Cart badge and Inventory Page button state could become inconsistent.
+
+#### Sorting Results
+
+* The product sort control was visible.
+* Switching between sorting options did not work as expected.
+* The displayed product order did not reliably change.
+* Sorting behavior differed from the working behavior established for `standard_user`.
+
+#### Checkout Results
+
+* Checkout Step One opened successfully.
+* First Name accepted input.
+* Zip/Postal Code accepted input.
+* Last Name received focus and displayed a cursor.
+* Typed characters were not preserved in the Last Name field.
+* Clicking `Continue` displayed:
+
+  `Error: Last Name is required`
+
+* Checkout could not proceed to Checkout Overview.
+* The Last Name defect blocked order completion.
+
+#### Findings
+
+* `problem_user` contains multiple independent defects rather than one general persona issue.
+* Product images are incorrectly mapped on the Inventory Page.
+* Product Details navigation is incorrect for every available product.
+* One Product Details route returns corrupted fallback data.
+* Add and Remove actions are inconsistent.
+* Cart state is not reliably synchronized between Inventory and Product Details.
+* Sorting does not function correctly.
+* Checkout is blocked because Last Name cannot be entered.
+
+#### Risk Assessment
+
+* **Product identity risk:** user selects one product but receives details for another.
+* **Cart integrity risk:** displayed controls do not reliably represent cart state.
+* **Checkout blocker:** user cannot complete an order.
+* **Visual trust risk:** all products display the same unrelated image.
+* **Regression risk:** multiple core flows differ from `standard_user`.
+
+#### Automation Decision
+
+Automate only stable, high-value persona scenarios:
+
+* all Inventory Page product images are incorrect;
+* Product Details routing does not preserve selected product identity;
+* Last Name input blocks checkout;
+* sorting does not change the product order;
+* selected Add/Remove behavior where the failure is reproducible.
+
+Do not run the complete `standard_user` regression suite again for `problem_user`.
+
 ---
 
 ## 7. Automation Priority
