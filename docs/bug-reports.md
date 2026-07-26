@@ -188,3 +188,78 @@ This confirms that the issue is specifically related to Unicode character handli
 - Checkout Step One does not reject Unicode or long input.
 - Checkout Overview does not display the entered customer information, so the corruption becomes visible only after generating the PDF.
 - The defect was reproduced with multiple Unicode and mixed-character values.
+
+---
+
+## BUG-INV-001 - Product Details opens a different product for problem_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Functional / Data Integrity / Navigation
+- **Area:** Inventory / Product Details
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-001`
+- **Environment:** SauceDemo web application
+- **User:** `problem_user`
+
+### Preconditions
+
+- User is logged in as `problem_user`.
+- User is on the Inventory Page.
+- All six products are displayed.
+
+### Steps to Reproduce
+
+1. Review the name of a product on the Inventory Page.
+2. Click the product name to open Product Details.
+3. Compare the selected product with:
+   - the resulting URL;
+   - Product Details name;
+   - description;
+   - price;
+   - image.
+4. Return to the Inventory Page.
+5. Repeat the same steps for every available product.
+
+### Actual Result
+
+None of the six Inventory Page products opens its corresponding Product Details content.
+
+| Selected product on Inventory Page | Opened URL | Actual Product Details content |
+| --- | --- | --- |
+| Sauce Labs Backpack | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket |
+| Sauce Labs Bike Light | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt |
+| Sauce Labs Bolt T-Shirt | `/inventory-item.html?id=2` | Sauce Labs Onesie |
+| Sauce Labs Fleece Jacket | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
+| Sauce Labs Onesie | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red) |
+| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack |
+
+Additional observations:
+
+- Five product links open valid data belonging to a different product.
+- One product link opens corrupted fallback data.
+- The opened URL does not correspond to the product selected by the user.
+- Product identity is not preserved between Inventory and Product Details.
+
+### Expected Result
+
+- Clicking a product name opens Product Details for that same product.
+- The URL identifies the selected product.
+- Product name, description, price, and image match the selected Inventory Page card.
+- No valid product link displays `ITEM NOT FOUND` or invalid fallback data.
+
+### Impact
+
+- User cannot reliably inspect the product they selected.
+- Product names, descriptions, prices, and images may belong to a different product.
+- The issue can cause incorrect purchasing decisions.
+- Product identity and catalog data integrity are compromised.
+- Every available product is affected for `problem_user`.
+
+### Notes
+
+- The issue was discovered during persona exploratory testing.
+- The behavior was reproduced for all six available products.
+- The corresponding Product Details flow works correctly for `standard_user`.
+- This issue should be automated as a focused persona risk scenario rather than by repeating the complete standard-user regression suite.
