@@ -2104,3 +2104,64 @@ It does not verify:
 - All Items navigation;
 - logout;
 - Reset App State behavior.
+
+---
+
+## TC-MENU-005 - Verify that Logout menu item logs user out
+
+### Test purpose
+
+Verify that clicking `Logout` in the sidebar ends the authenticated session and redirects the user to the Login Page.
+
+### Confirmed locators
+
+| Element | Locator |
+|---|---|
+| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
+| Logout link | `[data-test="logout-sidebar-link"]` |
+| Username field | `[data-test="username"]` |
+| Password field | `[data-test="password"]` |
+| Login button | `[data-test="login-button"]` |
+| Inventory page title | `[data-test="title"]` |
+
+### Planned assertions
+
+- Clicking `Logout` redirects the user to the root URL `/`.
+- Username field is visible.
+- Password field is visible.
+- Login button is visible.
+- Inventory Page title is no longer visible.
+- After page reload, the user remains on the Login Page.
+
+### Locator strategy
+
+The test uses stable SauceDemo locators based on `data-test` attributes and the confirmed accessible name of the menu button.
+
+The logout result is verified through both:
+
+- Login Page UI visibility;
+- persistence of the logged-out state after reload.
+
+### Session validation
+
+Reloading the Login Page confirms that logout is not only a client-side visual redirect.
+
+The test does not attempt to inspect cookies, local storage, or internal session implementation because those details are outside the functional scope of this case.
+
+### Scope boundary
+
+This test verifies only:
+
+- opening the sidebar;
+- clicking `Logout`;
+- redirect to the Login Page;
+- visibility of login controls;
+- persistence of the logged-out state after reload.
+
+It does not verify:
+
+- login validation;
+- session timeout;
+- logout from multiple tabs;
+- browser back-button behavior;
+- server-side token invalidation.

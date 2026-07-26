@@ -69,3 +69,27 @@ test('TC-MENU-004 - should navigate to Sauce Labs through About', async ({ page 
 
   await expect(page).toHaveURL(/^https:\/\/(?:www\.)?saucelabs\.com\/?/);
 });
+
+test('TC-MENU-005 - should log out through sidebar menu', async ({ page }) => {
+  await loginAsStandardUser(page);
+
+  await page.getByRole('button', { name: 'Open Menu' }).click();
+
+  const logoutLink = page.locator('[data-test="logout-sidebar-link"]');
+
+  await expect(logoutLink).toBeVisible();
+  await logoutLink.click();
+
+  await expect(page).toHaveURL(/^https:\/\/www\.saucedemo\.com\/$/);
+  await expect(page.locator('[data-test="username"]')).toBeVisible();
+  await expect(page.locator('[data-test="password"]')).toBeVisible();
+  await expect(page.locator('[data-test="login-button"]')).toBeVisible();
+  await expect(page.locator('[data-test="title"]')).toHaveCount(0);
+
+  await page.reload();
+
+  await expect(page).toHaveURL(/^https:\/\/www\.saucedemo\.com\/$/);
+  await expect(page.locator('[data-test="username"]')).toBeVisible();
+  await expect(page.locator('[data-test="password"]')).toBeVisible();
+  await expect(page.locator('[data-test="login-button"]')).toBeVisible();
+});
