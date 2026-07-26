@@ -531,6 +531,54 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * `Continue Shopping` button is visible.
 * `Checkout` button is visible.
 
+### TC-INV-014 - Verify dynamic contract coverage for all available products
+
+* **Priority:** High
+* **Type:** Data-driven / Functional / Regression
+
+#### Preconditions
+
+* User is logged in as `standard_user`.
+* User is on the Inventory Page.
+* The product catalog contains at least one product.
+
+#### Steps
+
+1. Determine the number of product cards currently displayed in the catalog.
+2. Verify that at least one product is available.
+3. For every currently displayed product:
+   * capture its name, description, price, and Product Details link;
+   * verify that its name and description are not empty;
+   * verify that its price has a valid monetary format and a value greater than zero;
+   * verify that its image is visible;
+   * click `Add to cart`;
+   * verify that the product action changes to `Remove`;
+   * verify that the cart badge reflects the added product;
+   * click `Remove`;
+   * verify that the product action returns to `Add to cart`;
+   * open Product Details;
+   * verify that name, description, and price match the Inventory Page card;
+   * return to the Inventory Page.
+4. Confirm that every product discovered during the test was checked.
+
+#### Expected Result
+
+* The catalog contains at least one product.
+* Every currently available product satisfies the common product-card contract.
+* Add and Remove actions work for every available product.
+* Product Details data matches the corresponding Inventory Page card.
+* The test does not depend on a fixed product count or predefined list of product names.
+* Products added to the catalog later are automatically included in the same contract verification.
+
+#### Automation Strategy
+
+* Discover products dynamically from the Inventory Page.
+* Do not hardcode the current number of products.
+* Do not hardcode a list of product names or product IDs.
+* Use card-scoped locators to prevent data from different products being mixed.
+* Preserve the existing Backpack tests as deterministic smoke coverage.
+* Do not execute the complete checkout flow separately for every product.
+
 ## 6.3 Cart Page
 
 ### TC-CART-001 - Verify that added product is displayed in the cart
@@ -1185,12 +1233,12 @@ Because SauceDemo does not publish a formal checkout-input specification, the fo
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 42 of 42 planned test cases (100%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
+**Current automated coverage:** 43 of 43 planned test cases (100%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
 | TC-LOGIN-001 - TC-LOGIN-004 | Login Page | Core authentication smoke and negative coverage |
-| TC-INV-001 - TC-INV-013 | Inventory Page | Product listing, cart actions, product details, sorting, and cart navigation |
+| TC-INV-001 - TC-INV-014 | Inventory Page | Product listing, cart actions, product details, sorting, cart navigation, and dynamic contract coverage for all currently available products |
 | TC-CART-001 - TC-CART-006 | Cart Page | Cart item validation, removal, navigation, checkout entry, multiple products, and empty cart validation |
 | TC-CART-007 | Cart / Checkout | Empty-cart checkout prevention, automated as a known expected failure for `BUG-CART-001` |
 | TC-CHK1-001 - TC-CHK1-006 | Checkout Step One | Initial form display, required-field validation, successful continuation, and cancel navigation |

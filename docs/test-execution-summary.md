@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 39 documented records: 13 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these records, 37 have a `Passed` status, 1 has a `Failed` status, and 1 exploratory charter has a `Completed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 40 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 1 exploratory charter has a `Completed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -440,6 +440,48 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 - `Checkout` button allowed the user to continue to the checkout flow even when the cart was empty.
 - Empty-cart checkout behavior should be reviewed separately in Cart or Checkout test cases.
 - This behavior is not blocking for this test case because `TC-INV-013` only verifies cart navigation from the Inventory Page.
+
+#### Possible Bugs
+
+- None found for this test case.
+
+---
+
+### TC-INV-014 - Verify dynamic contract coverage for all available products
+
+- **Execution type:** Automated
+- **Status:** Passed
+- **Automation decision:** Automated
+
+#### Actual Result
+
+- User logged in as `standard_user`.
+- Inventory Page contained at least one product.
+- Every product currently displayed in the catalog was discovered dynamically.
+- For each product:
+  - product name was not empty;
+  - product description was not empty;
+  - product price matched the expected monetary format;
+  - product price value was greater than zero;
+  - product image was visible;
+  - `Add to cart` was available;
+  - clicking `Add to cart` changed the action to `Remove`;
+  - cart badge displayed `1`;
+  - clicking `Remove` restored `Add to cart`;
+  - cart badge disappeared;
+  - Product Details opened successfully;
+  - Product Details name matched the Inventory Page card;
+  - Product Details description matched the Inventory Page card;
+  - Product Details price matched the Inventory Page card;
+  - `Back to products` returned the user to the Inventory Page.
+- The test did not depend on a fixed product count or predefined product list.
+- The complete regression run finished with `129 passed`.
+
+#### Observations
+
+- The test automatically includes products added to the catalog later, provided they follow the same product-card contract.
+- Existing Backpack tests remain useful as deterministic smoke coverage.
+- Full checkout is intentionally not repeated for every product.
 
 #### Possible Bugs
 

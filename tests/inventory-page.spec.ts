@@ -201,3 +201,59 @@ test('TC-INV-013 - should open cart page from inventory page', async ({ page }) 
   await expect(page.locator('[data-test="continue-shopping"]')).toBeVisible();
   await expect(page.locator('[data-test="checkout"]')).toBeVisible();
 });
+
+test('TC-INV-014 - should verify dynamic contract for all available products', async ({ page }) => {
+  await loginAsStandardUser(page);
+
+  const productCards = page.locator('[data-test="inventory-item"]');
+  const productCount = await productCards.count();
+
+  expect(productCount).toBeGreaterThan(0);
+
+  for (let index = 0; index < productCount; index += 1) {
+    const productCard = productCards.nth(index);
+
+    const nameLocator = productCard.locator('[data-test="inventory-item-name"]');
+    const descriptionLocator = productCard.locator('[data-test="inventory-item-desc"]');
+    const priceLocator = productCard.locator('[data-test="inventory-item-price"]');
+    const imageLocator = productCard.locator('img.inventory_item_img');
+    const addButton = productCard.getByRole('button', { name: 'Add to cart' });
+    const titleLink = productCard.locator('[data-test$="-title-link"]');
+
+    const productName = (await nameLocator.textContent())?.trim();
+    const productDescription = (await descriptionLocator.textContent())?.trim();
+    const productPrice = (await priceLocator.textContent())?.trim();
+
+    expect(productName).toBeTruthy();
+    expect(productDescription).toBeTruthy();
+    expect(productPrice).toMatch(/^\$\d+\.\d{2}$/);
+    expect(Number(productPrice?.replace('$', ''))).toBeGreaterThan(0);
+
+    await expect(imageLocator).toBeVisible();
+    await expect(addButton).toBeVisible();
+
+    await addButton.click();
+
+    const removeButton = productCard.getByRole('button', { name: 'Remove' });
+
+    await expect(removeButton).toBeVisible();
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+
+    await removeButton.click();
+
+    await expect(productCard.getByRole('button', { name: 'Add to cart' })).toBeVisible();
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
+
+    await titleLink.click();
+
+    await expect(page).toHaveURL(/\/inventory-item\.html\?id=\d+$/);
+    await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText(productName!);
+    await expect(page.locator('[data-test="inventory-item-desc"]')).toHaveText(productDescription!);
+    await expect(page.locator('[data-test="inventory-item-price"]')).toHaveText(productPrice!);
+
+    await page.locator('[data-test="back-to-products"]').click();
+
+    await expect(page).toHaveURL(/\/inventory\.html$/);
+    await expect(page.locator('[data-test="inventory-item"]')).toHaveCount(productCount);
+  }
+});
