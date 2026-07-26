@@ -263,3 +263,69 @@ Additional observations:
 - The behavior was reproduced for all six available products.
 - The corresponding Product Details flow works correctly for `standard_user`.
 - This issue should be automated as a focused persona risk scenario rather than by repeating the complete standard-user regression suite.
+
+---
+
+## BUG-CHK1-001 - Last Name field does not accept input for problem_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Functional / Input / Checkout Blocker
+- **Area:** Checkout Step One
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-001`
+- **Environment:** SauceDemo web application
+- **User:** `problem_user`
+
+### Preconditions
+
+- User is logged in as `problem_user`.
+- Cart contains at least one product.
+- User is on Checkout Step One.
+
+### Steps to Reproduce
+
+1. Click the First Name field.
+2. Enter any valid value.
+3. Click the Last Name field.
+4. Type any characters.
+5. Click the Zip/Postal Code field.
+6. Enter any valid value.
+7. Click `Continue`.
+
+### Actual Result
+
+- First Name accepts and preserves typed characters.
+- Zip/Postal Code accepts and preserves typed characters.
+- Last Name receives focus and displays a text cursor.
+- Characters typed into Last Name are not preserved.
+- Last Name remains empty.
+- Clicking `Continue` displays:
+
+  `Error: Last Name is required`
+
+- User remains on Checkout Step One.
+- Checkout cannot proceed to Checkout Overview.
+
+### Expected Result
+
+- Last Name accepts and preserves typed characters.
+- User can submit valid checkout information.
+- User is redirected to Checkout Overview.
+- Checkout is not blocked by a non-functional input field.
+
+### Impact
+
+- `problem_user` cannot complete checkout.
+- The issue blocks the core purchase flow.
+- User input appears possible because the field receives focus, but the entered value is silently discarded.
+- The defect creates a misleading and frustrating user experience.
+
+### Notes
+
+- The issue was discovered during persona exploratory testing.
+- The behavior was reproduced repeatedly.
+- First Name and Zip/Postal Code continue to work.
+- The corresponding checkout form works correctly for `standard_user`.
+- This issue is suitable for focused automation as a known expected failure.
