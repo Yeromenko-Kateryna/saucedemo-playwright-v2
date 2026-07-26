@@ -860,6 +860,85 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * User is redirected to the Cart Page.
 * Page title `Your Cart` is visible.
 
+### TC-CHK1-007 - Explore checkout input validation boundaries
+
+* **Priority:** Medium
+* **Type:** Exploratory / Validation / Boundary
+* **Related defect:** `BUG-COMPLETE-001`
+
+#### Preconditions
+
+* User is logged in as `standard_user`.
+* Cart contains at least one product.
+* User is on Checkout Step One.
+
+#### Exploratory Charter
+
+Investigate how the checkout information form handles non-standard, malformed, international, and boundary input values.
+
+Focus areas:
+
+* whitespace-only values;
+* punctuation-only values;
+* Unicode and Cyrillic text;
+* numeric values in name fields;
+* alphabetic values in the Zip/Postal Code field;
+* mixed-character values;
+* very long values;
+* behavior after continuing to Checkout Overview;
+* preservation of submitted values in the generated order PDF.
+
+#### Test Data Explored
+
+| First Name | Last Name | Zip/Postal Code | Result |
+| --- | --- | --- | --- |
+| Three spaces | Three spaces | Three spaces | Accepted; user continued to Checkout Overview |
+| `---` | `---` | `---` | Accepted; user continued to Checkout Overview |
+| Cyrillic text | Cyrillic text | Cyrillic text | Accepted; user continued to Checkout Overview |
+| Numeric value | Numeric value | Alphabetic value | Accepted; user continued to Checkout Overview |
+| Very long Cyrillic text | Very long Cyrillic text | Very long Cyrillic text | Accepted; checkout completed successfully |
+
+#### Actual Result
+
+* The form rejects fully empty required fields.
+* The form accepts values containing only whitespace.
+* The form accepts punctuation-only values.
+* The form accepts Unicode and Cyrillic text.
+* The form accepts numeric values in the name fields.
+* The form accepts alphabetic values in the Zip/Postal Code field.
+* The form accepts very long input values.
+* All explored values were accepted and allowed navigation to Checkout Overview.
+* The very long Unicode-input scenario was completed through Order Complete and PDF generation.
+* Checkout Overview does not display the submitted customer information.
+* Generated order PDFs display ASCII checkout data correctly.
+* Generated order PDFs corrupt Cyrillic and other Unicode checkout data.
+
+#### Findings
+
+* Required-field validation is based on the presence of input rather than meaningful or normalized values.
+* No trimming, format validation, or practical maximum-length restriction was observed.
+* Unicode input is accepted by the web form but is not preserved correctly in the generated PDF.
+* The Unicode PDF issue is tracked as `BUG-COMPLETE-001`.
+
+#### Expected Result
+
+Because SauceDemo does not publish a formal checkout-input specification, the following are recorded as product-quality expectations rather than confirmed business rules:
+
+* whitespace-only values should not satisfy required-field validation;
+* submitted values should be normalized where appropriate;
+* excessively long input should be constrained or handled safely;
+* Unicode data accepted by the form should remain readable in all downstream outputs;
+* generated receipts should accurately preserve user-provided data.
+
+#### Automation Decision
+
+* Do not automate every explored value as a separate end-to-end test.
+* Add focused automated coverage for:
+  * whitespace-only required fields;
+  * Unicode PDF preservation, if PDF generation can be tested reliably;
+  * maximum-length handling only if a product requirement is defined.
+* Keep broader malformed-input combinations as exploratory coverage.
+
 ## 6.5 Checkout Overview
 
 ### TC-CHK2-001 - Verify that Checkout Overview is displayed

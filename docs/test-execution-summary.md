@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual manual execution records, not a single consolidated release run. It contains 38 documented manual cases: 13 Inventory, 7 Cart, 6 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these cases, 37 have a `Passed` status and 1 has a `Failed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 39 documented records: 13 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, and 5 Sidebar Menu cases. Of these records, 37 have a `Passed` status, 1 has a `Failed` status, and 1 exploratory charter has a `Completed` status. Two confirmed product defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -971,6 +971,67 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 #### Possible Bugs
 
 - None found for this test case.
+
+---
+
+### TC-CHK1-007 - Explore checkout input validation boundaries
+
+- **Execution type:** Exploratory
+- **Status:** Completed
+- **Automation decision:** Partially planned
+- **Related defect:** `BUG-COMPLETE-001`
+
+#### Charter
+
+Investigate how Checkout Step One handles malformed, international, whitespace-only, mixed-character, and very long values.
+
+#### Test Data Explored
+
+- whitespace-only values in all three fields;
+- punctuation-only values such as `---`;
+- Cyrillic and Unicode text;
+- numeric values in First Name and Last Name;
+- alphabetic values in Zip/Postal Code;
+- mixed-character values;
+- very long Cyrillic text in all three fields;
+- ASCII control data: `Katia`, `Tester`, `12345`.
+
+#### Actual Result
+
+- Fully empty fields were rejected by the existing required-field validation.
+- Values containing only spaces were accepted.
+- Punctuation-only values were accepted.
+- Cyrillic and Unicode values were accepted.
+- Numeric values in the name fields were accepted.
+- Alphabetic values in Zip/Postal Code were accepted.
+- Very long values were accepted.
+- The user could continue to Checkout Overview.
+- Checkout Overview did not display the submitted customer information.
+- All explored values were accepted by Checkout Step One.
+- The very long Unicode-input scenario was completed through Order Complete and PDF generation.
+- Generated PDFs displayed ASCII checkout data correctly.
+- Generated PDFs corrupted Cyrillic and mixed Unicode checkout data.
+
+#### Findings
+
+- The form validates field presence but does not normalize or validate meaningful content.
+- No trimming behavior was observed for whitespace-only values.
+- No practical maximum-length restriction was observed during exploration.
+- Lack of strict format validation is not automatically treated as a defect because no formal field-format specification is available.
+- Unicode corruption in generated PDFs is a confirmed defect tracked as `BUG-COMPLETE-001`.
+
+#### Evidence
+
+- [Unicode PDF defect report](bug-reports.md#bug-complete-001---generated-order-pdf-corrupts-unicode-checkout-data)
+- [Corrupted long Cyrillic PDF](evidence/BUG-COMPLETE-001/01-corrupted-cyrillic-long-input.pdf)
+- [Corrupted mixed Unicode PDF](evidence/BUG-COMPLETE-001/02-corrupted-mixed-unicode-input.pdf)
+- [Correct ASCII control PDF](evidence/BUG-COMPLETE-001/03-correct-ascii-control.pdf)
+
+#### Automation Recommendation
+
+- Add focused coverage for whitespace-only required fields.
+- Consider PDF Unicode automation only if download and PDF-content verification can be implemented reliably.
+- Do not create separate end-to-end tests for every malformed input combination.
 
 ---
 
