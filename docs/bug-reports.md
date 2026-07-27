@@ -872,3 +872,323 @@ Additional observations:
 - The behavior is not specific to a single persona.
 - Removing products directly from the Cart Page works correctly.
 - `Reset App State` should update both the stored cart state and all visible Inventory controls immediately.
+
+---
+
+## BUG-INV-006 - Inventory prices are random and do not match transaction prices for visual_user
+
+- **Status:** Open
+- **Severity:** Critical
+- **Priority:** High
+- **Type:** Functional / Pricing / Data Consistency
+- **Area:** Inventory Page / Product Details / Cart / Checkout
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-004`
+- **User:** `visual_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `visual_user`.
+- Inventory Page is open.
+
+### Steps to Reproduce
+
+1. Record the displayed Inventory Page price for any product.
+2. Reload the Inventory Page or apply another sorting option.
+3. Record the price for the same product again.
+4. Open that product’s Product Details page.
+5. Record the Product Details price.
+6. Add the product to the cart.
+7. Record the Cart Page price.
+8. Continue to Checkout Overview.
+9. Record the product price used in the order summary.
+
+### Expected Result
+
+- Each product displays a stable price.
+- The Inventory Page price remains unchanged after reload, revisit, or sorting.
+- The same price is displayed on:
+  - Inventory Page;
+  - Product Details;
+  - Cart Page;
+  - Checkout Overview.
+- The displayed catalog price matches the transaction price.
+
+### Actual Result
+
+- Product prices on the Inventory Page are random.
+- Prices change after:
+  - page reload;
+  - return to Inventory Page;
+  - product sorting.
+- The same product displays different Inventory Page prices during separate observations.
+- All six available products are affected.
+- Product Details, Cart Page, and Checkout Overview display the normal static product price.
+- The Inventory Page price therefore does not match the price used for the transaction.
+
+### Example
+
+For Sauce Labs Backpack:
+
+- Inventory Page displayed multiple changing random prices.
+- Product Details displayed `$29.99`.
+- Cart Page displayed `$29.99`.
+- Checkout Overview displayed `$29.99`.
+- Item total displayed `$29.99`.
+- Tax displayed `$2.40`.
+- Total displayed `$32.39`.
+
+### Impact
+
+- Users see misleading catalog prices.
+- Users cannot rely on the price displayed before opening a product.
+- The displayed price changes during normal navigation.
+- The price shown during product selection differs from the actual transaction price.
+- This creates a serious trust and commercial risk.
+- Price-based sorting and price comparison become unreliable.
+- Automated pricing assertions fail because Inventory values are unstable.
+
+### Notes
+
+- The defect affects all six products.
+- Product Details, Cart, and Checkout use stable prices.
+- The defect is isolated to the Inventory Page price display.
+- Some generated Inventory prices also use inconsistent decimal formatting.
+- The behavior is specific to `visual_user`.
+
+---
+
+## BUG-INV-007 - First Inventory position displays the wrong dog image for visual_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Visual / Functional / Data Mapping
+- **Area:** Inventory Page / Product Images / Sorting
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-004`
+- **User:** `visual_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `visual_user`.
+- Inventory Page is open.
+
+### Steps to Reproduce
+
+1. Observe the image displayed for the first product.
+2. Record the product name in the first position.
+3. Change the sorting option so that another product becomes first.
+4. Observe the image displayed for the new first product.
+5. Open the first product’s Product Details page.
+6. Compare the Inventory image with the Product Details image.
+
+### Expected Result
+
+- Each product displays its own corresponding image.
+- Sorting changes product order without changing the image-to-product mapping.
+- The Inventory image matches the Product Details image for the same product.
+
+### Actual Result
+
+- The first Inventory position displays a dog-with-ball image.
+- After sorting, the dog image moves to whichever product becomes first.
+- The image is therefore associated with the first visual position rather than with a specific product.
+- Product Details displays the correct image for the selected product.
+
+### Impact
+
+- Users see an incorrect image for the first product.
+- The wrong image can be associated with different products after sorting.
+- Product identification and comparison are unreliable.
+- Visual assertions based on product-image mapping fail.
+- Sorting exposes the incorrect position-based image behavior.
+
+### Notes
+
+- The defect was reproduced with multiple sorting options.
+- The dog image is not tied to Sauce Labs Backpack or another specific product.
+- The remaining Inventory product images appeared normal during exploration.
+- Product Details image mapping remained correct.
+- The behavior is specific to `visual_user`.
+
+---
+
+## BUG-UI-001 - Cart icon is misplaced across multiple pages for visual_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** High
+- **Type:** Visual / Layout
+- **Area:** Shared Header / Navigation
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-004`
+- **User:** `visual_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `visual_user`.
+
+### Steps to Reproduce
+
+1. Open the Inventory Page.
+2. Observe the cart icon position.
+3. Open a Product Details page.
+4. Observe the cart icon position.
+5. Continue through:
+   - Cart Page;
+   - Checkout Step One;
+   - Checkout Overview;
+   - Order Complete.
+6. Compare the cart icon position with its normal header position for `standard_user`.
+
+### Expected Result
+
+- The cart icon is positioned consistently in the header.
+- The icon remains aligned with the shared top navigation area.
+- The icon does not overlap or align with page-specific content.
+
+### Actual Result
+
+- The cart icon is shifted downward and to the right.
+- On the Inventory Page, it appears near the sorting row instead of its normal header position.
+- The incorrect position remains visible on:
+  - Inventory Page;
+  - Product Details;
+  - Cart Page;
+  - Checkout Step One;
+  - Checkout Overview;
+  - Order Complete.
+- The cart badge still updates and the control remains functional.
+
+### Impact
+
+- Shared navigation appears visually broken.
+- The cart control is difficult to locate consistently.
+- The misplaced icon reduces visual hierarchy and interface clarity.
+- The same layout defect affects multiple pages.
+- Visual regression tests for the shared header fail.
+
+### Notes
+
+- Cart functionality remains available.
+- The defect affects the shared header layout rather than cart behavior.
+- The behavior is specific to `visual_user`.
+- The cart icon is positioned correctly for `standard_user`.
+
+---
+
+## BUG-UI-002 - Sidebar Menu icon is visually skewed for visual_user
+
+- **Status:** Open
+- **Severity:** Low
+- **Priority:** Medium
+- **Type:** Visual / Layout
+- **Area:** Shared Header / Sidebar Menu Control
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-004`
+- **User:** `visual_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `visual_user`.
+- Any authenticated application page is open.
+
+### Steps to Reproduce
+
+1. Observe the Sidebar Menu icon in the upper-left area of the header.
+2. Compare the three icon lines with the normal hamburger icon displayed for `standard_user`.
+3. Open and close the Sidebar Menu.
+4. Observe the icon again.
+
+### Expected Result
+
+- The Sidebar Menu icon displays three horizontal, parallel lines.
+- The icon is aligned correctly within the header.
+- Opening or closing the menu does not distort the icon.
+
+### Actual Result
+
+- The three menu-icon lines are visually tilted to the right.
+- The control appears skewed instead of displaying a normal horizontal hamburger icon.
+- The visual defect remains present before and after opening the Sidebar Menu.
+- Sidebar Menu functionality remains available.
+
+### Impact
+
+- The shared navigation control appears visually malformed.
+- The distorted icon reduces interface consistency and polish.
+- Visual regression tests for the header fail.
+- Users may interpret the control as broken even though it remains functional.
+
+### Notes
+
+- Sidebar Menu navigation works correctly.
+- The defect affects the icon appearance, not the menu behavior.
+- The behavior is specific to `visual_user`.
+- The Sidebar Menu icon is displayed correctly for `standard_user`.
+
+---
+
+## BUG-CHK2-002 - Item total intermittently exposes floating-point precision for visual_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** High
+- **Type:** Functional / Calculation Display / Data Formatting
+- **Area:** Checkout Overview
+- **Reproducibility:** Intermittent
+- **Related test case:** `TC-PERSONA-004`
+- **User:** `visual_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `visual_user`.
+- Multiple products are available in the cart.
+- Checkout Overview is open.
+
+### Steps to Reproduce
+
+1. Add all available products to the cart.
+2. Proceed to Checkout Step One.
+3. Enter valid customer data.
+4. Click `Continue`.
+5. Observe the `Item total` value on Checkout Overview.
+6. Repeat the flow if the issue does not appear.
+
+### Expected Result
+
+- `Item total` is calculated correctly.
+- The monetary value is rounded and displayed with exactly two decimal places.
+- Floating-point implementation details are not exposed in the user interface.
+
+### Actual Result
+
+- `Item total` intermittently displays an unrounded floating-point value.
+- One observed value was:
+
+  `$121.94999999999999`
+
+- `Tax` and `Total` remained displayed with two decimal places.
+- The issue was not reproduced on every attempt.
+
+### Impact
+
+- Financial information appears technically incorrect.
+- Users may distrust the order calculation.
+- Monetary formatting is inconsistent within the same order summary.
+- Automated assertions expecting a two-decimal currency format can fail intermittently.
+- The defect may indicate missing rounding before rendering calculated values.
+
+### Notes
+
+- The issue was observed after adding all available products.
+- The defect is intermittent.
+- The underlying arithmetic may still be correct, but the displayed `Item total` is not formatted correctly.
+- This defect is separate from random Inventory Page prices tracked in `BUG-INV-006`.
+- The behavior was observed for `visual_user`.
