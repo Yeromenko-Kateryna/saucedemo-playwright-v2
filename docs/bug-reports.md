@@ -812,7 +812,7 @@ Additional observations:
 
 ---
 
-## BUG-CART-003 - Reset App State clears the cart but leaves stale Remove buttons for error_user
+## BUG-CART-003 - Reset App State clears the cart but leaves stale Remove buttons on Inventory Page
 
 - **Status:** Open
 - **Severity:** Medium
@@ -820,13 +820,13 @@ Additional observations:
 - **Type:** Functional / State Management
 - **Area:** Inventory Page / Cart State / Sidebar Menu
 - **Reproducibility:** 100%
-- **Related test case:** `TC-PERSONA-003`
-- **User:** `error_user`
+- **Related test cases:** `TC-PERSONA-001`, `TC-PERSONA-002`, `TC-PERSONA-003`
+- **Affected users:** `standard_user`, `problem_user`, `performance_glitch_user`, `error_user`
 
 ### Preconditions
 
 - SauceDemo is available.
-- User is logged in as `error_user`.
+- A supported user is logged in.
 - Inventory Page is open.
 - At least one product has been added to the cart.
 
@@ -837,36 +837,38 @@ Additional observations:
 3. Open the Sidebar Menu.
 4. Click `Reset App State`.
 5. Observe the cart badge.
-6. Observe the cart contents.
-7. Observe the product action buttons on the Inventory Page.
+6. Open the Cart Page and verify its contents.
+7. Return to the Inventory Page and observe the product action buttons.
 
 ### Expected Result
 
 - The cart is cleared.
 - The cart badge is removed.
 - No products remain in the cart.
-- Every previously added product displays `Add to cart`.
+- Every previously added product immediately displays `Add to cart`.
 - Inventory controls remain synchronized with the actual cart state.
 
 ### Actual Result
 
 - The cart is cleared.
 - The cart badge is removed.
-- The cart contains no products.
-- One or more previously added products can still display `Remove`.
+- The Cart Page contains no products.
+- Previously added products can continue to display `Remove` on the Inventory Page.
 - Inventory controls remain stale and do not match the empty cart state.
+- Opening the empty Cart Page and returning to Inventory refreshes the stale controls.
+- Clicking a stale `Remove` control also changes it back to `Add to cart`.
 
 ### Impact
 
-- The Inventory Page shows incorrect product state.
+- The Inventory Page shows an incorrect product state.
 - Users may believe products are still present in the cart.
-- Users may be unable to add a product again through the stale control.
-- Cart state and Inventory UI become inconsistent.
-- Automated cart-state validation fails after Reset App State.
+- Cart state and Inventory UI become temporarily inconsistent.
+- Users must perform another navigation or interaction to refresh the controls.
+- Automated cart-state validation fails immediately after Reset App State.
 
 ### Notes
 
+- The defect was reproduced for `standard_user`, `problem_user`, `performance_glitch_user`, and `error_user`.
+- The behavior is not specific to a single persona.
 - Removing products directly from the Cart Page works correctly.
-- The defect appears after using `Reset App State`.
-- The behavior is specific to `error_user`.
-- Reset App State should update both the stored cart state and all visible Inventory controls.
+- `Reset App State` should update both the stored cart state and all visible Inventory controls immediately.
