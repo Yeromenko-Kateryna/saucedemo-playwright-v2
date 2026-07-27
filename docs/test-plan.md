@@ -1442,6 +1442,129 @@ Focus areas:
 * Use a documented generous upper threshold to avoid flaky timing assertions.
 * Keep detailed transition comparison as exploratory coverage.
 
+### TC-PERSONA-003 - Explore functional failures as error_user
+
+* **Priority:** High
+* **Type:** Exploratory / Persona / Functional
+* **User:** `error_user`
+
+#### Preconditions
+
+* SauceDemo is available.
+* User can log in with `error_user`.
+* Password is `secret_sauce`.
+
+#### Exploratory Charter
+
+Explore functional failures specific to `error_user` across the main shopping flow.
+
+Focus areas:
+
+* Inventory Page;
+* product sorting;
+* Add and Remove actions;
+* Product Details;
+* cart state;
+* Reset App State;
+* Cart Page;
+* Checkout Step One;
+* Checkout Overview;
+* order completion;
+* Sidebar Menu.
+
+#### Actual Result
+
+* Login credentials were accepted.
+* Inventory Page opened successfully.
+* Sidebar Menu opened and its navigation items worked.
+* Selecting any available sorting option displayed the browser alert:
+  `Sorting is broken! This error has been reported to Backtrace.`
+* Product order did not change after the sorting attempt.
+* Add and Remove actions on Inventory Page behaved inconsistently:
+  * some products could be added;
+  * some `Add to cart` controls did not respond;
+  * some `Remove` controls did not respond;
+  * the same actions sometimes worked during another attempt.
+* Removing products from the Cart Page worked correctly.
+* `Continue Shopping` returned to the Inventory Page successfully.
+* `Checkout` opened Checkout Step One successfully.
+* `Reset App State` cleared the cart state, but previously added products could still display `Remove` on the Inventory Page.
+* This created a mismatch between the empty cart and the product button state.
+* All six Product Details pages opened with the correct product name, price, and image.
+* Product descriptions were missing from Product Details for all six products.
+* `Back to products` returned to the Inventory Page.
+* The First Name field accepted input.
+* The Postal Code field accepted input.
+* The Last Name field received focus but did not preserve typed characters.
+* Submitting a completely empty form displayed `Error: First Name is required`.
+* After First Name and Postal Code were entered, the application continued to Checkout Overview even though Last Name remained empty.
+* Checkout Overview displayed the selected products, quantities, prices, payment information, shipping information, subtotal, tax, and total.
+* `Cancel` navigation worked.
+* The `Finish` button was visible and appeared enabled.
+* Repeated clicks on `Finish` produced no visible response.
+* No alert appeared after clicking `Finish`.
+* The URL remained `/checkout-step-two.html`.
+* The Order Complete page did not open.
+* The order could not be completed.
+
+#### Functional Results
+
+| Area | Action | Observed behavior |
+| --- | --- | --- |
+| Login | Log in as `error_user` | Successful |
+| Sidebar Menu | Open and use menu items | Worked |
+| Sorting | Select any sorting option | Browser alert displayed; sorting not applied |
+| Inventory | Add product | Inconsistent; worked only for some attempts or products |
+| Inventory | Remove product | Inconsistent; sometimes did not respond |
+| Cart | Remove product | Worked |
+| Cart | Continue Shopping | Worked |
+| Cart | Checkout | Worked |
+| Reset App State | Clear application state | Cart cleared, but stale `Remove` buttons could remain |
+| Product Details | Open any of six products | Correct product opened |
+| Product Details | Validate description | Description missing for all six products |
+| Checkout Step One | Enter First Name | Worked |
+| Checkout Step One | Enter Last Name | Field did not preserve input |
+| Checkout Step One | Enter Postal Code | Worked |
+| Checkout Step One | Submit fully empty form | `Error: First Name is required` |
+| Checkout Step One | Continue with empty Last Name | Checkout Overview opened |
+| Checkout Overview | Validate order information | Displayed correctly |
+| Checkout Overview | Cancel | Worked |
+| Checkout Overview | Finish | No response; order not completed |
+
+#### Findings
+
+* Sorting is completely unavailable for `error_user`.
+* Product descriptions are consistently missing from Product Details.
+* Last Name input is broken.
+* Checkout validation does not prevent continuation with an empty Last Name.
+* The final order-completion action is blocked because `Finish` does not respond.
+* Reset App State can leave the Inventory Page visually inconsistent with the actual cart.
+* Inventory Add and Remove behavior is intermittent and requires a focused reproducibility check before being recorded as a separate confirmed defect.
+* Cart Page removal remains functional.
+* The code-like Backpack description and Red T-Shirt product name are shared with `standard_user` and are treated as demo content rather than persona-specific defects.
+
+#### Risk Assessment
+
+* **Functional risk:** users cannot sort products.
+* **Information risk:** Product Details omit required product information.
+* **Data-quality risk:** checkout accepts incomplete customer information.
+* **State-management risk:** the Inventory Page may display stale cart controls after Reset App State.
+* **Transaction risk:** users can reach Checkout Overview but cannot complete the order.
+* **Automation risk:** browser alerts and non-responsive controls require explicit handling and stable assertions.
+
+#### Automation Decision
+
+* Do not duplicate the full `standard_user` regression suite.
+* Add focused persona tests for stable, high-value failures.
+* Prioritize:
+  * sorting alert and unchanged order;
+  * missing Product Details description;
+  * Last Name input failure;
+  * continuation with an empty Last Name;
+  * non-responsive Finish button;
+  * stale Inventory state after Reset App State.
+* Keep inconsistent Inventory Add and Remove behavior as an exploratory finding until a deterministic reproduction path is established.
+
 ---
 
 ## 7. Automation Priority

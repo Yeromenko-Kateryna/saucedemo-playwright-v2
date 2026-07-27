@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 42 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 2 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 3 exploratory charters have a `Completed` status. Seven confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, and `BUG-CHK1-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 43 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 3 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 4 exploratory charters have a `Completed` status. Seven confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, and `BUG-CHK1-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1646,3 +1646,101 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 - Measure destination page readiness, not URL change alone.
 - Avoid duplicating the complete `standard_user` regression suite.
 - Use a documented threshold broad enough to reduce timing flakiness.
+
+---
+
+### TC-PERSONA-003 - Explore functional failures as error_user
+
+- **Execution type:** Exploratory
+- **Status:** Completed
+- **Automation decision:** Partially planned
+- **User:** `error_user`
+
+#### Charter
+
+Explore functional failures specific to `error_user` across the main shopping flow.
+
+#### Actual Result
+
+- Login credentials were accepted.
+- Inventory Page opened successfully.
+- Sidebar Menu opened and its navigation items worked.
+- Selecting any sorting option displayed:
+  `Sorting is broken! This error has been reported to Backtrace.`
+- Product sorting was not applied.
+- Inventory Add and Remove actions behaved inconsistently:
+  - some products could be added;
+  - some buttons did not respond;
+  - the same action sometimes worked on another attempt.
+- Removing products from the Cart Page worked.
+- `Continue Shopping` and `Checkout` worked.
+- `Reset App State` cleared the cart, but stale `Remove` buttons could remain on the Inventory Page.
+- All six Product Details pages opened with the correct name, price, and image.
+- Product descriptions were missing from all six Product Details pages.
+- First Name and Postal Code accepted input.
+- Last Name received focus but did not preserve typed characters.
+- A fully empty form displayed `Error: First Name is required`.
+- Checkout Overview opened after First Name and Postal Code were entered, even though Last Name remained empty.
+- Checkout Overview displayed the selected products and calculated totals.
+- `Cancel` worked.
+- `Finish` appeared enabled but did not respond.
+- Repeated clicks on `Finish` caused no visible change.
+- No alert appeared.
+- The URL remained `/checkout-step-two.html`.
+- The order could not be completed.
+
+#### Functional Results
+
+| Area | Action | Observed behavior |
+| --- | --- | --- |
+| Login | Log in as `error_user` | Successful |
+| Sidebar Menu | Open and use menu items | Worked |
+| Sorting | Select any option | Alert displayed; sorting not applied |
+| Inventory | Add product | Inconsistent |
+| Inventory | Remove product | Inconsistent |
+| Cart | Remove product | Worked |
+| Cart | Continue Shopping | Worked |
+| Cart | Checkout | Worked |
+| Reset App State | Clear application state | Cart cleared; stale `Remove` state could remain |
+| Product Details | Open all six products | Correct products opened |
+| Product Details | Validate description | Missing for all six products |
+| Checkout Step One | Enter First Name | Worked |
+| Checkout Step One | Enter Last Name | Input was not preserved |
+| Checkout Step One | Enter Postal Code | Worked |
+| Checkout Step One | Submit empty form | `Error: First Name is required` |
+| Checkout Step One | Continue with empty Last Name | Checkout Overview opened |
+| Checkout Overview | Validate order information | Displayed correctly |
+| Checkout Overview | Cancel | Worked |
+| Checkout Overview | Finish | No response; order not completed |
+
+#### Findings
+
+- Sorting is unavailable for `error_user`.
+- Product descriptions are missing from Product Details.
+- Last Name input is broken.
+- Checkout permits progression with an empty Last Name.
+- `Finish` blocks final order completion.
+- Reset App State can leave stale Inventory controls.
+- Inventory Add and Remove behavior is intermittent and is not yet treated as a separate confirmed deterministic defect.
+- Cart Page removal remains functional.
+- Code-like catalog text is shared with `standard_user` and is not treated as a persona-specific defect.
+
+#### Risk Assessment
+
+- Users cannot sort the catalog.
+- Product Details omit product information.
+- Incomplete customer data can reach Checkout Overview.
+- Inventory state may not match cart state.
+- Users cannot finish the order.
+- Browser alerts and intermittent controls create automation instability.
+
+#### Automation Recommendation
+
+- Add focused tests for:
+  - sorting alert and unchanged order;
+  - missing Product Details description;
+  - Last Name input failure;
+  - progression with empty Last Name;
+  - non-responsive Finish button;
+  - stale state after Reset App State.
+- Keep intermittent Add and Remove behavior under exploratory observation until a deterministic reproduction path is identified.
