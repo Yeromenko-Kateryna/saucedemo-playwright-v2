@@ -1592,6 +1592,8 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 - Returning through `Back Home` required approximately 10 seconds.
 - `Cancel` navigation from Checkout Step One required approximately 10 seconds.
 - `Cancel` navigation from Checkout Overview required approximately 10 seconds.
+- Sidebar Menu opened quickly, and `All Items`, `About`, `Logout`, and `Reset App State` responded quickly.
+- Returning from the external About page back to the Inventory Page required approximately 10 seconds.
 - During slow transitions, the destination URL appeared before the target page became visually ready.
 - No new persona-specific functional blocker was found.
 - The complete checkout flow remained functional.
@@ -1613,6 +1615,12 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 | Checkout Overview → Finish | Fast |
 | Checkout Overview → Cancel | Approximately 10-second delay |
 | Order Complete → Back Home | Approximately 10-second delay |
+| Open Sidebar Menu | Fast |
+| Sidebar → All Items | Fast |
+| Sidebar → About | Fast |
+| Return from About → Inventory | Approximately 10-second delay |
+| Sidebar → Logout | Fast |
+| Sidebar → Reset App State | Fast |
 
 #### Findings
 
