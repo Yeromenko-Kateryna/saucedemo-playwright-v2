@@ -1339,6 +1339,101 @@ Automate only stable, high-value persona scenarios:
 
 Do not run the complete `standard_user` regression suite again for `problem_user`.
 
+### TC-PERSONA-002 - Explore navigation performance as performance_glitch_user
+
+* **Priority:** Medium
+* **Type:** Exploratory / Persona / Performance
+* **User:** `performance_glitch_user`
+
+#### Preconditions
+
+* SauceDemo is available.
+* User can log in with `performance_glitch_user`.
+* Password is `secret_sauce`.
+
+#### Exploratory Charter
+
+Compare navigation response times for `performance_glitch_user` with the normal behavior established for `standard_user`.
+
+Focus areas:
+
+* login;
+* Inventory Page readiness;
+* Product Details navigation;
+* return navigation;
+* product sorting;
+* Add and Remove actions;
+* Cart Page;
+* Checkout navigation;
+* order completion;
+* return to Inventory Page.
+
+#### Actual Result
+
+* Login credentials were accepted.
+* The URL changed to `/inventory.html` quickly, but the Inventory Page required approximately 10 seconds to become visually ready.
+* Opening Product Details was fast.
+* Add and Remove actions were fast.
+* Returning from Product Details through `Back to products` required approximately 10 seconds.
+* Product sorting worked, but applying a different sorting option required approximately 10 seconds.
+* Opening the Cart Page was fast.
+* Returning through `Continue Shopping` required approximately 10 seconds.
+* Opening Checkout Step One was fast.
+* Continuing to Checkout Overview was fast.
+* Completing the order through `Finish` was fast.
+* Returning through `Back Home` required approximately 10 seconds.
+* `Cancel` navigation from Checkout Step One required approximately 10 seconds.
+* `Cancel` navigation from Checkout Overview required approximately 10 seconds.
+* During slow transitions, the browser URL changed before the destination page became visually ready.
+* No functional errors or blocked checkout flow were observed.
+* The complete checkout flow remained functional, including the already known ability to complete an empty-cart checkout.
+* No new persona-specific checkout validation defect was identified.
+
+#### Transition Results
+
+| Action | Observed behavior |
+| --- | --- |
+| Login → Inventory | Approximately 10-second visual delay |
+| Inventory → Product Details | Fast |
+| Product Details → Inventory | Approximately 10-second delay |
+| Apply sorting | Works after approximately 10 seconds |
+| Add / Remove product | Fast |
+| Inventory → Cart | Fast |
+| Cart → Continue Shopping | Approximately 10-second delay |
+| Cart → Checkout Step One | Fast |
+| Checkout Step One → Continue | Fast |
+| Checkout Step One → Cancel | Approximately 10-second delay |
+| Checkout Overview → Finish | Fast |
+| Checkout Overview → Cancel | Approximately 10-second delay |
+| Order Complete → Back Home | Approximately 10-second delay |
+
+#### Findings
+
+* Performance degradation is selective rather than global.
+* Slow behavior primarily affects transitions that return or navigate to the Inventory Page.
+* The destination URL may appear before the target page is visually ready.
+* Core cart and checkout actions remain functional.
+* The order can be completed successfully.
+* Existing shared behaviors were also observed but are not treated as new persona-specific findings:
+  * empty-cart checkout remains possible and is already tracked as `BUG-CART-001`;
+  * weak checkout input validation is already covered by `TC-CHK1-007`;
+  * code-like catalog text is shared with `standard_user` and is treated as demo content rather than a defect.
+
+#### Risk Assessment
+
+* **Usability risk:** users may believe navigation is frozen.
+* **Interaction risk:** users may click controls repeatedly while waiting.
+* **Automation risk:** tests with short fixed timeouts may fail even though the destination URL has already changed.
+* **Performance risk:** repeated delays significantly increase the time required to browse and complete secondary navigation flows.
+
+#### Automation Decision
+
+* Do not duplicate the full functional regression suite.
+* Add one focused performance-oriented persona test for a stable slow transition.
+* Prefer measuring page readiness after navigation rather than URL change alone.
+* Use a documented generous upper threshold to avoid flaky timing assertions.
+* Keep detailed transition comparison as exploratory coverage.
+
 ---
 
 ## 7. Automation Priority

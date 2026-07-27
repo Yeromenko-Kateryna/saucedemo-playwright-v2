@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 41 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 1 Persona Exploration case. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 2 exploratory charters have a `Completed` status. Seven confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, and `BUG-CHK1-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 42 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 2 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 3 exploratory charters have a `Completed` status. Seven confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, and `BUG-CHK1-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1562,3 +1562,79 @@ Automate only stable, high-risk scenarios:
 - selected reproducible Add/Remove failures.
 
 Do not duplicate the complete `standard_user` regression suite.
+
+---
+
+### TC-PERSONA-002 - Explore navigation performance as performance_glitch_user
+
+- **Execution type:** Exploratory
+- **Status:** Completed
+- **Automation decision:** Partially planned
+- **User:** `performance_glitch_user`
+
+#### Charter
+
+Compare navigation response times for `performance_glitch_user` with the normal behavior established for `standard_user`.
+
+#### Actual Result
+
+- Login credentials were accepted.
+- The browser URL changed to `/inventory.html` quickly, but the Inventory Page required approximately 10 seconds to become visually ready.
+- Opening Product Details was fast.
+- Add and Remove actions were fast.
+- Returning from Product Details through `Back to products` required approximately 10 seconds.
+- Product sorting worked, but applying another sorting option required approximately 10 seconds.
+- Opening the Cart Page was fast.
+- Returning through `Continue Shopping` required approximately 10 seconds.
+- Opening Checkout Step One was fast.
+- Continuing to Checkout Overview was fast.
+- Completing the order through `Finish` was fast.
+- Returning through `Back Home` required approximately 10 seconds.
+- `Cancel` navigation from Checkout Step One required approximately 10 seconds.
+- `Cancel` navigation from Checkout Overview required approximately 10 seconds.
+- During slow transitions, the destination URL appeared before the target page became visually ready.
+- No new persona-specific functional blocker was found.
+- The complete checkout flow remained functional.
+
+#### Transition Results
+
+| Action | Observed behavior |
+| --- | --- |
+| Login → Inventory | Approximately 10-second visual delay |
+| Inventory → Product Details | Fast |
+| Product Details → Inventory | Approximately 10-second delay |
+| Apply sorting | Works after approximately 10 seconds |
+| Add / Remove product | Fast |
+| Inventory → Cart | Fast |
+| Cart → Continue Shopping | Approximately 10-second delay |
+| Cart → Checkout Step One | Fast |
+| Checkout Step One → Continue | Fast |
+| Checkout Step One → Cancel | Approximately 10-second delay |
+| Checkout Overview → Finish | Fast |
+| Checkout Overview → Cancel | Approximately 10-second delay |
+| Order Complete → Back Home | Approximately 10-second delay |
+
+#### Findings
+
+- Performance degradation was selective rather than global.
+- Slow behavior primarily affected transitions that returned or navigated to the Inventory Page.
+- URL change alone did not indicate that the destination page was ready for interaction.
+- Core cart and checkout actions remained functional.
+- Existing shared behaviors were not treated as new persona-specific defects:
+  - empty-cart checkout is already tracked as `BUG-CART-001`;
+  - weak checkout input validation is already covered by `TC-CHK1-007`;
+  - code-like catalog text is shared with `standard_user` and treated as demo content.
+
+#### Risk Assessment
+
+- Users may believe the application is frozen.
+- Repeated clicks during the delay may create unintended interactions.
+- Automated tests that assert only the URL may continue before the page is ready.
+- Repeated delays significantly increase navigation time.
+
+#### Automation Recommendation
+
+- Add one focused test for a stable slow Inventory-bound transition.
+- Measure destination page readiness, not URL change alone.
+- Avoid duplicating the complete `standard_user` regression suite.
+- Use a documented threshold broad enough to reduce timing flakiness.
