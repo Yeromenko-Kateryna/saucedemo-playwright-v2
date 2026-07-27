@@ -1565,6 +1565,180 @@ Focus areas:
   * stale Inventory state after Reset App State.
 * Keep inconsistent Inventory Add and Remove behavior as an exploratory finding until a deterministic reproduction path is established.
 
+### TC-PERSONA-004 - Explore visual and pricing defects as visual_user
+
+* **Priority:** High
+* **Type:** Exploratory / Persona / Visual / Functional
+* **User:** `visual_user`
+
+#### Preconditions
+
+* SauceDemo is available.
+* User can log in with `visual_user`.
+* Password is `secret_sauce`.
+
+#### Exploratory Charter
+
+Explore visual, layout, pricing, image, calculation-display, and state-consistency defects specific to `visual_user` across the main shopping flow.
+
+Focus areas:
+
+* Inventory Page layout;
+* product images;
+* product prices;
+* product sorting;
+* product card alignment;
+* Add and Remove controls;
+* Product Details;
+* Cart Page;
+* Checkout Step One;
+* Checkout Overview;
+* Order Complete;
+* Sidebar Menu;
+* header controls;
+* Reset App State.
+
+#### Actual Result
+
+* Login credentials were accepted.
+* Inventory Page opened successfully.
+* Product sorting worked and changed the product order.
+* Product prices on the Inventory Page were random and changed repeatedly.
+* Prices changed after:
+  * returning to the Inventory Page;
+  * reloading the page;
+  * applying another sorting option.
+* The same product displayed different Inventory Page prices during separate observations.
+* Some Inventory Page prices used an inconsistent currency format, including values with only one decimal digit.
+* All six products were affected by the random pricing behavior.
+* Product Details displayed the normal static product price.
+* Cart Page displayed the normal static product price.
+* Checkout Overview displayed the normal static product price.
+* When all products were added, Checkout Overview intermittently displayed an unrounded floating-point value for `Item total`.
+* One observed value was `$121.94999999999999`.
+* `Tax` and `Total` remained displayed with two decimal places.
+* The precision defect was not reproduced on every attempt.
+* For Sauce Labs Backpack:
+  * Inventory Page displayed changing random values;
+  * Product Details displayed `$29.99`;
+  * Cart Page displayed `$29.99`;
+  * Checkout Overview displayed `$29.99`;
+  * Item total was `$29.99`;
+  * Tax was `$2.40`;
+  * Total was `$32.39`.
+* The Inventory Page price therefore did not match the price used in Product Details, Cart, and Checkout.
+* The first product position on the Inventory Page displayed a dog-with-ball image.
+* After sorting changed the first product, the dog image moved to the new first product.
+* The dog image was therefore associated with the first visual position rather than a specific product.
+* Product Details displayed the correct image for the opened product.
+* Product card content alignment was inconsistent.
+* Some product names were shifted horizontally compared with other cards.
+* Prices and action buttons were not aligned consistently across product cards.
+* At least one `Add to cart` button extended outside the expected product-card content area.
+* The cart icon was positioned incorrectly in the header.
+* The cart icon appeared near the sorting row or lower than its normal header position.
+* The incorrect cart-icon position remained visible across:
+  * Inventory Page;
+  * Product Details;
+  * Cart Page;
+  * Checkout Step One;
+  * Checkout Overview;
+  * Order Complete.
+* The Sidebar Menu icon was visually skewed.
+* Its horizontal lines appeared tilted to the right instead of forming a normal hamburger icon.
+* Sidebar Menu functionality remained available.
+* Cart Page layout was inconsistent:
+  * the `Checkout` button appeared at the top-right area of the page;
+  * `Continue Shopping` remained lower on the left;
+  * the two primary actions were visually separated.
+* Checkout Step One layout was inconsistent:
+  * `Cancel` and `Continue` were positioned far apart near the lower edges of the page;
+  * the controls appeared detached from the form.
+* Checkout Overview layout was inconsistent:
+  * `Cancel` and `Finish` were positioned far apart near the lower edges of the page;
+  * the controls appeared detached from the order information.
+* Order Complete remained functional.
+* Products could be added to the cart.
+* The cart badge updated.
+* Cart contents were preserved across the shopping flow.
+* Checkout could be completed successfully.
+* `Reset App State` cleared the actual cart but could leave stale `Remove` controls on the Inventory Page.
+* The Reset App State behavior matched the already documented shared defect `BUG-CART-003`.
+
+#### Visual and Functional Results
+
+| Area | Action | Observed behavior |
+| --- | --- | --- |
+| Login | Log in as `visual_user` | Successful |
+| Inventory | View product prices | Random prices displayed |
+| Inventory | Reload or revisit page | Product prices changed |
+| Inventory | Apply sorting | Sorting worked, prices changed |
+| Inventory | Validate currency format | Some prices used inconsistent decimal formatting |
+| Product Details | Open product | Normal static price displayed |
+| Cart | View added product | Normal static price displayed |
+| Checkout Overview | View added product | Normal static price displayed |
+| Checkout Overview | Add all products and inspect Item total | Intermittently displayed an unrounded floating-point value |
+| Inventory | Observe first product image | Dog image displayed |
+| Inventory | Change sorting | Dog image moved to the new first product |
+| Product Details | Validate product image | Correct image displayed |
+| Inventory | Validate card layout | Alignment varied between cards |
+| Inventory | Validate action buttons | At least one button exceeded the expected card area |
+| Header | Observe cart icon | Positioned incorrectly |
+| Header | Observe Sidebar Menu icon | Lines appeared skewed to the right |
+| Sidebar Menu | Open menu | Functional |
+| Cart | Validate page actions | Checkout and Continue Shopping were visually separated |
+| Checkout Step One | Validate controls | Cancel and Continue were positioned far apart |
+| Checkout Overview | Validate controls | Cancel and Finish were positioned far apart |
+| Checkout | Complete order | Successful |
+| Reset App State | Clear cart | Shared stale-button defect reproduced |
+
+#### Findings
+
+* Inventory Page prices are random and unstable.
+* Inventory Page prices do not match the prices used in Product Details, Cart, or Checkout.
+* Pricing inconsistency affects all available products.
+* Currency formatting is inconsistent for some generated Inventory Page values.
+* Checkout Overview can intermittently expose floating-point precision in `Item total`.
+* The dog image is attached to the first product position rather than to a specific product.
+* Correct product images appear on Product Details.
+* Product card layout and control alignment are inconsistent.
+* The cart icon is misplaced across multiple pages.
+* The Sidebar Menu icon is visually skewed.
+* Cart and checkout controls are positioned inconsistently.
+* Core shopping and order-completion functionality remains available.
+* Reset App State behavior is already tracked as the shared `BUG-CART-003`.
+
+#### Risk Assessment
+
+* **Pricing risk:** users see a different price before opening or purchasing a product.
+* **Trust risk:** constantly changing prices make the catalog appear unreliable.
+* **Commercial risk:** displayed catalog prices do not represent the actual transaction price.
+* **Calculation-display risk:** unrounded floating-point values make financial totals appear unreliable.
+* **Visual risk:** incorrect images may cause users to associate the wrong image with a product.
+* **Usability risk:** misplaced header controls and action buttons reduce interface clarity.
+* **Accessibility risk:** inconsistent alignment and detached controls make visual navigation harder.
+* **Automation risk:** dynamic random prices and position-based images can cause unstable assertions.
+* **Regression risk:** visual defects affect multiple pages and shared layout components.
+
+#### Automation Decision
+
+* Do not duplicate the complete `standard_user` regression suite.
+* Add focused persona tests for stable, high-value defects.
+* Prioritize:
+  * Inventory price stability;
+  * Inventory price consistency with Product Details;
+  * Inventory price consistency with Cart and Checkout Overview;
+  * currency-format validation;
+  * Checkout Overview monetary rounding with all products;
+  * first-position dog-image behavior after sorting;
+  * correct Product Details image;
+  * cart-icon positioning;
+  * Sidebar Menu icon appearance;
+  * product-card boundary and alignment checks.
+* Use visual regression screenshots only for stable viewport sizes.
+* Keep broad page-layout review as exploratory coverage.
+* Reuse `BUG-CART-003` for Reset App State instead of creating a duplicate persona-specific defect.
+
 ---
 
 ## 7. Automation Priority

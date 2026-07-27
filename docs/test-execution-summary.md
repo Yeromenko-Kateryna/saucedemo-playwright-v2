@@ -12,7 +12,7 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 43 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 3 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 4 exploratory charters have a `Completed` status. Thirteen confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-CART-003`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, `BUG-INV-004`, `BUG-INV-005`, `BUG-CHK1-001`, `BUG-CHK1-002`, `BUG-CHK1-003`, and `BUG-CHK2-001`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 44 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 4 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 5 exploratory charters have a `Completed` status. Thirteen confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-CART-003`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, `BUG-INV-004`, `BUG-INV-005`, `BUG-CHK1-001`, `BUG-CHK1-002`, `BUG-CHK1-003`, and `BUG-CHK2-001`.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
@@ -1744,3 +1744,124 @@ Explore functional failures specific to `error_user` across the main shopping fl
   - non-responsive Finish button;
   - stale state after Reset App State.
 - Keep intermittent Add and Remove behavior under exploratory observation until a deterministic reproduction path is identified.
+
+---
+
+### TC-PERSONA-004 - Explore visual and pricing defects as visual_user
+
+- **Execution type:** Exploratory
+- **Status:** Completed
+- **Automation decision:** Partially planned
+- **User:** `visual_user`
+
+#### Charter
+
+Explore visual, layout, pricing, image, calculation-display, and state-consistency defects specific to `visual_user` across the main shopping flow.
+
+#### Actual Result
+
+- Login credentials were accepted.
+- Inventory Page opened successfully.
+- Product sorting worked.
+- Inventory Page prices changed after reload, revisit, and sorting.
+- All six products displayed unstable random prices.
+- Some prices used inconsistent decimal formatting.
+- Product Details displayed normal static prices.
+- Cart Page displayed normal static prices.
+- Checkout Overview displayed normal static prices.
+- Sauce Labs Backpack displayed `$29.99` on Product Details, Cart, and Checkout Overview.
+- Backpack displayed changing random prices on the Inventory Page.
+- Checkout Overview showed:
+  - Item total: `$29.99`;
+  - Tax: `$2.40`;
+  - Total: `$32.39`.
+- When all products were added, `Item total` intermittently displayed an unrounded floating-point value.
+- One observed value was `$121.94999999999999`.
+- `Tax` and `Total` remained formatted with two decimal places.
+- The floating-point precision issue was not reproduced on every attempt.
+- The first Inventory position displayed a dog-with-ball image.
+- After sorting, the dog image moved to whichever product became first.
+- Product Details displayed the correct image for the selected product.
+- Product card alignment was inconsistent.
+- Some product names, prices, and action buttons were shifted.
+- At least one `Add to cart` button exceeded the expected card area.
+- The cart icon was misplaced across Inventory, Product Details, Cart, Checkout, and Order Complete pages.
+- The Sidebar Menu icon appeared skewed to the right.
+- Sidebar Menu functionality remained available.
+- Cart Page positioned `Checkout` separately at the top-right while `Continue Shopping` remained lower-left.
+- Checkout Step One placed `Cancel` and `Continue` far apart near the lower page edges.
+- Checkout Overview placed `Cancel` and `Finish` far apart near the lower page edges.
+- Products could be added to the cart.
+- The cart badge updated.
+- Cart contents were preserved.
+- Checkout completed successfully.
+- Reset App State reproduced the shared stale-button defect tracked as `BUG-CART-003`.
+
+#### Visual and Functional Results
+
+| Area | Action | Observed behavior |
+| --- | --- | --- |
+| Login | Log in as `visual_user` | Successful |
+| Inventory | View prices | Random values displayed |
+| Inventory | Reload or revisit | Prices changed |
+| Inventory | Apply sorting | Sorting worked; prices changed |
+| Inventory | Validate currency format | Some values had inconsistent decimal formatting |
+| Product Details | View price | Static product price displayed |
+| Cart | View price | Static product price displayed |
+| Checkout Overview | View price | Static product price displayed |
+| Checkout Overview | Add all products | Item total intermittently exposed floating-point precision |
+| Inventory | Observe first image | Dog image displayed |
+| Inventory | Sort products | Dog image moved to the new first item |
+| Product Details | Validate image | Correct product image displayed |
+| Inventory | Validate card layout | Alignment was inconsistent |
+| Inventory | Validate action controls | At least one control exceeded the expected card area |
+| Header | Observe cart icon | Misplaced |
+| Header | Observe menu icon | Visually skewed |
+| Sidebar Menu | Open menu | Functional |
+| Cart | Validate action layout | Primary controls were visually separated |
+| Checkout Step One | Validate action layout | Controls were positioned far apart |
+| Checkout Overview | Validate action layout | Controls were positioned far apart |
+| Checkout | Complete order | Successful |
+| Reset App State | Clear cart | Shared stale-button defect reproduced |
+
+#### Findings
+
+- Inventory prices are random and unstable.
+- Inventory prices do not match Product Details, Cart, or Checkout.
+- All six products are affected.
+- Currency formatting can be inconsistent.
+- Checkout Overview can intermittently expose floating-point precision.
+- The dog image is attached to the first Inventory position.
+- Product Details displays correct product images.
+- Product-card alignment is inconsistent.
+- The cart icon is misplaced across multiple pages.
+- The Sidebar Menu icon is visually skewed.
+- Cart and checkout controls are positioned inconsistently.
+- Core shopping and checkout functionality remains available.
+- Reset App State remains covered by `BUG-CART-003`.
+
+#### Risk Assessment
+
+- Users see misleading catalog prices.
+- Displayed prices reduce trust in the purchasing flow.
+- Financial totals may appear technically incorrect.
+- Incorrect images can be associated with the wrong product.
+- Misplaced and skewed controls reduce visual clarity.
+- Dynamic values and layout shifts create unstable automation assertions.
+
+#### Automation Recommendation
+
+- Add focused tests for:
+  - Inventory price stability;
+  - Inventory price consistency with Product Details;
+  - Inventory price consistency with Cart and Checkout;
+  - currency-format validation;
+  - monetary rounding with all products;
+  - dog-image movement after sorting;
+  - correct Product Details image;
+  - cart-icon position;
+  - Sidebar Menu icon appearance;
+  - product-card boundaries and alignment.
+- Use fixed viewports for visual regression.
+- Keep broad layout review as exploratory coverage.
+- Reuse `BUG-CART-003` for Reset App State.
