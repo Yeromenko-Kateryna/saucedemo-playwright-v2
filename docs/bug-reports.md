@@ -444,3 +444,84 @@ Additional observations:
 - The sorting control remains visible but does not apply any alternative option.
 - Sorting works correctly for `standard_user`.
 - This issue is suitable for focused automation as a known expected failure.
+
+---
+
+## BUG-CART-002 - Inventory and Product Details cart actions do not respond for problem_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Functional / Cart State
+- **Area:** Inventory / Product Details / Cart
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-001`
+- **Environment:** SauceDemo web application
+- **User:** `problem_user`
+
+### Preconditions
+
+- User is logged in as `problem_user`.
+- User is on the Inventory Page.
+- Cart is empty.
+
+### Steps to Reproduce
+
+1. Locate `Sauce Labs Backpack` on the Inventory Page.
+2. Click `Add to cart`.
+3. Verify that:
+   - the button changes to `Remove`;
+   - cart badge displays `1`;
+   - the product appears in the Cart Page.
+4. Return to the Inventory Page.
+5. Click `Remove` for `Sauce Labs Backpack`.
+6. Observe the button and cart badge.
+7. Open the Cart Page.
+8. Click `Remove` for the Backpack in the Cart Page.
+9. Return to the Inventory Page.
+10. Open Product Details through the Backpack product link.
+11. Click `Add to cart` on Product Details.
+
+### Actual Result
+
+- `Add to cart` on the Inventory Page initially works.
+- The button changes to `Remove`.
+- Cart badge displays `1`.
+- `Sauce Labs Backpack` appears in the Cart Page.
+- Clicking `Remove` on the Inventory Page does not remove the product.
+- The button remains `Remove`.
+- Cart badge remains `1`.
+- The product remains in the cart.
+- Clicking `Remove` in the Cart Page works correctly.
+- The product is removed from the cart.
+- The Backpack link opens Product Details for another product because of `BUG-INV-001`.
+- Clicking `Add to cart` on the opened Product Details Page does not add the displayed product.
+
+### Expected Result
+
+- `Remove` on the Inventory Page removes the selected product.
+- The button changes back to `Add to cart`.
+- Cart badge is updated or removed.
+- The Cart Page no longer contains the removed product.
+- `Add to cart` on Product Details adds the displayed product.
+- Cart actions behave consistently across Inventory, Product Details, and Cart Page.
+
+### Impact
+
+- User cannot reliably manage cart contents from the Inventory Page.
+- User must open the Cart Page to remove products.
+- Product Details cart actions do not work.
+- Cart controls display actionable states but do not perform the corresponding operation.
+- Cart state becomes inconsistent across application pages.
+
+### Related Defects
+
+- `BUG-INV-001` — Product Details opens a different product for `problem_user`.
+
+### Notes
+
+- The issue was reproduced with `Sauce Labs Backpack`.
+- Removal from the Cart Page works correctly.
+- Inventory Page removal and Product Details addition do not work.
+- Additional products showed similar inconsistent Add/Remove behavior during exploratory testing.
+- Automation should use one stable product scenario rather than duplicating the test for every product.
