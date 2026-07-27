@@ -525,3 +525,348 @@ Additional observations:
 - Inventory Page removal and Product Details addition do not work.
 - Additional products showed similar inconsistent Add/Remove behavior during exploratory testing.
 - Automation should use one stable product scenario rather than duplicating the test for every product.
+
+---
+
+## BUG-INV-004 - Sorting displays an error alert and does not change product order for error_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** High
+- **Type:** Functional
+- **Area:** Inventory Page / Sorting
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- Inventory Page is open.
+
+### Steps to Reproduce
+
+1. Open the product sorting dropdown.
+2. Select `Name (A to Z)`.
+3. Observe the result.
+4. Repeat the test with:
+   - `Name (Z to A)`;
+   - `Price (low to high)`;
+   - `Price (high to low)`.
+
+### Expected Result
+
+- The selected sorting option is applied.
+- Product order changes according to the selected option.
+- No error alert is displayed.
+
+### Actual Result
+
+- Each available sorting option displays the browser alert:
+
+  `Sorting is broken! This error has been reported to Backtrace.`
+
+- Product order does not change.
+- Sorting remains unavailable for `error_user`.
+
+### Impact
+
+- The user cannot reorder the product catalog.
+- Product comparison by name or price is unavailable.
+- The alert interrupts the shopping flow.
+- Automated sorting tests require explicit alert handling and cannot validate the expected product order.
+
+### Notes
+
+- The defect was reproduced with all four available sorting options.
+- The behavior is specific to `error_user`.
+- Sorting works for `standard_user`.
+
+---
+
+## BUG-INV-005 - Product description is missing on Product Details for error_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** High
+- **Type:** Functional / Content
+- **Area:** Product Details
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- Inventory Page is open.
+
+### Steps to Reproduce
+
+1. Open any product from the Inventory Page.
+2. Observe the Product Details page.
+3. Return to the Inventory Page.
+4. Repeat the check for all six available products.
+
+### Expected Result
+
+- Product Details displays:
+  - product name;
+  - product description;
+  - product price;
+  - product image;
+  - cart action control.
+
+### Actual Result
+
+- Product name is displayed.
+- Product price is displayed.
+- Product image is displayed.
+- The cart action control is displayed.
+- Product description is missing.
+- The defect occurs for all six available products.
+
+### Impact
+
+- Users cannot read complete product information before adding an item to the cart.
+- Product comparison and purchase decisions are affected.
+- Product Details does not provide the same description available on the Inventory Page.
+- Automated Product Details validation fails for the description element.
+
+### Notes
+
+- The defect was reproduced for all six products.
+- Product routing, name, price, and image were correct during exploration.
+- The behavior is specific to `error_user`.
+- Product descriptions are displayed correctly for `standard_user`.
+
+---
+
+## BUG-CHK1-002 - Last Name field does not accept input for error_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Functional / Form Input
+- **Area:** Checkout Step One
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- At least one product is present in the cart.
+- Checkout Step One is open.
+
+### Steps to Reproduce
+
+1. Click the Last Name field.
+2. Type any alphabetic value.
+3. Observe the field value.
+4. Type numeric or special characters.
+5. Observe the field value again.
+
+### Expected Result
+
+- The Last Name field accepts and preserves entered characters.
+- The entered value remains visible until it is changed or cleared by the user.
+
+### Actual Result
+
+- The Last Name field receives focus.
+- The text cursor is visible.
+- Typed characters are not preserved.
+- The field remains empty regardless of the entered value.
+
+### Impact
+
+- The user cannot provide a Last Name through the form.
+- Valid customer information cannot be submitted normally.
+- Checkout behavior depends on defective validation logic instead of valid user input.
+- Automated form completion cannot populate all required customer fields.
+
+### Notes
+
+- First Name accepts input.
+- Postal Code accepts input.
+- The defect was reproduced with multiple attempted Last Name values.
+- A separate defect tracks continuation to Checkout Overview with the empty Last Name.
+- Similar input failure was observed for `problem_user`, but the downstream validation behavior differs.
+
+---
+
+## BUG-CHK1-003 - Checkout continues with an empty Last Name for error_user
+
+- **Status:** Open
+- **Severity:** High
+- **Priority:** High
+- **Type:** Functional / Validation
+- **Area:** Checkout Step One
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- At least one product is present in the cart.
+- Checkout Step One is open.
+
+### Steps to Reproduce
+
+1. Enter a valid value in the First Name field.
+2. Leave the Last Name field empty.
+3. Enter a valid value in the Postal Code field.
+4. Click `Continue`.
+
+### Expected Result
+
+- Checkout remains on Checkout Step One.
+- Validation displays `Error: Last Name is required`.
+- Checkout Overview does not open.
+
+### Actual Result
+
+- No Last Name validation error is displayed.
+- Checkout proceeds to Checkout Overview.
+- The URL changes to `/checkout-step-two.html`.
+- Incomplete customer information is accepted.
+
+### Impact
+
+- Required customer data is not validated correctly.
+- Incomplete checkout data can progress into the order review stage.
+- Form behavior is inconsistent with the required-field validation contract.
+- Automated negative validation tests fail for the Last Name field.
+
+### Notes
+
+- Submitting a completely empty form still displays `Error: First Name is required`.
+- First Name and Postal Code accept input.
+- `BUG-CHK1-002` tracks the separate issue where the Last Name field does not accept input.
+- For `problem_user`, the Last Name input is also broken, but checkout remains blocked by `Error: Last Name is required`.
+
+---
+
+## BUG-CHK2-001 - Finish button does not complete the order for error_user
+
+- **Status:** Open
+- **Severity:** Critical
+- **Priority:** High
+- **Type:** Functional / Transaction
+- **Area:** Checkout Overview
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- At least one product is present in the cart.
+- Checkout Overview is open.
+
+### Steps to Reproduce
+
+1. Complete the checkout flow until Checkout Overview.
+2. Verify that the `Finish` button is visible.
+3. Click `Finish`.
+4. Click `Finish` several more times.
+5. Observe the page, URL, and any alerts.
+
+### Expected Result
+
+- The order is completed.
+- The application navigates to the Order Complete page.
+- The URL changes to `/checkout-complete.html`.
+- A successful order confirmation is displayed.
+
+### Actual Result
+
+- The `Finish` button is visible and appears enabled.
+- Clicking `Finish` produces no visible response.
+- Repeated clicks do not change the behavior.
+- No alert is displayed.
+- The URL remains `/checkout-step-two.html`.
+- The Order Complete page does not open.
+- The order is not completed.
+
+### Impact
+
+- The main purchase transaction cannot be completed.
+- Users can reach the final checkout stage but cannot place the order.
+- The defect blocks the primary business flow for `error_user`.
+- End-to-end checkout automation fails at the final action.
+
+### Notes
+
+- `Cancel` from Checkout Overview works correctly.
+- Checkout Overview displays products, prices, subtotal, tax, and total.
+- The failure is isolated to the `Finish` action.
+- The defect was reproduced with repeated clicks.
+- Order completion works for `standard_user`.
+
+---
+
+## BUG-CART-003 - Reset App State clears the cart but leaves stale Remove buttons for error_user
+
+- **Status:** Open
+- **Severity:** Medium
+- **Priority:** High
+- **Type:** Functional / State Management
+- **Area:** Inventory Page / Cart State / Sidebar Menu
+- **Reproducibility:** 100%
+- **Related test case:** `TC-PERSONA-003`
+- **User:** `error_user`
+
+### Preconditions
+
+- SauceDemo is available.
+- User is logged in as `error_user`.
+- Inventory Page is open.
+- At least one product has been added to the cart.
+
+### Steps to Reproduce
+
+1. Verify that the cart badge is displayed.
+2. Verify that an added product displays `Remove`.
+3. Open the Sidebar Menu.
+4. Click `Reset App State`.
+5. Observe the cart badge.
+6. Observe the cart contents.
+7. Observe the product action buttons on the Inventory Page.
+
+### Expected Result
+
+- The cart is cleared.
+- The cart badge is removed.
+- No products remain in the cart.
+- Every previously added product displays `Add to cart`.
+- Inventory controls remain synchronized with the actual cart state.
+
+### Actual Result
+
+- The cart is cleared.
+- The cart badge is removed.
+- The cart contains no products.
+- One or more previously added products can still display `Remove`.
+- Inventory controls remain stale and do not match the empty cart state.
+
+### Impact
+
+- The Inventory Page shows incorrect product state.
+- Users may believe products are still present in the cart.
+- Users may be unable to add a product again through the stale control.
+- Cart state and Inventory UI become inconsistent.
+- Automated cart-state validation fails after Reset App State.
+
+### Notes
+
+- Removing products directly from the Cart Page works correctly.
+- The defect appears after using `Reset App State`.
+- The behavior is specific to `error_user`.
+- Reset App State should update both the stored cart state and all visible Inventory controls.
