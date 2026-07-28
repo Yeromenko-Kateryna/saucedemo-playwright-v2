@@ -2,8 +2,12 @@ import { expect, type Page } from '@playwright/test';
 
 export const testData = {
   credentials: {
-    standardUser: 'standard_user',
-    password: 'secret_sauce',
+  standardUser: 'standard_user',
+  problemUser: 'problem_user',
+  performanceGlitchUser: 'performance_glitch_user',
+  errorUser: 'error_user',
+  visualUser: 'visual_user',
+  password: 'secret_sauce',
   },
   checkout: {
     firstName: 'Katia',
@@ -14,8 +18,8 @@ export const testData = {
 
 export async function login(
   page: Page,
-  username = testData.credentials.standardUser,
-  password = testData.credentials.password,
+  username: string = testData.credentials.standardUser,
+  password: string = testData.credentials.password,
 ) {
   await page.goto('/');
   await page.getByTestId('username').fill(username);
