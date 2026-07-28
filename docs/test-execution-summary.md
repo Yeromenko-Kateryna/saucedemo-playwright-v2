@@ -12,11 +12,29 @@ This file records the manual observations for test cases that have already been 
 
 ## Reporting Scope and Evidence
 
-This is a collection of individual execution records, not a single consolidated release run. It contains 44 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 4 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 5 exploratory charters have a `Completed` status. Eighteen confirmed product defects are recorded: `BUG-CART-001`, `BUG-CART-002`, `BUG-CART-003`, `BUG-COMPLETE-001`, `BUG-INV-001`, `BUG-INV-002`, `BUG-INV-003`, `BUG-INV-004`, `BUG-INV-005`, `BUG-INV-006`, `BUG-INV-007`, `BUG-CHK1-001`, `BUG-CHK1-002`, `BUG-CHK1-003`, `BUG-CHK2-001`, `BUG-CHK2-002`, `BUG-UI-001`, and `BUG-UI-002`.
+This is a collection of individual execution records, not a single consolidated release run. It contains 44 documented records: 14 Inventory, 7 Cart, 7 Checkout Step One, 5 Checkout Overview, 2 Order Complete, 5 Sidebar Menu, and 4 Persona Exploration cases. Of these records, 38 have a `Passed` status, 1 has a `Failed` status, and 5 exploratory charters have a `Completed` status. Two evidence-backed defects are recorded: `BUG-CART-001` and `BUG-COMPLETE-001`. The remaining documented issues are persona-specific observations or cross-persona observations that require product-context confirmation.
 
 The historical manual notes do not contain an execution date, browser version, operating system, application build, or commit SHA. Those values are intentionally not reconstructed. New execution summaries should record this metadata and link the relevant Playwright HTML report or CI run so that the result can be reproduced.
 
 Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). A test case marked `Automated` here means that a corresponding Playwright test exists; it does not by itself prove the result of a particular automated run.
+
+## Latest Automated Test Run
+
+| Field                | Recorded value                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Date                 | 2026-07-28                                                                                                                     |
+| Command              | `npm run test:all`                                                                                                             |
+| Scenario definitions | 49: 43 functional regression and 6 persona-risk scenarios                                                                      |
+| Browser executions   | 147 passed                                                                                                                     |
+| Browsers             | Chromium, Firefox, WebKit                                                                                                      |
+| Workers              | 3                                                                                                                              |
+| Duration             | 1.3 minutes                                                                                                                    |
+| Commit SHA           | Local working tree with uncommitted changes; base HEAD `7fc79c9`                                                               |
+| Environment          | Windows 10.0.26200.0, Node.js 24.15.0, Playwright 1.61.1                                                                       |
+| HTML report          | Locally generated in `playwright-report/`; not committed by design                                                             |
+| CI workflow          | [Playwright Checks](https://github.com/Yeromenko-Kateryna/saucedemo-playwright-v2/actions/workflows/playwright-regression.yml) |
+
+The persona-risk scenarios use `test.fail()` because they document known, reproducible behavior. Their expected failures count as a successful run; an unexpected pass fails the run and indicates a possible product fix.
 
 ---
 
@@ -719,7 +737,6 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 #### Possible Bugs
 
 - None found for this test case.
-
 
 ---
 
@@ -1491,7 +1508,7 @@ Investigate how Checkout Step One handles malformed, international, whitespace-o
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially automated
+- **Automation decision:** Two selected risk scenarios are automated as known expected failures: `BUG-INV-001` and `BUG-CHK1-001`.
 - **User:** `problem_user`
 
 #### Charter
@@ -1508,14 +1525,14 @@ Compare the behavior of `problem_user` with the working behavior already establi
 
 #### Product Details Routing Results
 
-| Selected product | Opened URL | Actual Product Details content |
-| --- | --- | --- |
-| Sauce Labs Backpack | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket |
-| Sauce Labs Bike Light | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt |
-| Sauce Labs Bolt T-Shirt | `/inventory-item.html?id=2` | Sauce Labs Onesie |
-| Sauce Labs Fleece Jacket | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
-| Sauce Labs Onesie | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red) |
-| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack |
+| Selected product                  | Opened URL                  | Actual Product Details content                                               |
+| --------------------------------- | --------------------------- | ---------------------------------------------------------------------------- |
+| Sauce Labs Backpack               | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket                                                     |
+| Sauce Labs Bike Light             | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt                                                      |
+| Sauce Labs Bolt T-Shirt           | `/inventory-item.html?id=2` | Sauce Labs Onesie                                                            |
+| Sauce Labs Fleece Jacket          | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
+| Sauce Labs Onesie                 | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red)                                            |
+| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack                                                          |
 
 #### Cart and Product Action Results
 
@@ -1600,27 +1617,27 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 
 #### Transition Results
 
-| Action | Observed behavior |
-| --- | --- |
-| Login → Inventory | Approximately 10-second visual delay |
-| Inventory → Product Details | Fast |
-| Product Details → Inventory | Approximately 10-second delay |
-| Apply sorting | Works after approximately 10 seconds |
-| Add / Remove product | Fast |
-| Inventory → Cart | Fast |
-| Cart → Continue Shopping | Approximately 10-second delay |
-| Cart → Checkout Step One | Fast |
-| Checkout Step One → Continue | Fast |
-| Checkout Step One → Cancel | Approximately 10-second delay |
-| Checkout Overview → Finish | Fast |
-| Checkout Overview → Cancel | Approximately 10-second delay |
-| Order Complete → Back Home | Approximately 10-second delay |
-| Open Sidebar Menu | Fast |
-| Sidebar → All Items | Fast |
-| Sidebar → About | Fast |
-| Return from About → Inventory | Approximately 10-second delay |
-| Sidebar → Logout | Fast |
-| Sidebar → Reset App State | Fast |
+| Action                        | Observed behavior                    |
+| ----------------------------- | ------------------------------------ |
+| Login → Inventory             | Approximately 10-second visual delay |
+| Inventory → Product Details   | Fast                                 |
+| Product Details → Inventory   | Approximately 10-second delay        |
+| Apply sorting                 | Works after approximately 10 seconds |
+| Add / Remove product          | Fast                                 |
+| Inventory → Cart              | Fast                                 |
+| Cart → Continue Shopping      | Approximately 10-second delay        |
+| Cart → Checkout Step One      | Fast                                 |
+| Checkout Step One → Continue  | Fast                                 |
+| Checkout Step One → Cancel    | Approximately 10-second delay        |
+| Checkout Overview → Finish    | Fast                                 |
+| Checkout Overview → Cancel    | Approximately 10-second delay        |
+| Order Complete → Back Home    | Approximately 10-second delay        |
+| Open Sidebar Menu             | Fast                                 |
+| Sidebar → All Items           | Fast                                 |
+| Sidebar → About               | Fast                                 |
+| Return from About → Inventory | Approximately 10-second delay        |
+| Sidebar → Logout              | Fast                                 |
+| Sidebar → Reset App State     | Fast                                 |
 
 #### Findings
 
@@ -1642,10 +1659,9 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 
 #### Automation Recommendation
 
-- Add one focused test for a stable slow Inventory-bound transition.
-- Measure destination page readiness, not URL change alone.
+- Keep this charter exploratory because there is no agreed performance SLA.
+- Future navigation checks should measure destination page readiness, not URL change alone.
 - Avoid duplicating the complete `standard_user` regression suite.
-- Use a documented threshold broad enough to reduce timing flakiness.
 
 ---
 
@@ -1653,7 +1669,7 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially automated
+- **Automation decision:** Two selected risk scenarios are automated as known expected failures: `BUG-INV-004` and `BUG-CHK2-001`.
 - **User:** `error_user`
 
 #### Charter
@@ -1691,27 +1707,27 @@ Explore functional failures specific to `error_user` across the main shopping fl
 
 #### Functional Results
 
-| Area | Action | Observed behavior |
-| --- | --- | --- |
-| Login | Log in as `error_user` | Successful |
-| Sidebar Menu | Open and use menu items | Worked |
-| Sorting | Select any option | Alert displayed; sorting not applied |
-| Inventory | Add product | Inconsistent |
-| Inventory | Remove product | Inconsistent |
-| Cart | Remove product | Worked |
-| Cart | Continue Shopping | Worked |
-| Cart | Checkout | Worked |
-| Reset App State | Clear application state | Cart cleared; stale `Remove` state could remain |
-| Product Details | Open all six products | Correct products opened |
-| Product Details | Validate description | Missing for all six products |
-| Checkout Step One | Enter First Name | Worked |
-| Checkout Step One | Enter Last Name | Input was not preserved |
-| Checkout Step One | Enter Postal Code | Worked |
-| Checkout Step One | Submit empty form | `Error: First Name is required` |
-| Checkout Step One | Continue with empty Last Name | Checkout Overview opened |
-| Checkout Overview | Validate order information | Displayed correctly |
-| Checkout Overview | Cancel | Worked |
-| Checkout Overview | Finish | No response; order not completed |
+| Area              | Action                        | Observed behavior                               |
+| ----------------- | ----------------------------- | ----------------------------------------------- |
+| Login             | Log in as `error_user`        | Successful                                      |
+| Sidebar Menu      | Open and use menu items       | Worked                                          |
+| Sorting           | Select any option             | Alert displayed; sorting not applied            |
+| Inventory         | Add product                   | Inconsistent                                    |
+| Inventory         | Remove product                | Inconsistent                                    |
+| Cart              | Remove product                | Worked                                          |
+| Cart              | Continue Shopping             | Worked                                          |
+| Cart              | Checkout                      | Worked                                          |
+| Reset App State   | Clear application state       | Cart cleared; stale `Remove` state could remain |
+| Product Details   | Open all six products         | Correct products opened                         |
+| Product Details   | Validate description          | Missing for all six products                    |
+| Checkout Step One | Enter First Name              | Worked                                          |
+| Checkout Step One | Enter Last Name               | Input was not preserved                         |
+| Checkout Step One | Enter Postal Code             | Worked                                          |
+| Checkout Step One | Submit empty form             | `Error: First Name is required`                 |
+| Checkout Step One | Continue with empty Last Name | Checkout Overview opened                        |
+| Checkout Overview | Validate order information    | Displayed correctly                             |
+| Checkout Overview | Cancel                        | Worked                                          |
+| Checkout Overview | Finish                        | No response; order not completed                |
 
 #### Findings
 
@@ -1736,13 +1752,7 @@ Explore functional failures specific to `error_user` across the main shopping fl
 
 #### Automation Recommendation
 
-- Add focused tests for:
-  - sorting alert and unchanged order;
-  - missing Product Details description;
-  - Last Name input failure;
-  - progression with empty Last Name;
-  - non-responsive Finish button;
-  - stale state after Reset App State.
+- Keep missing Product Details description, Last Name behavior, incomplete-data continuation, and stale Reset App State controls exploratory.
 - Keep intermittent Add and Remove behavior under exploratory observation until a deterministic reproduction path is identified.
 
 ---
@@ -1751,7 +1761,7 @@ Explore functional failures specific to `error_user` across the main shopping fl
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially automated
+- **Automation decision:** Two selected risk scenarios are automated as known expected failures: `BUG-INV-006` and `BUG-INV-007`.
 - **User:** `visual_user`
 
 #### Charter
@@ -1799,30 +1809,30 @@ Explore visual, layout, pricing, image, calculation-display, and state-consisten
 
 #### Visual and Functional Results
 
-| Area | Action | Observed behavior |
-| --- | --- | --- |
-| Login | Log in as `visual_user` | Successful |
-| Inventory | View prices | Random values displayed |
-| Inventory | Reload or revisit | Prices changed |
-| Inventory | Apply sorting | Sorting worked; prices changed |
-| Inventory | Validate currency format | Some values had inconsistent decimal formatting |
-| Product Details | View price | Static product price displayed |
-| Cart | View price | Static product price displayed |
-| Checkout Overview | View price | Static product price displayed |
-| Checkout Overview | Add all products | Item total intermittently exposed floating-point precision |
-| Inventory | Observe first image | Dog image displayed |
-| Inventory | Sort products | Dog image moved to the new first item |
-| Product Details | Validate image | Correct product image displayed |
-| Inventory | Validate card layout | Alignment was inconsistent |
-| Inventory | Validate action controls | At least one control exceeded the expected card area |
-| Header | Observe cart icon | Misplaced |
-| Header | Observe menu icon | Visually skewed |
-| Sidebar Menu | Open menu | Functional |
-| Cart | Validate action layout | Primary controls were visually separated |
-| Checkout Step One | Validate action layout | Controls were positioned far apart |
-| Checkout Overview | Validate action layout | Controls were positioned far apart |
-| Checkout | Complete order | Successful |
-| Reset App State | Clear cart | Shared stale-button defect reproduced |
+| Area              | Action                   | Observed behavior                                          |
+| ----------------- | ------------------------ | ---------------------------------------------------------- |
+| Login             | Log in as `visual_user`  | Successful                                                 |
+| Inventory         | View prices              | Random values displayed                                    |
+| Inventory         | Reload or revisit        | Prices changed                                             |
+| Inventory         | Apply sorting            | Sorting worked; prices changed                             |
+| Inventory         | Validate currency format | Some values had inconsistent decimal formatting            |
+| Product Details   | View price               | Static product price displayed                             |
+| Cart              | View price               | Static product price displayed                             |
+| Checkout Overview | View price               | Static product price displayed                             |
+| Checkout Overview | Add all products         | Item total intermittently exposed floating-point precision |
+| Inventory         | Observe first image      | Dog image displayed                                        |
+| Inventory         | Sort products            | Dog image moved to the new first item                      |
+| Product Details   | Validate image           | Correct product image displayed                            |
+| Inventory         | Validate card layout     | Alignment was inconsistent                                 |
+| Inventory         | Validate action controls | At least one control exceeded the expected card area       |
+| Header            | Observe cart icon        | Misplaced                                                  |
+| Header            | Observe menu icon        | Visually skewed                                            |
+| Sidebar Menu      | Open menu                | Functional                                                 |
+| Cart              | Validate action layout   | Primary controls were visually separated                   |
+| Checkout Step One | Validate action layout   | Controls were positioned far apart                         |
+| Checkout Overview | Validate action layout   | Controls were positioned far apart                         |
+| Checkout          | Complete order           | Successful                                                 |
+| Reset App State   | Clear cart               | Shared stale-button defect reproduced                      |
 
 #### Findings
 

@@ -2,12 +2,12 @@ import { expect, type Page } from '@playwright/test';
 
 export const testData = {
   credentials: {
-  standardUser: 'standard_user',
-  problemUser: 'problem_user',
-  performanceGlitchUser: 'performance_glitch_user',
-  errorUser: 'error_user',
-  visualUser: 'visual_user',
-  password: 'secret_sauce',
+    standardUser: 'standard_user',
+    problemUser: 'problem_user',
+    performanceGlitchUser: 'performance_glitch_user',
+    errorUser: 'error_user',
+    visualUser: 'visual_user',
+    password: 'secret_sauce',
   },
   checkout: {
     firstName: 'Katia',

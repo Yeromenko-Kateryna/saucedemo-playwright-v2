@@ -22,9 +22,7 @@ test('TC-CHK1-002 - should show error when first name is missing', async ({ page
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
-  await expect(page.locator('[data-test="error"]')).toHaveText(
-    'Error: First Name is required',
-  );
+  await expect(page.locator('[data-test="error"]')).toHaveText('Error: First Name is required');
   await expect(page.locator('[data-test="firstName"]')).toHaveValue('');
   await expect(page.locator('[data-test="lastName"]')).toHaveValue(testData.checkout.lastName);
   await expect(page.locator('[data-test="postalCode"]')).toHaveValue(testData.checkout.postalCode);
@@ -41,9 +39,7 @@ test('TC-CHK1-003 - should show error when last name is missing', async ({ page 
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
-  await expect(page.locator('[data-test="error"]')).toHaveText(
-    'Error: Last Name is required',
-  );
+  await expect(page.locator('[data-test="error"]')).toHaveText('Error: Last Name is required');
   await expect(page.locator('[data-test="firstName"]')).toHaveValue(testData.checkout.firstName);
   await expect(page.locator('[data-test="lastName"]')).toHaveValue('');
   await expect(page.locator('[data-test="postalCode"]')).toHaveValue(testData.checkout.postalCode);
@@ -60,9 +56,7 @@ test('TC-CHK1-004 - should show error when postal code is missing', async ({ pag
   await page.locator('[data-test="continue"]').click();
 
   await expect(page).toHaveURL(/.*checkout-step-one.html/);
-  await expect(page.locator('[data-test="error"]')).toHaveText(
-    'Error: Postal Code is required',
-  );
+  await expect(page.locator('[data-test="error"]')).toHaveText('Error: Postal Code is required');
   await expect(page.locator('[data-test="firstName"]')).toHaveValue(testData.checkout.firstName);
   await expect(page.locator('[data-test="lastName"]')).toHaveValue(testData.checkout.lastName);
   await expect(page.locator('[data-test="postalCode"]')).toHaveValue('');

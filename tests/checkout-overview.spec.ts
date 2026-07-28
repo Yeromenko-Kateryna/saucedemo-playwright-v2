@@ -1,14 +1,22 @@
 import { test, expect } from '@playwright/test';
 import { openCheckoutOverview } from './saucedemo-test-helpers';
 
+function parseMoneyToCents(text: string): number {
+  const match = text.match(/\$(\d+)\.(\d{2})$/);
+
+  if (!match) {
+    throw new Error(`Could not parse monetary value from: ${text}`);
+  }
+
+  return Number(match[1]) * 100 + Number(match[2]);
+}
+
 test('TC-CHK2-001 - should display checkout overview correctly', async ({ page }) => {
   await openCheckoutOverview(page);
 
   await expect(page).toHaveURL(/.*checkout-step-two.html/);
   await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');
-  await expect(page.locator('[data-test="payment-info-label"]')).toHaveText(
-    'Payment Information:',
-  );
+  await expect(page.locator('[data-test="payment-info-label"]')).toHaveText('Payment Information:');
   await expect(page.locator('[data-test="shipping-info-label"]')).toHaveText(
     'Shipping Information:',
   );
@@ -32,9 +40,7 @@ test('TC-CHK2-002 - should display selected product on checkout overview', async
   );
   await expect(productDescription).toBeVisible();
   await expect(productDescription).not.toHaveText('');
-  await expect(overviewItem.locator('[data-test="inventory-item-price"]')).toHaveText(
-    '$29.99',
-  );
+  await expect(overviewItem.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99');
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 });
 
@@ -50,16 +56,6 @@ test('TC-CHK2-003 - should calculate checkout price summary correctly', async ({
   await expect(itemTotal).toHaveText('Item total: $29.99');
   await expect(tax).toHaveText('Tax: $2.40');
   await expect(total).toHaveText('Total: $32.39');
-
-  const parseMoneyToCents = (text: string) => {
-    const match = text.match(/\$(\d+)\.(\d{2})$/);
-
-    if (!match) {
-      throw new Error(`Could not parse monetary value from: ${text}`);
-    }
-
-    return Number(match[1]) * 100 + Number(match[2]);
-  };
 
   const productPriceCents = parseMoneyToCents(await productPrice.innerText());
   const itemTotalCents = parseMoneyToCents(await itemTotal.innerText());

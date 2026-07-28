@@ -22,6 +22,23 @@ This document is included as a portfolio artifact to demonstrate locator selecti
 
 Shared login, cart, and checkout setup is implemented in `tests/saucedemo-test-helpers.ts`; feature-level spec files retain the assertions that define each test case's business value.
 
+## Persona Known-Issue Checks
+
+`tests/persona-risks.spec.ts` contains six focused checks for reproducible persona-specific risks. Each is tagged `@persona` and uses Playwright `test.fail()` so an unexpected product fix is visible in test results.
+
+| Known issue    | User           | Key locator strategy                                                                                                                                       |
+| -------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BUG-CHK2-001` | `error_user`   | `finish`, `title`, and checkout-page URL use stable `data-test` attributes and a URL assertion.                                                            |
+| `BUG-INV-001`  | `problem_user` | Product-specific title link `item-4-title-link` verifies selected-product routing.                                                                         |
+| `BUG-CHK1-001` | `problem_user` | `lastName`, `continue`, and `error` verify the checkout input and blocking validation.                                                                     |
+| `BUG-INV-004`  | `error_user`   | `product-sort-container` and `inventory-item-name`, with a one-time `dialog` listener, verify sorting behavior.                                            |
+| `BUG-INV-006`  | `visual_user`  | A product-card locator scoped by product name compares Inventory and Product Details prices.                                                               |
+| `BUG-INV-007`  | `visual_user`  | For two first-position products after sorting, scoped Inventory image `src` values are compared with the corresponding Product Details image `src` values. |
+
+The Product Details image has no stable, product-independent `data-test` hook. `img.inventory_details_img` is therefore used only after the test has navigated through a product-specific `data-test` link and verified the Product Details page identity.
+
+The persona suite deliberately covers only selected deterministic risks. It does not duplicate the standard-user regression suite or automate subjective visual observations.
+
 ---
 
 ## TC-INV-001 - Inventory Page is displayed after successful login
@@ -32,15 +49,15 @@ Verify that the Inventory Page is displayed after successful login.
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute |
-| Password field | `[data-test="password"]` | Stable test attribute |
-| Login button | `[data-test="login-button"]` | Stable test attribute |
-| Page title | `[data-test="title"]` | Confirms Inventory Page title |
-| Inventory list | `[data-test="inventory-list"]` | Confirms product list is visible |
-| Cart link | `[data-test="shopping-cart-link"]` | Confirms cart navigation is available |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Confirms sorting control is visible |
+| Element          | Locator                                | Reason                                |
+| ---------------- | -------------------------------------- | ------------------------------------- |
+| Username field   | `[data-test="username"]`               | Stable test attribute                 |
+| Password field   | `[data-test="password"]`               | Stable test attribute                 |
+| Login button     | `[data-test="login-button"]`           | Stable test attribute                 |
+| Page title       | `[data-test="title"]`                  | Confirms Inventory Page title         |
+| Inventory list   | `[data-test="inventory-list"]`         | Confirms product list is visible      |
+| Cart link        | `[data-test="shopping-cart-link"]`     | Confirms cart navigation is available |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Confirms sorting control is visible   |
 
 ### Notes
 
@@ -56,14 +73,14 @@ Verify that the first product card contains required product information.
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| First product card | `[data-test="inventory-item"]` with `.first()` | Scopes checks to one product card |
-| Product name | `[data-test="inventory-item-name"]` | Stable test attribute |
-| Product description | `[data-test="inventory-item-desc"]` | Stable test attribute |
-| Product price | `[data-test="inventory-item-price"]` | Stable test attribute |
-| Product image | `[data-test="inventory-item-sauce-labs-backpack-img"]` | Stable product-specific test attribute on the image element |
-| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Stable product-specific test attribute |
+| Element             | Locator                                                | Reason                                                      |
+| ------------------- | ------------------------------------------------------ | ----------------------------------------------------------- |
+| First product card  | `[data-test="inventory-item"]` with `.first()`         | Scopes checks to one product card                           |
+| Product name        | `[data-test="inventory-item-name"]`                    | Stable test attribute                                       |
+| Product description | `[data-test="inventory-item-desc"]`                    | Stable test attribute                                       |
+| Product price       | `[data-test="inventory-item-price"]`                   | Stable test attribute                                       |
+| Product image       | `[data-test="inventory-item-sauce-labs-backpack-img"]` | Stable product-specific test attribute on the image element |
+| Add to cart button  | `[data-test="add-to-cart-sauce-labs-backpack"]`        | Stable product-specific test attribute                      |
 
 ### Notes
 
@@ -85,14 +102,14 @@ Verify that a user can add one product from the Inventory Page and that the prod
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product from the Inventory Page |
-| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the product action changed after adding |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the cart count changed to `1` |
+| Element            | Locator                                         | Reason                                                |
+| ------------------ | ----------------------------------------------- | ----------------------------------------------------- |
+| Username field     | `[data-test="username"]`                        | Stable test attribute used for login                  |
+| Password field     | `[data-test="password"]`                        | Stable test attribute used for login                  |
+| Login button       | `[data-test="login-button"]`                    | Stable test attribute used for login                  |
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product from the Inventory Page     |
+| Remove button      | `[data-test="remove-sauce-labs-backpack"]`      | Confirms that the product action changed after adding |
+| Cart badge         | `[data-test="shopping-cart-badge"]`             | Confirms that the cart count changed to `1`           |
 
 ### Notes
 
@@ -116,14 +133,14 @@ Verify that a user can remove an added product directly from the Inventory Page 
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Creates the required added-product state |
-| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product directly from the Inventory Page |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms the count before removal and its disappearance afterward |
+| Element            | Locator                                         | Reason                                                            |
+| ------------------ | ----------------------------------------------- | ----------------------------------------------------------------- |
+| Username field     | `[data-test="username"]`                        | Stable test attribute used for login                              |
+| Password field     | `[data-test="password"]`                        | Stable test attribute used for login                              |
+| Login button       | `[data-test="login-button"]`                    | Stable test attribute used for login                              |
+| Add to cart button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Creates the required added-product state                          |
+| Remove button      | `[data-test="remove-sauce-labs-backpack"]`      | Removes the selected product directly from the Inventory Page     |
+| Cart badge         | `[data-test="shopping-cart-badge"]`             | Confirms the count before removal and its disappearance afterward |
 
 ### Notes
 
@@ -145,16 +162,16 @@ Verify that a user can add two different products from the Inventory Page and th
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Backpack add button | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first product |
-| Bike Light add button | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second different product |
-| Backpack remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the first product remains added |
-| Bike Light remove button | `[data-test="remove-sauce-labs-bike-light"]` | Confirms that the second product was added |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the count changes from `1` to `2` |
+| Element                  | Locator                                           | Reason                                          |
+| ------------------------ | ------------------------------------------------- | ----------------------------------------------- |
+| Username field           | `[data-test="username"]`                          | Stable test attribute used for login            |
+| Password field           | `[data-test="password"]`                          | Stable test attribute used for login            |
+| Login button             | `[data-test="login-button"]`                      | Stable test attribute used for login            |
+| Backpack add button      | `[data-test="add-to-cart-sauce-labs-backpack"]`   | Adds the first product                          |
+| Bike Light add button    | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second different product               |
+| Backpack remove button   | `[data-test="remove-sauce-labs-backpack"]`        | Confirms that the first product remains added   |
+| Bike Light remove button | `[data-test="remove-sauce-labs-bike-light"]`      | Confirms that the second product was added      |
+| Cart badge               | `[data-test="shopping-cart-badge"]`               | Confirms that the count changes from `1` to `2` |
 
 ### Notes
 
@@ -176,18 +193,18 @@ Verify that clicking a product name on the Inventory Page opens the correct Prod
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Product name link on Inventory Page | `[data-test="item-4-title-link"]` | Opens the details page for `Sauce Labs Backpack` |
-| Product name on Details Page | `[data-test="inventory-item-name"]` | Confirms correct product details page opened |
-| Product description | `[data-test="inventory-item-desc"]` | Confirms product description is visible |
-| Product price | `[data-test="inventory-item-price"]` | Confirms product price is visible |
-| Product image | `[data-test="item-sauce-labs-backpack-img"]` | Confirms product image is visible |
-| Add to cart button | `[data-test="add-to-cart"]` | Confirms add action is available on the details page |
-| Back to products button | `[data-test="back-to-products"]` | Confirms user can return to Inventory Page |
+| Element                             | Locator                                      | Reason                                               |
+| ----------------------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| Username field                      | `[data-test="username"]`                     | Stable test attribute used for login                 |
+| Password field                      | `[data-test="password"]`                     | Stable test attribute used for login                 |
+| Login button                        | `[data-test="login-button"]`                 | Stable test attribute used for login                 |
+| Product name link on Inventory Page | `[data-test="item-4-title-link"]`            | Opens the details page for `Sauce Labs Backpack`     |
+| Product name on Details Page        | `[data-test="inventory-item-name"]`          | Confirms correct product details page opened         |
+| Product description                 | `[data-test="inventory-item-desc"]`          | Confirms product description is visible              |
+| Product price                       | `[data-test="inventory-item-price"]`         | Confirms product price is visible                    |
+| Product image                       | `[data-test="item-sauce-labs-backpack-img"]` | Confirms product image is visible                    |
+| Add to cart button                  | `[data-test="add-to-cart"]`                  | Confirms add action is available on the details page |
+| Back to products button             | `[data-test="back-to-products"]`             | Confirms user can return to Inventory Page           |
 
 ### Notes
 
@@ -211,18 +228,18 @@ Verify that clicking a product image on the Inventory Page opens the correct Pro
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Product image link on Inventory Page | `[data-test="item-4-img-link"]` | Opens the details page for `Sauce Labs Backpack` from product image |
-| Product name on Details Page | `[data-test="inventory-item-name"]` | Confirms correct product details page opened |
-| Product description | `[data-test="inventory-item-desc"]` | Confirms product description is visible |
-| Product price | `[data-test="inventory-item-price"]` | Confirms product price is visible |
-| Product image on Details Page | `[data-test="item-sauce-labs-backpack-img"]` | Confirms product image is visible |
-| Add to cart button | `[data-test="add-to-cart"]` | Confirms add action is available on the details page |
-| Back to products button | `[data-test="back-to-products"]` | Confirms user can return to Inventory Page |
+| Element                              | Locator                                      | Reason                                                              |
+| ------------------------------------ | -------------------------------------------- | ------------------------------------------------------------------- |
+| Username field                       | `[data-test="username"]`                     | Stable test attribute used for login                                |
+| Password field                       | `[data-test="password"]`                     | Stable test attribute used for login                                |
+| Login button                         | `[data-test="login-button"]`                 | Stable test attribute used for login                                |
+| Product image link on Inventory Page | `[data-test="item-4-img-link"]`              | Opens the details page for `Sauce Labs Backpack` from product image |
+| Product name on Details Page         | `[data-test="inventory-item-name"]`          | Confirms correct product details page opened                        |
+| Product description                  | `[data-test="inventory-item-desc"]`          | Confirms product description is visible                             |
+| Product price                        | `[data-test="inventory-item-price"]`         | Confirms product price is visible                                   |
+| Product image on Details Page        | `[data-test="item-sauce-labs-backpack-img"]` | Confirms product image is visible                                   |
+| Add to cart button                   | `[data-test="add-to-cart"]`                  | Confirms add action is available on the details page                |
+| Back to products button              | `[data-test="back-to-products"]`             | Confirms user can return to Inventory Page                          |
 
 ### Notes
 
@@ -246,16 +263,16 @@ Verify that clicking `Back to products` on the Product Details Page returns the 
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Product name link on Inventory Page | `[data-test="item-4-title-link"]` | Opens the Product Details Page for `Sauce Labs Backpack` |
-| Back to products button | `[data-test="back-to-products"]` | Returns user from Product Details Page to Inventory Page |
-| Page title | `[data-test="title"]` | Confirms Inventory Page title is visible after returning |
-| Inventory list | `[data-test="inventory-list"]` | Confirms product list is visible after returning |
-| Backpack product link | `[data-test="item-4-title-link"]` | Confirms `Sauce Labs Backpack` is visible again on Inventory Page |
+| Element                             | Locator                           | Reason                                                            |
+| ----------------------------------- | --------------------------------- | ----------------------------------------------------------------- |
+| Username field                      | `[data-test="username"]`          | Stable test attribute used for login                              |
+| Password field                      | `[data-test="password"]`          | Stable test attribute used for login                              |
+| Login button                        | `[data-test="login-button"]`      | Stable test attribute used for login                              |
+| Product name link on Inventory Page | `[data-test="item-4-title-link"]` | Opens the Product Details Page for `Sauce Labs Backpack`          |
+| Back to products button             | `[data-test="back-to-products"]`  | Returns user from Product Details Page to Inventory Page          |
+| Page title                          | `[data-test="title"]`             | Confirms Inventory Page title is visible after returning          |
+| Inventory list                      | `[data-test="inventory-list"]`    | Confirms product list is visible after returning                  |
+| Backpack product link               | `[data-test="item-4-title-link"]` | Confirms `Sauce Labs Backpack` is visible again on Inventory Page |
 
 ### Notes
 
@@ -279,20 +296,20 @@ Verify that products can be sorted by name in ascending alphabetical order.
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
-| Product names | `[data-test="inventory-item-name"]` | Allows checking the displayed product order |
+| Element          | Locator                                | Reason                                      |
+| ---------------- | -------------------------------------- | ------------------------------------------- |
+| Username field   | `[data-test="username"]`               | Stable test attribute used for login        |
+| Password field   | `[data-test="password"]`               | Stable test attribute used for login        |
+| Login button     | `[data-test="login-button"]`           | Stable test attribute used for login        |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options    |
+| Product names    | `[data-test="inventory-item-name"]`    | Allows checking the displayed product order |
 
 ### Sorting Values
 
-| Sorting option | Value |
-|---|---|
-| Name A to Z | `az` |
-| Name Z to A | `za` |
+| Sorting option    | Value  |
+| ----------------- | ------ |
+| Name A to Z       | `az`   |
+| Name Z to A       | `za`   |
 | Price low to high | `lohi` |
 | Price high to low | `hilo` |
 
@@ -320,19 +337,19 @@ Verify that products can be sorted by name in descending alphabetical order.
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
-| Product names | `[data-test="inventory-item-name"]` | Allows checking the displayed product order |
+| Element          | Locator                                | Reason                                      |
+| ---------------- | -------------------------------------- | ------------------------------------------- |
+| Username field   | `[data-test="username"]`               | Stable test attribute used for login        |
+| Password field   | `[data-test="password"]`               | Stable test attribute used for login        |
+| Login button     | `[data-test="login-button"]`           | Stable test attribute used for login        |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options    |
+| Product names    | `[data-test="inventory-item-name"]`    | Allows checking the displayed product order |
 
 ### Sorting Values
 
 | Sorting option | Value |
-|---|---|
-| Name Z to A | `za` |
+| -------------- | ----- |
+| Name Z to A    | `za`  |
 
 ### Notes
 
@@ -356,18 +373,18 @@ Verify that products can be sorted by price from the lowest price to the highest
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting the price sorting option |
-| Product prices | `[data-test="inventory-item-price"]` | Provides the displayed prices for numeric order validation |
+| Element          | Locator                                | Reason                                                     |
+| ---------------- | -------------------------------------- | ---------------------------------------------------------- |
+| Username field   | `[data-test="username"]`               | Stable test attribute used for login                       |
+| Password field   | `[data-test="password"]`               | Stable test attribute used for login                       |
+| Login button     | `[data-test="login-button"]`           | Stable test attribute used for login                       |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting the price sorting option                  |
+| Product prices   | `[data-test="inventory-item-price"]`   | Provides the displayed prices for numeric order validation |
 
 ### Sorting Values
 
-| Sorting option | Value |
-|---|---|
+| Sorting option    | Value  |
+| ----------------- | ------ |
 | Price low to high | `lohi` |
 
 ### Notes
@@ -392,18 +409,18 @@ Verify that products can be sorted by price from the highest price to the lowest
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options |
-| Product prices | `[data-test="inventory-item-price"]` | Allows checking that prices are displayed in descending order |
+| Element          | Locator                                | Reason                                                        |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------- |
+| Username field   | `[data-test="username"]`               | Stable test attribute used for login                          |
+| Password field   | `[data-test="password"]`               | Stable test attribute used for login                          |
+| Login button     | `[data-test="login-button"]`           | Stable test attribute used for login                          |
+| Sorting dropdown | `[data-test="product-sort-container"]` | Allows selecting product sorting options                      |
+| Product prices   | `[data-test="inventory-item-price"]`   | Allows checking that prices are displayed in descending order |
 
 ### Sorting Values
 
-| Sorting option | Value |
-|---|---|
+| Sorting option    | Value  |
+| ----------------- | ------ |
 | Price high to low | `hilo` |
 
 ### Notes
@@ -430,23 +447,23 @@ Verify that the user can navigate from the Inventory Page to the Cart Page by cl
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Stable test attribute used to open the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying that the Cart Page title is displayed |
-| Cart list | `[data-test="cart-list"]` | Allows verifying that the Cart Page content area is displayed |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control is visible |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is visible |
+| Element                  | Locator                            | Reason                                                        |
+| ------------------------ | ---------------------------------- | ------------------------------------------------------------- |
+| Username field           | `[data-test="username"]`           | Stable test attribute used for login                          |
+| Password field           | `[data-test="password"]`           | Stable test attribute used for login                          |
+| Login button             | `[data-test="login-button"]`       | Stable test attribute used for login                          |
+| Cart icon/link           | `[data-test="shopping-cart-link"]` | Stable test attribute used to open the Cart Page              |
+| Page title               | `[data-test="title"]`              | Allows verifying that the Cart Page title is displayed        |
+| Cart list                | `[data-test="cart-list"]`          | Allows verifying that the Cart Page content area is displayed |
+| Continue Shopping button | `[data-test="continue-shopping"]`  | Confirms that the Cart Page navigation control is visible     |
+| Checkout button          | `[data-test="checkout"]`           | Confirms that the checkout entry point is visible             |
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
-| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
+| Element           | Locator                             | Reason                                                 |
+| ----------------- | ----------------------------------- | ------------------------------------------------------ |
+| Quantity label    | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible    |
+| Description label | `[data-test="cart-desc-label"]`     | Confirms that the description column header is visible |
 
 ### Notes
 
@@ -474,31 +491,31 @@ Verify that the Cart Page correctly displays one product after the user adds it 
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that one product was added |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying that the Cart Page title is displayed |
-| Cart list | `[data-test="cart-list"]` | Allows verifying that the cart content area is displayed |
-| Cart item | `[data-test="inventory-item"]` | Represents the product displayed inside the cart |
-| Product quantity | `[data-test="item-quantity"]` | Allows verifying the quantity of the product in the cart |
-| Product name | `[data-test="inventory-item-name"]` | Allows verifying the product name in the cart |
-| Product description | `[data-test="inventory-item-desc"]` | Allows verifying the product description in the cart |
-| Product price | `[data-test="inventory-item-price"]` | Allows verifying the product price in the cart |
-| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the added product can be removed from the cart |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control is visible |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is visible |
+| Element                                    | Locator                                         | Reason                                                       |
+| ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------ |
+| Username field                             | `[data-test="username"]`                        | Stable test attribute used for login                         |
+| Password field                             | `[data-test="password"]`                        | Stable test attribute used for login                         |
+| Login button                               | `[data-test="login-button"]`                    | Stable test attribute used for login                         |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart                        |
+| Cart badge                                 | `[data-test="shopping-cart-badge"]`             | Confirms that one product was added                          |
+| Cart icon/link                             | `[data-test="shopping-cart-link"]`              | Opens the Cart Page                                          |
+| Page title                                 | `[data-test="title"]`                           | Allows verifying that the Cart Page title is displayed       |
+| Cart list                                  | `[data-test="cart-list"]`                       | Allows verifying that the cart content area is displayed     |
+| Cart item                                  | `[data-test="inventory-item"]`                  | Represents the product displayed inside the cart             |
+| Product quantity                           | `[data-test="item-quantity"]`                   | Allows verifying the quantity of the product in the cart     |
+| Product name                               | `[data-test="inventory-item-name"]`             | Allows verifying the product name in the cart                |
+| Product description                        | `[data-test="inventory-item-desc"]`             | Allows verifying the product description in the cart         |
+| Product price                              | `[data-test="inventory-item-price"]`            | Allows verifying the product price in the cart               |
+| Remove button                              | `[data-test="remove-sauce-labs-backpack"]`      | Confirms that the added product can be removed from the cart |
+| Continue Shopping button                   | `[data-test="continue-shopping"]`               | Confirms that the Cart Page navigation control is visible    |
+| Checkout button                            | `[data-test="checkout"]`                        | Confirms that the checkout entry point is visible            |
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
-| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
+| Element           | Locator                             | Reason                                                 |
+| ----------------- | ----------------------------------- | ------------------------------------------------------ |
+| Quantity label    | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible    |
+| Description label | `[data-test="cart-desc-label"]`     | Confirms that the description column header is visible |
 
 ### Notes
 
@@ -524,30 +541,30 @@ Verify that the user can remove an added product directly from the Cart Page.
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart before opening the Cart Page |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that one product was added and should disappear after removal |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying that the Cart Page remains displayed |
-| Cart list | `[data-test="cart-list"]` | Allows verifying that the cart content area remains visible |
-| Cart item | `[data-test="inventory-item"]` | Represents the product displayed inside the cart before removal |
-| Product name | `[data-test="inventory-item-name"]` | Allows verifying that the correct product is displayed before removal |
-| Remove button | `[data-test="remove-sauce-labs-backpack"]` | Removes the selected product from the Cart Page |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the Cart Page navigation control remains visible |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point remains visible |
+| Element                                    | Locator                                         | Reason                                                                 |
+| ------------------------------------------ | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| Username field                             | `[data-test="username"]`                        | Stable test attribute used for login                                   |
+| Password field                             | `[data-test="password"]`                        | Stable test attribute used for login                                   |
+| Login button                               | `[data-test="login-button"]`                    | Stable test attribute used for login                                   |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product to the cart before opening the Cart Page     |
+| Cart badge                                 | `[data-test="shopping-cart-badge"]`             | Confirms that one product was added and should disappear after removal |
+| Cart icon/link                             | `[data-test="shopping-cart-link"]`              | Opens the Cart Page                                                    |
+| Page title                                 | `[data-test="title"]`                           | Allows verifying that the Cart Page remains displayed                  |
+| Cart list                                  | `[data-test="cart-list"]`                       | Allows verifying that the cart content area remains visible            |
+| Cart item                                  | `[data-test="inventory-item"]`                  | Represents the product displayed inside the cart before removal        |
+| Product name                               | `[data-test="inventory-item-name"]`             | Allows verifying that the correct product is displayed before removal  |
+| Remove button                              | `[data-test="remove-sauce-labs-backpack"]`      | Removes the selected product from the Cart Page                        |
+| Continue Shopping button                   | `[data-test="continue-shopping"]`               | Confirms that the Cart Page navigation control remains visible         |
+| Checkout button                            | `[data-test="checkout"]`                        | Confirms that the checkout entry point remains visible                 |
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Quantity label | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible |
-| Description label | `[data-test="cart-desc-label"]` | Confirms that the description column header is visible |
-| Product description | `[data-test="inventory-item-desc"]` | Product description was visible before removal |
-| Product quantity | `[data-test="item-quantity"]` | Product quantity was visible before removal |
+| Element             | Locator                             | Reason                                                 |
+| ------------------- | ----------------------------------- | ------------------------------------------------------ |
+| Quantity label      | `[data-test="cart-quantity-label"]` | Confirms that the quantity column header is visible    |
+| Description label   | `[data-test="cart-desc-label"]`     | Confirms that the description column header is visible |
+| Product description | `[data-test="inventory-item-desc"]` | Product description was visible before removal         |
+| Product quantity    | `[data-test="item-quantity"]`       | Product quantity was visible before removal            |
 
 ### Notes
 
@@ -581,27 +598,27 @@ Verify that the `Continue Shopping` button on the Cart Page returns the user to 
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the cart state is preserved |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying both Cart Page and Inventory Page titles |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Returns the user from Cart Page to Inventory Page |
-| Inventory list | `[data-test="inventory-list"]` | Confirms that the Inventory Page is displayed after returning |
-| Remove button for Sauce Labs Backpack | `[data-test="remove-sauce-labs-backpack"]` | Confirms that the product remains added after returning to Inventory Page |
+| Element                                    | Locator                                         | Reason                                                                    |
+| ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------- |
+| Username field                             | `[data-test="username"]`                        | Stable test attribute used for login                                      |
+| Password field                             | `[data-test="password"]`                        | Stable test attribute used for login                                      |
+| Login button                               | `[data-test="login-button"]`                    | Stable test attribute used for login                                      |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page                    |
+| Cart badge                                 | `[data-test="shopping-cart-badge"]`             | Confirms that the cart state is preserved                                 |
+| Cart icon/link                             | `[data-test="shopping-cart-link"]`              | Opens the Cart Page                                                       |
+| Page title                                 | `[data-test="title"]`                           | Allows verifying both Cart Page and Inventory Page titles                 |
+| Continue Shopping button                   | `[data-test="continue-shopping"]`               | Returns the user from Cart Page to Inventory Page                         |
+| Inventory list                             | `[data-test="inventory-list"]`                  | Confirms that the Inventory Page is displayed after returning             |
+| Remove button for Sauce Labs Backpack      | `[data-test="remove-sauce-labs-backpack"]`      | Confirms that the product remains added after returning to Inventory Page |
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Cart item description | `[data-test="inventory-item-desc"]` | Product description was visible on the Cart Page |
-| Product quantity | `[data-test="item-quantity"]` | Product quantity was visible on the Cart Page |
-| Product title link | `[data-test="item-4-title-link"]` | Codegen captured product navigation, but it is not needed for this test |
-| Back to products button | `[data-test="back-to-products"]` | Codegen captured Product Details navigation, but it is not needed for this test |
+| Element                 | Locator                             | Reason                                                                          |
+| ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| Cart item description   | `[data-test="inventory-item-desc"]` | Product description was visible on the Cart Page                                |
+| Product quantity        | `[data-test="item-quantity"]`       | Product quantity was visible on the Cart Page                                   |
+| Product title link      | `[data-test="item-4-title-link"]`   | Codegen captured product navigation, but it is not needed for this test         |
+| Back to products button | `[data-test="back-to-products"]`    | Codegen captured Product Details navigation, but it is not needed for this test |
 
 ### Notes
 
@@ -627,31 +644,31 @@ Verify that the `Checkout` button on the Cart Page opens the Checkout Step One P
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that the product remains in the cart |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Checkout button | `[data-test="checkout"]` | Opens the Checkout Step One Page from the Cart Page |
-| Page title | `[data-test="title"]` | Allows verifying that Checkout Step One Page is displayed |
-| Checkout info container | `[data-test="checkout-info-container"]` | Confirms that the checkout form area is displayed |
-| First Name field | `[data-test="firstName"]` | Confirms that the First Name input is visible |
-| Last Name field | `[data-test="lastName"]` | Confirms that the Last Name input is visible |
-| Postal Code field | `[data-test="postalCode"]` | Confirms that the Postal Code input is visible |
-| Continue button | `[data-test="continue"]` | Confirms that the checkout form submit button is visible |
-| Cancel button | `[data-test="cancel"]` | Confirms that the checkout form cancel control is visible |
+| Element                                    | Locator                                         | Reason                                                    |
+| ------------------------------------------ | ----------------------------------------------- | --------------------------------------------------------- |
+| Username field                             | `[data-test="username"]`                        | Stable test attribute used for login                      |
+| Password field                             | `[data-test="password"]`                        | Stable test attribute used for login                      |
+| Login button                               | `[data-test="login-button"]`                    | Stable test attribute used for login                      |
+| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the selected product before opening the Cart Page    |
+| Cart badge                                 | `[data-test="shopping-cart-badge"]`             | Confirms that the product remains in the cart             |
+| Cart icon/link                             | `[data-test="shopping-cart-link"]`              | Opens the Cart Page                                       |
+| Checkout button                            | `[data-test="checkout"]`                        | Opens the Checkout Step One Page from the Cart Page       |
+| Page title                                 | `[data-test="title"]`                           | Allows verifying that Checkout Step One Page is displayed |
+| Checkout info container                    | `[data-test="checkout-info-container"]`         | Confirms that the checkout form area is displayed         |
+| First Name field                           | `[data-test="firstName"]`                       | Confirms that the First Name input is visible             |
+| Last Name field                            | `[data-test="lastName"]`                        | Confirms that the Last Name input is visible              |
+| Postal Code field                          | `[data-test="postalCode"]`                      | Confirms that the Postal Code input is visible            |
+| Continue button                            | `[data-test="continue"]`                        | Confirms that the checkout form submit button is visible  |
+| Cancel button                              | `[data-test="cancel"]`                          | Confirms that the checkout form cancel control is visible |
 
 ### Additional Locators Observed
 
-| Element | Locator | Reason |
-|---|---|---|
-| Error message | `[data-test="error"]` | Appears when required checkout fields are missing |
-| Error close button | `[data-test="error-button"]` | Closes the checkout validation error |
-| Error container | `.error-message-container` | Codegen captured validation error container |
-| Checkout form | `form` | Codegen captured the form area |
+| Element            | Locator                      | Reason                                            |
+| ------------------ | ---------------------------- | ------------------------------------------------- |
+| Error message      | `[data-test="error"]`        | Appears when required checkout fields are missing |
+| Error close button | `[data-test="error-button"]` | Closes the checkout validation error              |
+| Error container    | `.error-message-container`   | Codegen captured validation error container       |
+| Checkout form      | `form`                       | Codegen captured the form area                    |
 
 ### Notes
 
@@ -677,26 +694,26 @@ Verify that the Cart Page correctly displays multiple products after the user ad
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Add to cart button for Sauce Labs Backpack | `[data-test="add-to-cart-sauce-labs-backpack"]` | Adds the first selected product |
-| Add to cart button for Sauce Labs Bike Light | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second selected product |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Confirms that two products were added |
-| Cart icon/link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Confirms that the Cart Page is displayed |
-| Cart list | `[data-test="cart-list"]` | Confirms that the cart content area is displayed |
-| Cart items | `[data-test="inventory-item"]` | Provides the collection of product containers displayed in the cart |
-| Product quantity | `[data-test="item-quantity"]` | Verifies quantity inside a specific cart item |
-| Product name | `[data-test="inventory-item-name"]` | Verifies the name inside a specific cart item |
-| Product description | `[data-test="inventory-item-desc"]` | Verifies the description inside a specific cart item |
-| Product price | `[data-test="inventory-item-price"]` | Verifies the price inside a specific cart item |
-| Remove button for Sauce Labs Backpack | `[data-test="remove-sauce-labs-backpack"]` | Verifies the action inside the Backpack cart item |
-| Remove button for Sauce Labs Bike Light | `[data-test="remove-sauce-labs-bike-light"]` | Verifies the action inside the Bike Light cart item |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that Cart Page navigation is available |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout entry point is available |
+| Element                                      | Locator                                           | Reason                                                              |
+| -------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------- |
+| Username field                               | `[data-test="username"]`                          | Stable test attribute used for login                                |
+| Password field                               | `[data-test="password"]`                          | Stable test attribute used for login                                |
+| Login button                                 | `[data-test="login-button"]`                      | Stable test attribute used for login                                |
+| Add to cart button for Sauce Labs Backpack   | `[data-test="add-to-cart-sauce-labs-backpack"]`   | Adds the first selected product                                     |
+| Add to cart button for Sauce Labs Bike Light | `[data-test="add-to-cart-sauce-labs-bike-light"]` | Adds the second selected product                                    |
+| Cart badge                                   | `[data-test="shopping-cart-badge"]`               | Confirms that two products were added                               |
+| Cart icon/link                               | `[data-test="shopping-cart-link"]`                | Opens the Cart Page                                                 |
+| Page title                                   | `[data-test="title"]`                             | Confirms that the Cart Page is displayed                            |
+| Cart list                                    | `[data-test="cart-list"]`                         | Confirms that the cart content area is displayed                    |
+| Cart items                                   | `[data-test="inventory-item"]`                    | Provides the collection of product containers displayed in the cart |
+| Product quantity                             | `[data-test="item-quantity"]`                     | Verifies quantity inside a specific cart item                       |
+| Product name                                 | `[data-test="inventory-item-name"]`               | Verifies the name inside a specific cart item                       |
+| Product description                          | `[data-test="inventory-item-desc"]`               | Verifies the description inside a specific cart item                |
+| Product price                                | `[data-test="inventory-item-price"]`              | Verifies the price inside a specific cart item                      |
+| Remove button for Sauce Labs Backpack        | `[data-test="remove-sauce-labs-backpack"]`        | Verifies the action inside the Backpack cart item                   |
+| Remove button for Sauce Labs Bike Light      | `[data-test="remove-sauce-labs-bike-light"]`      | Verifies the action inside the Bike Light cart item                 |
+| Continue Shopping button                     | `[data-test="continue-shopping"]`                 | Confirms that Cart Page navigation is available                     |
+| Checkout button                              | `[data-test="checkout"]`                          | Confirms that the checkout entry point is available                 |
 
 ### Scoped Locator Strategy
 
@@ -750,25 +767,25 @@ Verify that the Cart Page is displayed correctly when the user opens it without 
 
 ### Selected Locators
 
-| Element | Locator | Reason |
-|---|---|---|
-| Username field | `[data-test="username"]` | Stable test attribute used for login |
-| Password field | `[data-test="password"]` | Stable test attribute used for login |
-| Login button | `[data-test="login-button"]` | Stable test attribute used for login |
-| Cart link | `[data-test="shopping-cart-link"]` | Opens the Cart Page |
-| Page title | `[data-test="title"]` | Confirms that `Your Cart` is displayed |
-| Cart list | `[data-test="cart-list"]` | Confirms that the cart area is visible |
-| Cart items | `[data-test="inventory-item"]` | Represents products displayed in the cart |
-| Cart badge | `[data-test="shopping-cart-badge"]` | Represents the numerical cart item count |
-| Continue Shopping button | `[data-test="continue-shopping"]` | Confirms that the navigation button is visible |
-| Checkout button | `[data-test="checkout"]` | Confirms that the checkout button is visible |
+| Element                  | Locator                             | Reason                                         |
+| ------------------------ | ----------------------------------- | ---------------------------------------------- |
+| Username field           | `[data-test="username"]`            | Stable test attribute used for login           |
+| Password field           | `[data-test="password"]`            | Stable test attribute used for login           |
+| Login button             | `[data-test="login-button"]`        | Stable test attribute used for login           |
+| Cart link                | `[data-test="shopping-cart-link"]`  | Opens the Cart Page                            |
+| Page title               | `[data-test="title"]`               | Confirms that `Your Cart` is displayed         |
+| Cart list                | `[data-test="cart-list"]`           | Confirms that the cart area is visible         |
+| Cart items               | `[data-test="inventory-item"]`      | Represents products displayed in the cart      |
+| Cart badge               | `[data-test="shopping-cart-badge"]` | Represents the numerical cart item count       |
+| Continue Shopping button | `[data-test="continue-shopping"]`   | Confirms that the navigation button is visible |
+| Checkout button          | `[data-test="checkout"]`            | Confirms that the checkout button is visible   |
 
 ### DOM Behavior and Assertions
 
 Chrome DevTools Console confirmed that no cart item nodes are present on the empty Cart Page:
 
 ```javascript
-document.querySelectorAll('[data-test="inventory-item"]').length
+document.querySelectorAll('[data-test="inventory-item"]').length;
 ```
 
 Result: `0`
@@ -776,7 +793,7 @@ Result: `0`
 Chrome DevTools Console also confirmed that the cart badge is not present in the DOM:
 
 ```javascript
-document.querySelectorAll('[data-test="shopping-cart-badge"]').length
+document.querySelectorAll('[data-test="shopping-cart-badge"]').length;
 ```
 
 Result: `0`
@@ -828,23 +845,23 @@ The current application violates this rule and allows the user to complete an em
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Cart items | `[data-test="inventory-item"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First name field | `[data-test="firstName"]` |
-| Last name field | `[data-test="lastName"]` |
-| Postal code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Overview items | `[data-test="inventory-item"]` |
-| Item total | `[data-test="subtotal-label"]` |
-| Tax | `[data-test="tax-label"]` |
-| Total | `[data-test="total-label"]` |
-| Finish button | `[data-test="finish"]` |
-| Complete Page title | `[data-test="title"]` |
-| Success heading | `[data-test="complete-header"]` |
+| Element             | Locator                             |
+| ------------------- | ----------------------------------- |
+| Cart link           | `[data-test="shopping-cart-link"]`  |
+| Cart items          | `[data-test="inventory-item"]`      |
+| Cart badge          | `[data-test="shopping-cart-badge"]` |
+| Checkout button     | `[data-test="checkout"]`            |
+| First name field    | `[data-test="firstName"]`           |
+| Last name field     | `[data-test="lastName"]`            |
+| Postal code field   | `[data-test="postalCode"]`          |
+| Continue button     | `[data-test="continue"]`            |
+| Overview items      | `[data-test="inventory-item"]`      |
+| Item total          | `[data-test="subtotal-label"]`      |
+| Tax                 | `[data-test="tax-label"]`           |
+| Total               | `[data-test="total-label"]`         |
+| Finish button       | `[data-test="finish"]`              |
+| Complete Page title | `[data-test="title"]`               |
+| Success heading     | `[data-test="complete-header"]`     |
 
 ### Required business-rule assertions
 
@@ -904,22 +921,22 @@ Verify that Checkout Step One opens correctly and displays the required form ele
 
 ### Selected locators
 
-| Element | Locator |
-| --- | --- |
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
+| Element             | Locator                                         |
+| ------------------- | ----------------------------------------------- |
+| Username field      | `[data-test="username"]`                        |
+| Password field      | `[data-test="password"]`                        |
+| Login button        | `[data-test="login-button"]`                    |
 | Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| Page title | `[data-test="title"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Continue button | `[data-test="continue"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
-| Validation error | `[data-test="error"]` |
+| Cart link           | `[data-test="shopping-cart-link"]`              |
+| Checkout button     | `[data-test="checkout"]`                        |
+| Page title          | `[data-test="title"]`                           |
+| First Name field    | `[data-test="firstName"]`                       |
+| Last Name field     | `[data-test="lastName"]`                        |
+| Postal Code field   | `[data-test="postalCode"]`                      |
+| Cancel button       | `[data-test="cancel"]`                          |
+| Continue button     | `[data-test="continue"]`                        |
+| Cart badge          | `[data-test="shopping-cart-badge"]`             |
+| Validation error    | `[data-test="error"]`                           |
 
 ### Planned assertions
 
@@ -969,21 +986,21 @@ Verify that Checkout Step One prevents the user from continuing when `First Name
 
 ### Selected locators
 
-| Element | Locator |
-| --- | --- |
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
+| Element             | Locator                                         |
+| ------------------- | ----------------------------------------------- |
+| Username field      | `[data-test="username"]`                        |
+| Password field      | `[data-test="password"]`                        |
+| Login button        | `[data-test="login-button"]`                    |
 | Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Validation error | `[data-test="error"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Cart link           | `[data-test="shopping-cart-link"]`              |
+| Checkout button     | `[data-test="checkout"]`                        |
+| First Name field    | `[data-test="firstName"]`                       |
+| Last Name field     | `[data-test="lastName"]`                        |
+| Postal Code field   | `[data-test="postalCode"]`                      |
+| Continue button     | `[data-test="continue"]`                        |
+| Cancel button       | `[data-test="cancel"]`                          |
+| Validation error    | `[data-test="error"]`                           |
+| Cart badge          | `[data-test="shopping-cart-badge"]`             |
 
 ### Planned input data
 
@@ -1038,21 +1055,21 @@ Verify that Checkout Step One prevents the user from continuing when `Last Name`
 
 ### Selected locators
 
-| Element | Locator |
-| --- | --- |
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
+| Element             | Locator                                         |
+| ------------------- | ----------------------------------------------- |
+| Username field      | `[data-test="username"]`                        |
+| Password field      | `[data-test="password"]`                        |
+| Login button        | `[data-test="login-button"]`                    |
 | Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Validation error | `[data-test="error"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Cart link           | `[data-test="shopping-cart-link"]`              |
+| Checkout button     | `[data-test="checkout"]`                        |
+| First Name field    | `[data-test="firstName"]`                       |
+| Last Name field     | `[data-test="lastName"]`                        |
+| Postal Code field   | `[data-test="postalCode"]`                      |
+| Continue button     | `[data-test="continue"]`                        |
+| Cancel button       | `[data-test="cancel"]`                          |
+| Validation error    | `[data-test="error"]`                           |
+| Cart badge          | `[data-test="shopping-cart-badge"]`             |
 
 ### Planned input data
 
@@ -1108,21 +1125,21 @@ Verify that Checkout Step One prevents the user from continuing when `Zip/Postal
 
 ### Selected locators
 
-| Element | Locator |
-| --- | --- |
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
+| Element             | Locator                                         |
+| ------------------- | ----------------------------------------------- |
+| Username field      | `[data-test="username"]`                        |
+| Password field      | `[data-test="password"]`                        |
+| Login button        | `[data-test="login-button"]`                    |
 | Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Validation error | `[data-test="error"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Cart link           | `[data-test="shopping-cart-link"]`              |
+| Checkout button     | `[data-test="checkout"]`                        |
+| First Name field    | `[data-test="firstName"]`                       |
+| Last Name field     | `[data-test="lastName"]`                        |
+| Postal Code field   | `[data-test="postalCode"]`                      |
+| Continue button     | `[data-test="continue"]`                        |
+| Cancel button       | `[data-test="cancel"]`                          |
+| Validation error    | `[data-test="error"]`                           |
+| Cart badge          | `[data-test="shopping-cart-badge"]`             |
 
 ### Planned input data
 
@@ -1173,20 +1190,20 @@ It does not verify:
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
-| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Checkout Overview title | `[data-test="title"]` |
-| Validation error | `[data-test="error"]` |
+| Element                 | Locator                                         |
+| ----------------------- | ----------------------------------------------- |
+| Username field          | `[data-test="username"]`                        |
+| Password field          | `[data-test="password"]`                        |
+| Login button            | `[data-test="login-button"]`                    |
+| Add Backpack button     | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link               | `[data-test="shopping-cart-link"]`              |
+| Checkout button         | `[data-test="checkout"]`                        |
+| First Name field        | `[data-test="firstName"]`                       |
+| Last Name field         | `[data-test="lastName"]`                        |
+| Postal Code field       | `[data-test="postalCode"]`                      |
+| Continue button         | `[data-test="continue"]`                        |
+| Checkout Overview title | `[data-test="title"]`                           |
+| Validation error        | `[data-test="error"]`                           |
 
 ### Planned input data
 
@@ -1246,23 +1263,23 @@ Verify that clicking the `Cancel` button on Checkout Step One returns the user t
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
-| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Cart Page title | `[data-test="title"]` |
-| Cart item | `[data-test="inventory-item"]` |
-| Product name | `[data-test="inventory-item-name"]` |
-| Product quantity | `[data-test="item-quantity"]` |
-| Product price | `[data-test="inventory-item-price"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
-| Continue Shopping button | `[data-test="continue-shopping"]` |
-| Checkout button on Cart Page | `[data-test="checkout"]` |
+| Element                      | Locator                                         |
+| ---------------------------- | ----------------------------------------------- |
+| Username field               | `[data-test="username"]`                        |
+| Password field               | `[data-test="password"]`                        |
+| Login button                 | `[data-test="login-button"]`                    |
+| Add Backpack button          | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link                    | `[data-test="shopping-cart-link"]`              |
+| Checkout button              | `[data-test="checkout"]`                        |
+| Cancel button                | `[data-test="cancel"]`                          |
+| Cart Page title              | `[data-test="title"]`                           |
+| Cart item                    | `[data-test="inventory-item"]`                  |
+| Product name                 | `[data-test="inventory-item-name"]`             |
+| Product quantity             | `[data-test="item-quantity"]`                   |
+| Product price                | `[data-test="inventory-item-price"]`            |
+| Cart badge                   | `[data-test="shopping-cart-badge"]`             |
+| Continue Shopping button     | `[data-test="continue-shopping"]`               |
+| Checkout button on Cart Page | `[data-test="checkout"]`                        |
 
 ### Planned assertions
 
@@ -1324,16 +1341,16 @@ Verify that Checkout Overview opens after submitting valid checkout information 
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Page title | `[data-test="title"]` |
-| Payment Information label | `[data-test="payment-info-label"]` |
+| Element                    | Locator                             |
+| -------------------------- | ----------------------------------- |
+| Page title                 | `[data-test="title"]`               |
+| Payment Information label  | `[data-test="payment-info-label"]`  |
 | Shipping Information label | `[data-test="shipping-info-label"]` |
-| Price Total label | `[data-test="total-info-label"]` |
-| Cancel button | `[data-test="cancel"]` |
-| Finish button | `[data-test="finish"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
-| Validation error | `[data-test="error"]` |
+| Price Total label          | `[data-test="total-info-label"]`    |
+| Cancel button              | `[data-test="cancel"]`              |
+| Finish button              | `[data-test="finish"]`              |
+| Cart badge                 | `[data-test="shopping-cart-badge"]` |
+| Validation error           | `[data-test="error"]`               |
 
 ### Planned assertions
 
@@ -1411,14 +1428,14 @@ Verify that the product selected on the Inventory Page is preserved and displaye
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Cart item | `[data-test="inventory-item"]` |
-| Product quantity | `[data-test="item-quantity"]` |
-| Product name | `[data-test="inventory-item-name"]` |
-| Product description | `[data-test="inventory-item-desc"]` |
-| Product price | `[data-test="inventory-item-price"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Element             | Locator                              |
+| ------------------- | ------------------------------------ |
+| Cart item           | `[data-test="inventory-item"]`       |
+| Product quantity    | `[data-test="item-quantity"]`        |
+| Product name        | `[data-test="inventory-item-name"]`  |
+| Product description | `[data-test="inventory-item-desc"]`  |
+| Product price       | `[data-test="inventory-item-price"]` |
+| Cart badge          | `[data-test="shopping-cart-badge"]`  |
 
 ### Planned assertions
 
@@ -1492,12 +1509,12 @@ Verify that the item subtotal, tax, and total displayed on Checkout Overview are
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
+| Element       | Locator                              |
+| ------------- | ------------------------------------ |
 | Product price | `[data-test="inventory-item-price"]` |
-| Item total | `[data-test="subtotal-label"]` |
-| Tax | `[data-test="tax-label"]` |
-| Total | `[data-test="total-label"]` |
+| Item total    | `[data-test="subtotal-label"]`       |
+| Tax           | `[data-test="tax-label"]`            |
+| Total         | `[data-test="total-label"]`          |
 
 ### Planned assertions
 
@@ -1557,22 +1574,22 @@ It does not verify:
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
-| Add Backpack button | `[data-test="add-to-cart-sauce-labs-backpack"]` |
-| Cart link | `[data-test="shopping-cart-link"]` |
-| Checkout button | `[data-test="checkout"]` |
-| First Name field | `[data-test="firstName"]` |
-| Last Name field | `[data-test="lastName"]` |
-| Postal Code field | `[data-test="postalCode"]` |
-| Continue button | `[data-test="continue"]` |
-| Finish button | `[data-test="finish"]` |
-| Page title | `[data-test="title"]` |
-| Order confirmation header | `[data-test="complete-header"]` |
-| Validation error | `[data-test="error"]` |
+| Element                   | Locator                                         |
+| ------------------------- | ----------------------------------------------- |
+| Username field            | `[data-test="username"]`                        |
+| Password field            | `[data-test="password"]`                        |
+| Login button              | `[data-test="login-button"]`                    |
+| Add Backpack button       | `[data-test="add-to-cart-sauce-labs-backpack"]` |
+| Cart link                 | `[data-test="shopping-cart-link"]`              |
+| Checkout button           | `[data-test="checkout"]`                        |
+| First Name field          | `[data-test="firstName"]`                       |
+| Last Name field           | `[data-test="lastName"]`                        |
+| Postal Code field         | `[data-test="postalCode"]`                      |
+| Continue button           | `[data-test="continue"]`                        |
+| Finish button             | `[data-test="finish"]`                          |
+| Page title                | `[data-test="title"]`                           |
+| Order confirmation header | `[data-test="complete-header"]`                 |
+| Validation error          | `[data-test="error"]`                           |
 
 ### Planned input data
 
@@ -1626,12 +1643,12 @@ Verify that clicking the `Cancel` button on Checkout Overview returns the user t
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Cancel button | `[data-test="cancel"]` |
-| Inventory Page title | `[data-test="title"]` |
-| Inventory list | `[data-test="inventory-list"]` |
-| Cart badge | `[data-test="shopping-cart-badge"]` |
+| Element                | Locator                                    |
+| ---------------------- | ------------------------------------------ |
+| Cancel button          | `[data-test="cancel"]`                     |
+| Inventory Page title   | `[data-test="title"]`                      |
+| Inventory list         | `[data-test="inventory-list"]`             |
+| Cart badge             | `[data-test="shopping-cart-badge"]`        |
 | Backpack Remove button | `[data-test="remove-sauce-labs-backpack"]` |
 
 ### Planned assertions
@@ -1693,12 +1710,12 @@ Verify that completing checkout opens the Order Complete Page and displays the e
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Finish button | `[data-test="finish"]` |
-| Page title | `[data-test="title"]` |
-| Success heading | `[data-test="complete-header"]` |
-| Success message | `[data-test="complete-text"]` |
+| Element          | Locator                          |
+| ---------------- | -------------------------------- |
+| Finish button    | `[data-test="finish"]`           |
+| Page title       | `[data-test="title"]`            |
+| Success heading  | `[data-test="complete-header"]`  |
+| Success message  | `[data-test="complete-text"]`    |
 | Back Home button | `[data-test="back-to-products"]` |
 
 ### Planned assertions
@@ -1759,12 +1776,12 @@ Verify that clicking the `Back Home` button on the Order Complete Page returns t
 
 ### Selected locators
 
-| Element | Locator |
-|---|---|
-| Finish button | `[data-test="finish"]` |
-| Back Home button | `[data-test="back-to-products"]` |
-| Inventory Page title | `[data-test="title"]` |
-| Inventory list | `[data-test="inventory-list"]` |
+| Element              | Locator                          |
+| -------------------- | -------------------------------- |
+| Finish button        | `[data-test="finish"]`           |
+| Back Home button     | `[data-test="back-to-products"]` |
+| Inventory Page title | `[data-test="title"]`            |
+| Inventory list       | `[data-test="inventory-list"]`   |
 
 ### Planned assertions
 
@@ -1820,13 +1837,13 @@ Verify that clicking the menu button opens the sidebar and displays the expected
 
 ### Confirmed locators
 
-| Element | Locator |
-|---|---|
-| Menu button | `getByRole('button', { name: 'Open Menu' })` |
-| All Items link | `[data-test="inventory-sidebar-link"]` |
-| About link | `[data-test="about-sidebar-link"]` |
-| Logout link | `[data-test="logout-sidebar-link"]` |
-| Reset App State link | `[data-test="reset-sidebar-link"]` |
+| Element              | Locator                                      |
+| -------------------- | -------------------------------------------- |
+| Menu button          | `getByRole('button', { name: 'Open Menu' })` |
+| All Items link       | `[data-test="inventory-sidebar-link"]`       |
+| About link           | `[data-test="about-sidebar-link"]`           |
+| Logout link          | `[data-test="logout-sidebar-link"]`          |
+| Reset App State link | `[data-test="reset-sidebar-link"]`           |
 
 ### Planned assertions
 
@@ -1894,15 +1911,15 @@ Verify that clicking the `Close Menu` button closes the sidebar and returns the 
 
 ### Confirmed locators
 
-| Element | Locator |
-|---|---|
-| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
-| Close Menu button | `getByRole('button', { name: 'Close Menu' })` |
-| All Items link | `[data-test="inventory-sidebar-link"]` |
-| About link | `[data-test="about-sidebar-link"]` |
-| Logout link | `[data-test="logout-sidebar-link"]` |
-| Reset App State link | `[data-test="reset-sidebar-link"]` |
-| Inventory Page title | `[data-test="title"]` |
+| Element              | Locator                                       |
+| -------------------- | --------------------------------------------- |
+| Open Menu button     | `getByRole('button', { name: 'Open Menu' })`  |
+| Close Menu button    | `getByRole('button', { name: 'Close Menu' })` |
+| All Items link       | `[data-test="inventory-sidebar-link"]`        |
+| About link           | `[data-test="about-sidebar-link"]`            |
+| Logout link          | `[data-test="logout-sidebar-link"]`           |
+| Reset App State link | `[data-test="reset-sidebar-link"]`            |
+| Inventory Page title | `[data-test="title"]`                         |
 
 ### Planned assertions
 
@@ -1974,13 +1991,13 @@ Verify that clicking `All Items` in the sidebar returns the user from Product De
 
 ### Confirmed locators
 
-| Element | Locator |
-|---|---|
-| Backpack product link | `[data-test="item-4-title-link"]` |
-| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
-| All Items link | `[data-test="inventory-sidebar-link"]` |
-| Inventory Page title | `[data-test="title"]` |
-| Inventory container | `[data-test="inventory-container"]` |
+| Element               | Locator                                      |
+| --------------------- | -------------------------------------------- |
+| Backpack product link | `[data-test="item-4-title-link"]`            |
+| Open Menu button      | `getByRole('button', { name: 'Open Menu' })` |
+| All Items link        | `[data-test="inventory-sidebar-link"]`       |
+| Inventory Page title  | `[data-test="title"]`                        |
+| Inventory container   | `[data-test="inventory-container"]`          |
 
 ### Planned assertions
 
@@ -2031,35 +2048,32 @@ It does not verify:
 
 ---
 
-## TC-MENU-004 - Verify that About menu item opens Sauce Labs page
+## TC-MENU-004 - Verify that About menu item provides the Sauce Labs destination
 
 ### Test purpose
 
-Verify that clicking `About` in the sidebar navigates the user from SauceDemo to the Sauce Labs website.
+Verify that the sidebar `About` link provides the intended Sauce Labs destination without making the regression suite depend on an external website.
 
 ### Confirmed locators
 
-| Element | Locator |
-|---|---|
+| Element          | Locator                                      |
+| ---------------- | -------------------------------------------- |
 | Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
-| About link | `[data-test="about-sidebar-link"]` |
+| About link       | `[data-test="about-sidebar-link"]`           |
 
 ### Planned assertions
 
-- Clicking `About` navigates away from SauceDemo.
-- Final URL belongs to the `saucelabs.com` domain.
-- No browser error page is displayed.
+- `About` is visible after the sidebar opens.
+- Its `href` belongs to the `saucelabs.com` domain.
 
 ### Locator strategy
 
-The test uses the confirmed Codegen locators:
+The test uses a stable accessible locator for the interactive button and a `data-test` locator for the link:
 
 - `getByRole('button', { name: 'Open Menu' })`
 - `[data-test="about-sidebar-link"]`
 
-The external Sauce Labs page is not validated through unstable page text, headings, CSS classes, or layout details.
-
-The stable assertion is the destination domain:
+The external Sauce Labs page is not opened or validated through unstable page text, headings, CSS classes, or layout details. The stable assertion is the destination domain in the link attribute:
 
 `saucelabs.com`
 
@@ -2070,32 +2084,19 @@ The following recorded actions are excluded:
 - partial username and password fills;
 - `dblclick()`;
 - `CapsLock` and `Shift+CapsLock` key presses;
-- clicking external page headings;
-- clicking external page text;
+- clicking the external page;
+- clicking external page headings or text;
 - clicking complex CSS-class locators on the Sauce Labs website.
 
-These external-page interactions are unrelated to the navigation purpose of `TC-MENU-004`.
-
-### External dependency note
-
-This test depends on the external Sauce Labs website.
-
-Possible failures may be caused by:
-
-- network connectivity;
-- DNS issues;
-- redirects controlled by Sauce Labs;
-- temporary external-site availability problems.
-
-The test should avoid asserting exact external page content because that content may change independently of SauceDemo.
+These external-page interactions are unrelated to the link-contract purpose of `TC-MENU-004` and would introduce network-dependent CI failures.
 
 ### Scope boundary
 
-This test verifies only:
+This automated test verifies only:
 
 - opening the sidebar;
-- clicking `About`;
-- navigation to the `saucelabs.com` domain.
+- visibility of `About`;
+- its Sauce Labs destination.
 
 It does not verify:
 
@@ -2115,14 +2116,14 @@ Verify that clicking `Logout` in the sidebar ends the authenticated session and 
 
 ### Confirmed locators
 
-| Element | Locator |
-|---|---|
-| Open Menu button | `getByRole('button', { name: 'Open Menu' })` |
-| Logout link | `[data-test="logout-sidebar-link"]` |
-| Username field | `[data-test="username"]` |
-| Password field | `[data-test="password"]` |
-| Login button | `[data-test="login-button"]` |
-| Inventory page title | `[data-test="title"]` |
+| Element              | Locator                                      |
+| -------------------- | -------------------------------------------- |
+| Open Menu button     | `getByRole('button', { name: 'Open Menu' })` |
+| Logout link          | `[data-test="logout-sidebar-link"]`          |
+| Username field       | `[data-test="username"]`                     |
+| Password field       | `[data-test="password"]`                     |
+| Login button         | `[data-test="login-button"]`                 |
+| Inventory page title | `[data-test="title"]`                        |
 
 ### Planned assertions
 

@@ -16,13 +16,17 @@ test('TC-INV-002 - should display required product card information', async ({ p
 
   const firstProductCard = page.locator('[data-test="inventory-item"]').first();
 
-  await expect(firstProductCard.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
+  await expect(firstProductCard.locator('[data-test="inventory-item-name"]')).toHaveText(
+    'Sauce Labs Backpack',
+  );
   await expect(firstProductCard.locator('[data-test="inventory-item-desc"]')).toBeVisible();
   await expect(firstProductCard.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99');
   await expect(
     firstProductCard.locator('[data-test="inventory-item-sauce-labs-backpack-img"]'),
   ).toBeVisible();
-  await expect(firstProductCard.locator('[data-test="add-to-cart-sauce-labs-backpack"]')).toBeVisible();
+  await expect(
+    firstProductCard.locator('[data-test="add-to-cart-sauce-labs-backpack"]'),
+  ).toBeVisible();
 });
 
 test('TC-INV-003 - should add one product to the cart', async ({ page }) => {

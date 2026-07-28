@@ -2,23 +2,29 @@
 
 ## Purpose
 
-This document records confirmed product defects discovered during manual exploratory testing of the SauceDemo application.
+This document records evidence-backed product defects and persona-specific observations discovered during manual exploratory testing of the SauceDemo application.
 
-Each bug report includes:
+Each record includes:
 
 - reproduction steps;
 - actual and expected results;
 - severity and priority assessment;
 - business impact;
 - reproducibility;
-- supporting evidence;
+- supporting evidence where it was captured;
 - related manual and automated test cases.
+
+## Scope Note
+
+`BUG-CART-001` and `BUG-COMPLETE-001` are evidence-backed defects observed with the standard user flow. The remaining records document observed behavior for named non-standard personas or cross-persona scenarios. They demonstrate exploratory testing and risk analysis, but should not be interpreted as confirmed production defects without product requirements or product-owner confirmation.
 
 Bug reports are based on observed application behavior. When an explicit product requirement is unavailable, the assumed business rule is stated clearly.
 
 ---
 
-## BUG-CART-001 - User can complete checkout with an empty cart
+## Confirmed Evidence-Backed Defects
+
+### BUG-CART-001 - User can complete checkout with an empty cart
 
 - **Status:** Open
 - **Severity:** High
@@ -27,6 +33,7 @@ Bug reports are based on observed application behavior. When an explicit product
 - **Area:** Cart / Checkout
 - **Reproducibility:** 100%
 - **Related test case:** TC-CART-007
+- **Automated check:** `tests/cart-page.spec.ts`
 - **Environment:** SauceDemo web application
 - **User:** `standard_user`
 
@@ -108,7 +115,7 @@ This should also be treated as a requirement clarification point for the product
 
 ---
 
-## BUG-COMPLETE-001 - Generated order PDF corrupts Unicode checkout data
+### BUG-COMPLETE-001 - Generated order PDF corrupts Unicode checkout data
 
 - **Status:** Open
 - **Severity:** Medium
@@ -191,7 +198,9 @@ This confirms that the issue is specifically related to Unicode character handli
 
 ---
 
-## BUG-INV-001 - Product Details opens a different product for problem_user
+## Persona-Specific Defect Observations
+
+### BUG-INV-001 - Product Details opens a different product for problem_user
 
 - **Status:** Open
 - **Severity:** High
@@ -200,6 +209,7 @@ This confirms that the issue is specifically related to Unicode character handli
 - **Area:** Inventory / Product Details
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-001`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **Environment:** SauceDemo web application
 - **User:** `problem_user`
 
@@ -226,14 +236,14 @@ This confirms that the issue is specifically related to Unicode character handli
 
 None of the six Inventory Page products opens its corresponding Product Details content.
 
-| Selected product on Inventory Page | Opened URL | Actual Product Details content |
-| --- | --- | --- |
-| Sauce Labs Backpack | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket |
-| Sauce Labs Bike Light | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt |
-| Sauce Labs Bolt T-Shirt | `/inventory-item.html?id=2` | Sauce Labs Onesie |
-| Sauce Labs Fleece Jacket | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
-| Sauce Labs Onesie | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red) |
-| Test.allTheThings() T-Shirt (Red) | `/inventory-item.html?id=4` | Sauce Labs Backpack |
+| Selected product on Inventory Page | Opened URL                  | Actual Product Details content                                               |
+| ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------- |
+| Sauce Labs Backpack                | `/inventory-item.html?id=5` | Sauce Labs Fleece Jacket                                                     |
+| Sauce Labs Bike Light              | `/inventory-item.html?id=1` | Sauce Labs Bolt T-Shirt                                                      |
+| Sauce Labs Bolt T-Shirt            | `/inventory-item.html?id=2` | Sauce Labs Onesie                                                            |
+| Sauce Labs Fleece Jacket           | `/inventory-item.html?id=6` | `ITEM NOT FOUND`, unrelated description, invalid price `$√-1`, and dog image |
+| Sauce Labs Onesie                  | `/inventory-item.html?id=3` | Test.allTheThings() T-Shirt (Red)                                            |
+| Test.allTheThings() T-Shirt (Red)  | `/inventory-item.html?id=4` | Sauce Labs Backpack                                                          |
 
 Additional observations:
 
@@ -266,7 +276,7 @@ Additional observations:
 
 ---
 
-## BUG-CHK1-001 - Last Name field does not accept input for problem_user
+### BUG-CHK1-001 - Last Name field does not accept input for problem_user
 
 - **Status:** Open
 - **Severity:** High
@@ -275,6 +285,7 @@ Additional observations:
 - **Area:** Checkout Step One
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-001`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **Environment:** SauceDemo web application
 - **User:** `problem_user`
 
@@ -332,7 +343,7 @@ Additional observations:
 
 ---
 
-## BUG-INV-002 - All inventory products display the same incorrect image for problem_user
+### BUG-INV-002 - All inventory products display the same incorrect image for problem_user
 
 - **Status:** Open
 - **Severity:** Medium
@@ -387,7 +398,7 @@ Additional observations:
 
 ---
 
-## BUG-INV-003 - Product sorting does not change for problem_user
+### BUG-INV-003 - Product sorting does not change for problem_user
 
 - **Status:** Open
 - **Severity:** Medium
@@ -447,7 +458,7 @@ Additional observations:
 
 ---
 
-## BUG-CART-002 - Inventory and Product Details cart actions do not respond for problem_user
+### BUG-CART-002 - Inventory and Product Details cart actions do not respond for problem_user
 
 - **Status:** Open
 - **Severity:** High
@@ -528,7 +539,7 @@ Additional observations:
 
 ---
 
-## BUG-INV-004 - Sorting displays an error alert and does not change product order for error_user
+### BUG-INV-004 - Sorting displays an error alert and does not change product order for error_user
 
 - **Status:** Open
 - **Severity:** Medium
@@ -537,6 +548,7 @@ Additional observations:
 - **Area:** Inventory Page / Sorting
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-003`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **User:** `error_user`
 
 ### Preconditions
@@ -585,7 +597,7 @@ Additional observations:
 
 ---
 
-## BUG-INV-005 - Product description is missing on Product Details for error_user
+### BUG-INV-005 - Product description is missing on Product Details for error_user
 
 - **Status:** Open
 - **Severity:** Medium
@@ -643,7 +655,7 @@ Additional observations:
 
 ---
 
-## BUG-CHK1-002 - Last Name field does not accept input for error_user
+### BUG-CHK1-002 - Last Name field does not accept input for error_user
 
 - **Status:** Open
 - **Severity:** High
@@ -698,7 +710,7 @@ Additional observations:
 
 ---
 
-## BUG-CHK1-003 - Checkout continues with an empty Last Name for error_user
+### BUG-CHK1-003 - Checkout continues with an empty Last Name for error_user
 
 - **Status:** Open
 - **Severity:** High
@@ -752,7 +764,7 @@ Additional observations:
 
 ---
 
-## BUG-CHK2-001 - Finish button does not complete the order for error_user
+### BUG-CHK2-001 - Finish button does not complete the order for error_user
 
 - **Status:** Open
 - **Severity:** Critical
@@ -761,6 +773,7 @@ Additional observations:
 - **Area:** Checkout Overview
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-003`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **User:** `error_user`
 
 ### Preconditions
@@ -812,7 +825,9 @@ Additional observations:
 
 ---
 
-## BUG-CART-003 - Reset App State clears the cart but leaves stale Remove buttons on Inventory Page
+## Cross-Persona Observations
+
+### BUG-CART-003 - Reset App State clears the cart but leaves stale Remove buttons on Inventory Page
 
 - **Status:** Open
 - **Severity:** Medium
@@ -875,7 +890,9 @@ Additional observations:
 
 ---
 
-## BUG-INV-006 - Inventory prices are random and do not match transaction prices for visual_user
+## Persona-Specific Defect Observations: visual_user
+
+### BUG-INV-006 - Inventory prices are random and do not match transaction prices for visual_user
 
 - **Status:** Open
 - **Severity:** Critical
@@ -884,6 +901,7 @@ Additional observations:
 - **Area:** Inventory Page / Product Details / Cart / Checkout
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-004`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **User:** `visual_user`
 
 ### Preconditions
@@ -959,7 +977,7 @@ For Sauce Labs Backpack:
 
 ---
 
-## BUG-INV-007 - First Inventory position displays the wrong dog image for visual_user
+### BUG-INV-007 - First Inventory position displays the wrong dog image for visual_user
 
 - **Status:** Open
 - **Severity:** High
@@ -968,6 +986,7 @@ For Sauce Labs Backpack:
 - **Area:** Inventory Page / Product Images / Sorting
 - **Reproducibility:** 100%
 - **Related test case:** `TC-PERSONA-004`
+- **Automated check:** `tests/persona-risks.spec.ts`
 - **User:** `visual_user`
 
 ### Preconditions
@@ -1016,7 +1035,7 @@ For Sauce Labs Backpack:
 
 ---
 
-## BUG-UI-001 - Cart icon is misplaced across multiple pages for visual_user
+### BUG-UI-001 - Cart icon is misplaced across multiple pages for visual_user
 
 - **Status:** Open
 - **Severity:** Medium
@@ -1081,7 +1100,7 @@ For Sauce Labs Backpack:
 
 ---
 
-## BUG-UI-002 - Sidebar Menu icon is visually skewed for visual_user
+### BUG-UI-002 - Sidebar Menu icon is visually skewed for visual_user
 
 - **Status:** Open
 - **Severity:** Low
@@ -1134,7 +1153,7 @@ For Sauce Labs Backpack:
 
 ---
 
-## BUG-CHK2-002 - Item total intermittently exposes floating-point precision for visual_user
+### BUG-CHK2-002 - Item total intermittently exposes floating-point precision for visual_user
 
 - **Status:** Open
 - **Severity:** Medium

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { addProduct, loginAsStandardUser, openCart } from './saucedemo-test-helpers';
+import { addProduct, loginAsStandardUser, openCart, testData } from './saucedemo-test-helpers';
 
 test('TC-CART-001 - should display one added product on cart page', async ({ page }) => {
   await loginAsStandardUser(page);
@@ -45,7 +45,9 @@ test('TC-CART-002 - should remove product from cart page', async ({ page }) => {
   await expect(page.locator('[data-test="checkout"]')).toBeVisible();
 });
 
-test('TC-CART-003 - should continue shopping from cart page and preserve cart state', async ({ page }) => {
+test('TC-CART-003 - should continue shopping from cart page and preserve cart state', async ({
+  page,
+}) => {
   await loginAsStandardUser(page);
   await addProduct(page, 'sauce-labs-backpack');
 
@@ -127,7 +129,9 @@ test('TC-CART-005 - should display multiple added products on cart page', async 
   );
   await expect(bikeLightCartItem.locator('[data-test="inventory-item-desc"]')).toBeVisible();
   await expect(bikeLightCartItem.locator('[data-test="inventory-item-price"]')).toHaveText('$9.99');
-  await expect(bikeLightCartItem.locator('[data-test="remove-sauce-labs-bike-light"]')).toBeVisible();
+  await expect(
+    bikeLightCartItem.locator('[data-test="remove-sauce-labs-bike-light"]'),
+  ).toBeVisible();
 
   await expect(page.locator('[data-test="continue-shopping"]')).toBeVisible();
   await expect(page.locator('[data-test="checkout"]')).toBeVisible();
@@ -152,8 +156,6 @@ test('TC-CART-006 - should display empty cart page correctly', async ({ page }) 
 });
 
 test('TC-CART-007 - should prevent checkout with an empty cart', async ({ page }) => {
-  test.fail(true, 'BUG-CART-001: User can complete checkout with an empty cart');
-
   await loginAsStandardUser(page);
   await openCart(page);
 
@@ -161,6 +163,10 @@ test('TC-CART-007 - should prevent checkout with an empty cart', async ({ page }
   await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
 
   const checkoutButton = page.locator('[data-test="checkout"]');
+
+  await expect(checkoutButton).toBeVisible();
+
+  test.fail(true, 'BUG-CART-001: User can complete checkout with an empty cart');
 
   if (await checkoutButton.isDisabled()) {
     await expect(checkoutButton).toBeDisabled();
@@ -174,9 +180,9 @@ test('TC-CART-007 - should prevent checkout with an empty cart', async ({ page }
     return;
   }
 
-  await page.locator('[data-test="firstName"]').fill('Katia');
-  await page.locator('[data-test="lastName"]').fill('Tester');
-  await page.locator('[data-test="postalCode"]').fill('12345');
+  await page.locator('[data-test="firstName"]').fill(testData.checkout.firstName);
+  await page.locator('[data-test="lastName"]').fill(testData.checkout.lastName);
+  await page.locator('[data-test="postalCode"]').fill(testData.checkout.postalCode);
   await page.locator('[data-test="continue"]').click();
 
   if (!page.url().endsWith('/checkout-step-two.html')) {

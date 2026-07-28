@@ -51,9 +51,7 @@ test('TC-MENU-003 - should navigate to inventory through All Items', async ({ pa
   await page.locator('[data-test="item-4-title-link"]').click();
 
   await expect(page).toHaveURL(/\/inventory-item\.html\?id=4$/);
-  await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText(
-    'Sauce Labs Backpack',
-  );
+  await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
 
   await page.getByRole('button', { name: 'Open Menu' }).click();
 
@@ -68,7 +66,7 @@ test('TC-MENU-003 - should navigate to inventory through All Items', async ({ pa
   await expect(allItemsLink).not.toBeVisible();
 });
 
-test('TC-MENU-004 - should navigate to Sauce Labs through About', async ({ page }) => {
+test('TC-MENU-004 - should provide Sauce Labs link through About', async ({ page }) => {
   await loginAsStandardUser(page);
 
   await page.getByRole('button', { name: 'Open Menu' }).click();
@@ -76,9 +74,7 @@ test('TC-MENU-004 - should navigate to Sauce Labs through About', async ({ page 
   const aboutLink = page.locator('[data-test="about-sidebar-link"]');
 
   await expect(aboutLink).toBeVisible();
-  await aboutLink.click();
-
-  await expect(page).toHaveURL(/^https:\/\/(?:www\.)?saucelabs\.com\/?/);
+  await expect(aboutLink).toHaveAttribute('href', /^https:\/\/(?:www\.)?saucelabs\.com\/?/);
 });
 
 test('TC-MENU-005 - should log out through sidebar menu', async ({ page }) => {

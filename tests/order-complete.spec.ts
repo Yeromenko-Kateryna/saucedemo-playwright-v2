@@ -27,4 +27,6 @@ test('TC-COMPLETE-002 - should return to inventory after clicking Back Home', as
   await expect(page).toHaveURL(/\/inventory\.html$/);
   await expect(page.locator('[data-test="title"]')).toHaveText('Products');
   await expect(page.locator('[data-test="inventory-list"]')).toBeVisible();
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveCount(0);
+  await expect(page.locator('[data-test="add-to-cart-sauce-labs-backpack"]')).toBeVisible();
 });

@@ -1,21 +1,34 @@
 {
   "name": "saucedemo-playwright",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Playwright and TypeScript QA automation portfolio for SauceDemo.",
   "scripts": {
-    "test": "playwright test",
-    "test:chromium": "playwright test --project=chromium",
-    "test:headed": "playwright test --project=chromium --headed",
+    "test": "playwright test --grep-invert @persona",
+    "test:all": "playwright test",
+    "test:personas": "playwright test --grep @persona",
+    "test:chromium": "playwright test --project=chromium --grep-invert @persona",
+    "test:headed": "playwright test --project=chromium --headed --grep-invert @persona",
     "test:list": "playwright test --list",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "playwright",
+    "typescript",
+    "qa-automation",
+    "e2e-testing",
+    "saucedemo"
+  ],
+  "author": "Kateryna Yeromenko",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.0"
+    "@types/node": "^26.1.0",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3"
   }
 }
