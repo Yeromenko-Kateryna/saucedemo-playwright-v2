@@ -475,7 +475,7 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
   - Product Details price matched the Inventory Page card;
   - `Back to products` returned the user to the Inventory Page.
 - The test did not depend on a fixed product count or predefined product list.
-- The complete regression run finished with `129 passed`.
+- The latest complete cross-browser run finished with `147 passed`: 49 automated scenarios executed across Chromium, Firefox, and WebKit.
 
 #### Observations
 
@@ -1020,7 +1020,7 @@ Automation coverage is maintained separately in [`test-plan.md`](test-plan.md). 
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially planned
+- **Automation decision:** Partially automated
 - **Related defect:** `BUG-COMPLETE-001`
 
 #### Charter
@@ -1491,7 +1491,7 @@ Investigate how Checkout Step One handles malformed, international, whitespace-o
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially planned
+- **Automation decision:** Partially automated
 - **User:** `problem_user`
 
 #### Charter
@@ -1569,7 +1569,7 @@ Do not duplicate the complete `standard_user` regression suite.
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially planned
+- **Automation decision:** Not automated
 - **User:** `performance_glitch_user`
 
 #### Charter
@@ -1653,7 +1653,7 @@ Compare navigation response times for `performance_glitch_user` with the normal 
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially planned
+- **Automation decision:** Partially automated
 - **User:** `error_user`
 
 #### Charter
@@ -1751,7 +1751,7 @@ Explore functional failures specific to `error_user` across the main shopping fl
 
 - **Execution type:** Exploratory
 - **Status:** Completed
-- **Automation decision:** Partially planned
+- **Automation decision:** Partially automated
 - **User:** `visual_user`
 
 #### Charter

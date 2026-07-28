@@ -94,14 +94,16 @@ The following areas are not included in the current automation scope, but can be
 | Area | Test Cases | Priority |
 | --- | ---: | --- |
 | Login Page | 4 | High |
-| Inventory Page | 13 | High / Medium |
+| Inventory Page | 14 | High / Medium |
 | Cart Page | 7 | High / Medium |
 | Checkout Step One | 6 | High / Medium |
 | Checkout Overview | 5 | High / Medium |
 | Order Complete Page | 2 | High / Medium |
 | Sidebar Menu and Navigation | 5 | High / Medium / Low |
 
-**Total planned test cases:** 42
+**Total functional regression test cases:** 43
+
+**Additional exploratory charters:** 5 — one Checkout Step One validation charter and four persona exploration charters.
 
 ---
 
@@ -136,6 +138,7 @@ The automation suite will be implemented incrementally with Playwright and TypeS
 * `tests/checkout-step-one.spec.ts` - Checkout information form and required-field validation tests.
 * `tests/checkout-overview.spec.ts` - Checkout Overview display, product, price-summary, completion, and cancel-navigation tests.
 * `tests/order-complete.spec.ts` - Order confirmation content and Back Home navigation tests.
+* `tests/persona-risks.spec.ts` - focused persona-specific known-issue tests for `problem_user`, `error_user`, and `visual_user`.
 * `tests/saucedemo-test-helpers.ts` - shared test data and reusable workflow helpers.
 * `docs/` - test planning and QA documentation.
 * `playwright-report/` - locally generated test execution reports, not committed to the repository.
@@ -1745,7 +1748,7 @@ Focus areas:
 
 ### Completed Automation Scope
 
-**Current automated coverage:** 43 of 43 planned test cases (100%). This count includes one automated known expected failure linked to `BUG-CART-001` and does not represent a test-run result.
+**Current automated coverage:** 49 automated test scenarios. This includes 43 functional regression scenarios derived from the planned test cases and 6 focused persona-risk scenarios implemented as known expected failures. The latest complete local cross-browser run executed 147 tests: 49 scenarios across Chromium, Firefox, and WebKit.
 
 | Test Case | Area | Reason |
 | --- | --- | --- |
@@ -1766,6 +1769,12 @@ Focus areas:
 | TC-MENU-003 | Sidebar Menu | All Items navigation from Product Details to Inventory Page |
 | TC-MENU-004 | Sidebar Menu | External About navigation to the `saucelabs.com` domain |
 | TC-MENU-005 | Sidebar Menu | Logout, Login Page validation, and persistence of the logged-out state after reload |
+| BUG-INV-001 | Persona Risk / `problem_user` | Verifies that the selected product opens the matching Product Details page |
+| BUG-CHK1-001 | Persona Risk / `problem_user` | Verifies that Last Name accepts input and checkout can continue |
+| BUG-INV-004 | Persona Risk / `error_user` | Verifies that sorting works without an alert and changes product order |
+| BUG-CHK2-001 | Persona Risk / `error_user` | Verifies that Finish completes the order |
+| BUG-INV-006 | Persona Risk / `visual_user` | Verifies Inventory and Product Details price consistency |
+| BUG-INV-007 | Persona Risk / `visual_user` | Verifies that product images remain mapped correctly after sorting |
 
 ### Next Automation Scope
 
@@ -1829,7 +1838,8 @@ AI outputs should be validated manually before being added to the test suite, do
 | Checkout Step One automation | Completed |
 | Checkout Overview automation | Completed |
 | Order Complete automation | Completed |
-| Menu navigation automation | Planned |
+| Menu navigation automation | Completed |
+| Persona risk automation | Completed |
 
 ---
 
