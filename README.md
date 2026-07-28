@@ -1,10 +1,10 @@
 # SauceDemo Playwright QA Automation Portfolio
 
-SauceDemo Playwright QA Automation Portfolio is an end-to-end UI test automation project for the SauceDemo demo e-commerce application.
+[SauceDemo](https://www.saucedemo.com/) is a demo e-commerce application used in this project as the application under test.
 
-The project demonstrates practical QA Automation skills: test design, stable locator strategy, cross-browser execution, reusable test helpers, documented exploratory testing, evidence-backed bug reporting, and CI execution with GitHub Actions.
+This repository contains end-to-end UI automation for SauceDemo using Playwright and TypeScript.
 
-This project was built as a portfolio project for a Junior QA Automation Engineer role.
+The project demonstrates practical QA Automation skills: test design, stable locator strategy, cross-browser execution, reusable test helpers, exploratory testing, evidence-backed bug reporting, and continuous integration with GitHub Actions.
 
 ---
 
@@ -16,7 +16,7 @@ This project was built as a portfolio project for a Junior QA Automation Enginee
 - GitHub Actions
 - Prettier
 - Playwright HTML Reports
-- Cross-browser testing: Chromium, Firefox, WebKit
+- Chromium, Firefox, and WebKit
 - Manual exploratory testing
 - Risk-based test design
 
@@ -24,7 +24,7 @@ This project was built as a portfolio project for a Junior QA Automation Enginee
 
 ## Test Automation Architecture
 
-The project uses a simple feature-based test structure.
+The project uses a feature-based test structure.
 
 ```text
 tests/
@@ -41,87 +41,98 @@ tests/
 
 The suite starts with direct Playwright locators and introduces reusable helpers only for repeated workflows such as login and checkout setup.
 
-This keeps the code readable while avoiding unnecessary Page Object Model abstraction for a portfolio-sized project.
+This keeps the code readable and maintainable while avoiding unnecessary Page Object Model abstraction for a portfolio-sized project.
 
 ---
 
 ## Features
 
-- Covers the main SauceDemo e-commerce flow from login to order completion
+- Covers the complete SauceDemo customer journey from login to order completion
 - Uses stable `data-test` selectors and accessible user-facing locators
 - Runs tests in Chromium, Firefox, and WebKit
 - Includes functional regression tests and persona-risk diagnostics
 - Uses reusable helpers for login and checkout setup
-- Includes TypeScript type checking and Prettier formatting checks
+- Provides local TypeScript type checking and Prettier formatting checks
 - Generates Playwright HTML reports
-- Runs automated checks in GitHub Actions
+- Runs automated checks through GitHub Actions
 - Documents test design, locator decisions, execution results, and bugs
 
 ---
 
 ## Test Coverage
 
-The automated regression suite covers the main SauceDemo customer journey.
+The functional regression suite covers the main SauceDemo e-commerce flow.
 
 ### Login Page
 
-- Valid login
-- Invalid credentials
-- Locked-out user
-- Empty credentials validation
+- Login Page element validation
+- Login with valid credentials
+- Invalid credentials validation
+- Locked-out user validation
 
 ### Inventory Page
 
-- Inventory Page visibility after login
-- Product card validation
-- Product image visibility
-- Product sorting
-- Adding one product to cart
-- Removing a product from Inventory Page
-- Adding multiple products
-- Cart badge updates
-- Opening Cart Page
-- Product details navigation
+- Inventory Page visibility after successful login
+- Product card information validation
+- Adding one product to the cart
+- Removing one product from the Inventory Page
+- Adding multiple products to the cart
+- Opening Product Details from the product name
+- Opening Product Details from the product image
+- Returning to Inventory from Product Details
+- Sorting products by name from A to Z
+- Sorting products by name from Z to A
+- Sorting products by price from low to high
+- Sorting products by price from high to low
+- Opening Cart Page from Inventory Page
+- Dynamic validation for all available products
 
 ### Cart Page
 
-- Cart Page visibility
-- Added product details
-- Cart badge validation
-- Continue Shopping flow
-- Removing products from Cart Page
-- Multiple products in cart
-- Checkout button visibility
+- Cart Page visibility with one added product
+- Removing a product from Cart Page
+- Continue Shopping flow with cart state preservation
+- Opening Checkout Step One from Cart Page
+- Multiple products displayed on Cart Page
+- Empty Cart Page validation
+- Checkout prevention with an empty cart
 
 ### Checkout Step One
 
+- Checkout form visibility
 - Required first name validation
 - Required last name validation
 - Required postal code validation
-- Successful checkout data submission
-- Invalid input behavior exploration
-- Navigation back to the cart
+- Continuing with valid checkout information
+- Returning to Cart Page after checkout cancellation
+
+Additional manual exploratory coverage includes whitespace-only, Unicode, malformed, and long checkout input values.
 
 ### Checkout Overview
 
-- Product details validation
-- Item total validation
-- Tax validation
-- Total price validation
-- Finish order flow
+- Checkout Overview Page visibility
+- Selected product validation
+- Item total, tax, and total price validation
+- Completing an order after clicking `Finish`
+- Returning to Inventory after checkout cancellation
 
 ### Order Complete Page
 
-- Order confirmation page visibility
-- Cart reset after order completion
+- Order completion confirmation
+- Cart reset and return to Inventory after clicking `Back Home`
 
 ### Sidebar Menu and Logout
 
-- Sidebar menu visibility
-- All Items navigation
-- About link validation
-- Reset App State behavior
-- Logout flow
+- Opening Sidebar Menu and validating navigation items
+- Closing Sidebar Menu
+- Navigation through `All Items`
+- Sauce Labs link validation through `About`
+- Logout through Sidebar Menu
+
+### Exploratory Findings
+
+- Reset App State exploratory findings
+- Persona-specific behavior exploration for `problem_user`, `error_user`, and `visual_user`
 
 ### Coverage Summary
 
@@ -160,22 +171,18 @@ The test suite uses stable and readable selectors.
 Examples:
 
 ```ts
-page.locator('[data-test="login-button"]')
-page.getByRole('button', { name: 'Checkout' })
-productCard.getByRole('button', { name: 'Add to cart' })
+page.getByTestId('login-button');
+page.getByRole('button', { name: 'Open Menu' });
+productCard.getByRole('button', { name: 'Add to cart' });
 ```
 
-Detailed locator rationale is available in:
-
-```text
-docs/locator-notes.md
-```
+Detailed locator rationale is available in [Locator Notes](docs/locator-notes.md).
 
 ---
 
 ## Persona-Risk Diagnostics
 
-In addition to regular regression coverage, the project includes targeted checks for known behavior risks in SauceDemo persona accounts.
+In addition to functional regression coverage, the project includes targeted checks for reproducible known behavior risks in SauceDemo persona accounts.
 
 Covered personas include:
 
@@ -189,17 +196,30 @@ These tests are intentionally marked with:
 test.fail()
 ```
 
-The expected-failure marker is applied only after the test setup succeeds.
+The expected-failure marker is applied only after login, navigation, and relevant preconditions have been validated. This prevents unrelated setup or locator failures from being incorrectly classified as known product defects.
 
-This means that an unexpected pass is visible in the test run and may indicate that a known issue has been fixed.
+An unexpected pass is visible in the test run and may indicate that a known issue has been fixed.
 
-The persona scenarios are not treated as general regression failures. They are diagnostic checks for documented product behavior.
+The persona scenarios are diagnostic checks for documented product behavior. They are not treated as general regression failures.
 
-Known findings and evidence are documented in:
+Known findings and evidence are documented in [Bug Reports](docs/bug-reports.md).
+
+---
+
+## Latest Test Run
 
 ```text
-docs/bug-reports.md
+Running 147 tests using 3 workers
+147 passed (1.3m)
 ```
+
+Execution scope:
+
+- 49 automated scenarios
+- Chromium
+- Firefox
+- WebKit
+- 147 total cross-browser executions
 
 ---
 
@@ -212,7 +232,7 @@ npm ci
 npx playwright install
 ```
 
-Run the standard functional regression suite:
+Run the functional regression suite:
 
 ```bash
 npm test
@@ -230,7 +250,7 @@ Run all tests:
 npm run test:all
 ```
 
-Run type checking:
+Run TypeScript type checking:
 
 ```bash
 npm run typecheck
@@ -279,39 +299,21 @@ The CI workflow is available in:
 
 ## QA Documentation
 
-The repository includes supporting QA documentation.
+### [Test Plan](docs/test-plan.md)
 
-### Test Plan
+Project scope, test strategy, manual test design, automation mapping, assumptions, and risks.
 
-```text
-docs/test-plan.md
-```
+### [Test Execution Summary](docs/test-execution-summary.md)
 
-Contains project scope, test strategy, manual test design, automation mapping, assumptions, and risks.
+Selected execution results, automation status, and known issue scope.
 
-### Test Execution Summary
+### [Locator Notes](docs/locator-notes.md)
 
-```text
-docs/test-execution-summary.md
-```
+Locator decisions and examples of stable Playwright selector usage.
 
-Contains selected execution results, automation status, and known issue scope.
+### [Bug Reports](docs/bug-reports.md)
 
-### Locator Notes
-
-```text
-docs/locator-notes.md
-```
-
-Contains locator decisions and examples of stable Playwright selector usage.
-
-### Bug Reports
-
-```text
-docs/bug-reports.md
-```
-
-Contains evidence-backed defects and persona-specific exploratory findings.
+Evidence-backed defects and persona-specific exploratory findings.
 
 ---
 
@@ -336,12 +338,11 @@ Contains evidence-backed defects and persona-specific exploratory findings.
 - How to design and automate end-to-end UI test scenarios with Playwright and TypeScript
 - How to select stable locators for reliable UI automation
 - How to structure tests by product feature
-- How to avoid unnecessary abstraction in a small automation project
 - How to reuse setup logic without reducing test readability
 - How to run tests in Chromium, Firefox, and WebKit
-- How to document manual test design and automation coverage
 - How to separate functional regression tests from known-risk diagnostic checks
 - How to use `test.fail()` responsibly for reproducible known issues
+- How to document manual test design and automation coverage
 - How to create evidence-backed bug reports
 - How to configure GitHub Actions for automated test execution
 
@@ -369,6 +370,6 @@ The current implementation includes:
 ## Author
 
 Kateryna Yeromenko  
-Aspiring QA Automation Engineer
+Junior QA Automation Engineer
 
-GitHub: https://github.com/Yeromenko-Kateryna
+GitHub: [Yeromenko-Kateryna](https://github.com/Yeromenko-Kateryna)
