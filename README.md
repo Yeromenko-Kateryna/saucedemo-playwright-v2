@@ -370,6 +370,4 @@ The current implementation includes:
 ## Author
 
 Kateryna Yeromenko  
-Junior QA Automation Engineer
-
 GitHub: [Yeromenko-Kateryna](https://github.com/Yeromenko-Kateryna)
