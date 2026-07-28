@@ -6,10 +6,21 @@ test('TC-MENU-001 - should open sidebar menu and display navigation items', asyn
 
   await page.getByRole('button', { name: 'Open Menu' }).click();
 
-  await expect(page.locator('[data-test="inventory-sidebar-link"]')).toHaveText('All Items');
-  await expect(page.locator('[data-test="about-sidebar-link"]')).toHaveText('About');
-  await expect(page.locator('[data-test="logout-sidebar-link"]')).toHaveText('Logout');
-  await expect(page.locator('[data-test="reset-sidebar-link"]')).toHaveText('Reset App State');
+  const allItemsLink = page.locator('[data-test="inventory-sidebar-link"]');
+  const aboutLink = page.locator('[data-test="about-sidebar-link"]');
+  const logoutLink = page.locator('[data-test="logout-sidebar-link"]');
+  const resetAppStateLink = page.locator('[data-test="reset-sidebar-link"]');
+  const closeMenuButton = page.getByRole('button', { name: 'Close Menu' });
+
+  await expect(allItemsLink).toBeVisible();
+  await expect(allItemsLink).toHaveText('All Items');
+  await expect(aboutLink).toBeVisible();
+  await expect(aboutLink).toHaveText('About');
+  await expect(logoutLink).toBeVisible();
+  await expect(logoutLink).toHaveText('Logout');
+  await expect(resetAppStateLink).toBeVisible();
+  await expect(resetAppStateLink).toHaveText('Reset App State');
+  await expect(closeMenuButton).toBeVisible();
 });
 
 test('TC-MENU-002 - should close sidebar menu', async ({ page }) => {
